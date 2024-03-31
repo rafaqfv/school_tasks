@@ -16,7 +16,6 @@ public class Task implements Parcelable {
     private String titulo;
     private String dataDeEntrega;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public Task(String disciplina, String descricao, String titulo, LocalDate dataLocalDate) {
         this.disciplina = disciplina;
         this.descricao = descricao;
@@ -24,7 +23,6 @@ public class Task implements Parcelable {
         this.dataDeEntrega = Task.converterParaPortugues(dataLocalDate.getDayOfWeek());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     protected Task(Parcel in) {
         disciplina = in.readString();
         descricao = in.readString();
@@ -32,7 +30,6 @@ public class Task implements Parcelable {
         dataDeEntrega = in.readString();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(disciplina);
@@ -91,7 +88,6 @@ public class Task implements Parcelable {
         this.dataDeEntrega = dataDeEntrega;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String converterParaPortugues(DayOfWeek diaDaSemana) {
         switch (diaDaSemana) {
             case MONDAY:

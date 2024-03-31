@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.databinding.ActivityAddTasksBinding;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -40,10 +41,11 @@ public class AddTasksActivity extends AppCompatActivity {
             return insets;
         });
 
+
         calendar = Calendar.getInstance();
 
         binding.salvarButton.setOnClickListener(v -> validateAndSaveTask());
-        binding.dataLayout.setOnClickListener(v -> showDatePickerDialog());
+        binding.data.setOnClickListener(v -> showDatePickerDialog());
     }
 
     private void validateAndSaveTask() {
@@ -54,84 +56,64 @@ public class AddTasksActivity extends AppCompatActivity {
         if (disciplina.isEmpty()) {
             binding.disciplina.setError("Disciplina é obrigatória");
             isValid = false;
-        } else if (disciplina.length() < 3) {
-            binding.disciplina.setError("Disciplina deve ter ao menos 3 caracteres");
-            isValid = false;
         } else {
             binding.disciplina.setError(null);
         }
 
         // Data validation
-        LocalDate data = null;
         String dataStr = binding.data.getText().toString().trim();
+        LocalDate data = null;
         if (!isValidData(dataStr)) {
             binding.data.setError("Data inválida. Use o formato DD/MM/YYYY");
             isValid = false;
         } else {
-            // Convertendo a string de data em LocalDate
-            try {
-                data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                // Agora você tem o objeto LocalDate 'data' para usar como desejar
-            } catch (DateTimeParseException e) {
-                // Se ocorrer um erro ao analisar a data, trate-o conforme necessário
-                e.printStackTrace();
-                isValid = false;
-            }
+            data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            binding.data.setError(null);
         }
 
         // Title validation (example: optional, maximum length)
         String titulo = binding.titulo.getText().toString().trim();
-        if (titulo.length() > 50) {
-            binding.titulo.setError("Título excede o limite de 50 caracteres");
-            isValid = false;
-        } else {
-            binding.titulo.setError(null);
-        }
 
         // Description validation (example: no specific validation)
         String descricao = binding.descricao.getText().toString().trim();
 
         if (isValid) {
             saveTask(disciplina, data, titulo, descricao);
-
             clearInputsAndErrors();
         }
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void saveTask(String disciplina, LocalDate data, String titulo, String descricao) {
-        // Implemente sua lógica para salvar a tarefa no banco de dados, armazenamento local, etc.
-        // Você pode usar Room, SharedPreferences, Firebase ou outras soluções de armazenamento
 
-        // Crie uma nova instância de Task com os dados fornecidos
         Task newTask = new Task(disciplina, descricao, titulo, data);
 
-        // Crie um Intent para retornar os dados da nova tarefa para a TasksActivity
         Intent resultIntent = new Intent();
         resultIntent.putExtra("newTask", newTask);
         setResult(RESULT_OK, resultIntent);
 
-        // Finalize a atividade para voltar à TasksActivity
         finish();
+    }
+
+    private void showDatePickerDialog() {
+        // Defina a data mínima como o dia de hoje
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Selecionar Data")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build();
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            calendar.setTimeInMillis(selection);
+            updateDataEntregaEditText();
+        });
+        datePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
     }
 
     private boolean isValidData(String data) {
         return data.matches("\\d{2}/\\d{2}/\\d{4}"); // Simple DD/MM/YYYY format check
     }
 
-    private void showDatePickerDialog() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, monthOfYear);
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateDataEntregaEditText();
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
-    }
-
     private void updateDataEntregaEditText() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        binding.data.setText(dateFormat.format(calendar.getTime()));
+        String dataStr = String.format(Locale.getDefault(), "%02d/%02d/%04d", calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
+        binding.data.setText(dataStr);
     }
 
     private void clearInputsAndErrors() {

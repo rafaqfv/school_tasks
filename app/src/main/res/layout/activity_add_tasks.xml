@@ -56,10 +56,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Data">
+            android:clickable="true"
+            android:hint="Data de entrega">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/data"
+                android:clickable="true"
+                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Título">
+            android:hint="Título da atividade">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titulo"
@@ -80,14 +83,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Descrição"
-            >
+            android:hint="Descrição">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descricao"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -44,13 +44,6 @@ public class TasksActivity extends AppCompatActivity {
 
         binding.recyclerTasks.setLayoutManager(new LinearLayoutManager(this));
 
-        // Adicione algumas tarefas à lista
-        taskList.add(new Task("Matemática", "Resolver exercícios de álgebra " +
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "Exercícios de Álgebra", LocalDate.of(2024, 04, 01)));
-        taskList.add(new Task("História", "Estudar para o teste", "Revolução Francesa", LocalDate.of(2024, 04, 2)));
-        taskList.add(new Task("Português", "Escrever um ensaio", "O Processo de Escrita", LocalDate.of(2024, 04, 3)));
-
         TaskAdapter adapter = new TaskAdapter(taskList);
         binding.recyclerTasks.setAdapter(adapter);
 

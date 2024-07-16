@@ -52,10 +52,8 @@ public class TasksActivity extends AppCompatActivity {
         });
 
         binding.recyclerTasks.setLayoutManager(new LinearLayoutManager(this));
-
         TaskAdapter adapter = new TaskAdapter(taskList);
         binding.recyclerTasks.setAdapter(adapter);
-
     }
 
     @Override
@@ -72,5 +70,4 @@ public class TasksActivity extends AppCompatActivity {
             }
         }
     }
-
 }

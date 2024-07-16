@@ -81,20 +81,29 @@ public class MainActivity extends AppCompatActivity {
 
             if (nome.isEmpty()) {
                 binding.nomeInput.setError("Nome vazio.");
+                new Handler(getMainLooper()).postDelayed(() -> {
+                    binding.nomeInput.setError(null);
+                }, 2000);
             }
             if (telefone.isEmpty()) {
                 binding.telefoneInput.setError("Telefone Vazio.");
+                new Handler(getMainLooper()).postDelayed(() -> {
+                    binding.telefoneInput.setError(null);
+                }, 2000);
             }
             if (email.isEmpty()) {
                 binding.emailInput.setError("Email vazio.");
+                new Handler(getMainLooper()).postDelayed(() -> {
+                    binding.emailInput.setError(null);
+                }, 2000);
             }
             if (senha.length() < 8) {
                 binding.senhaInput.setError("Senha menor do que 8 dígitos.");
+                new Handler(getMainLooper()).postDelayed(() -> {
+                    binding.senhaInput.setError(null);
+                }, 2000);
             }
-
             binding.progressBar2.setVisibility(View.INVISIBLE);
-
         });
-
     }
 }

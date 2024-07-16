@@ -2,6 +2,7 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -60,10 +61,16 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             if (email.isEmpty()) {
-                binding.email.setError("Vazio");
+                binding.emailInput.setError("Vazio");
+                new Handler(getMainLooper()).postDelayed(() -> {
+                    binding.emailInput.setError(null);
+                }, 2000);
             }
             if (senha.length() < 8) {
-                binding.senha.setError("Têm que ser maior ou igual à 8");
+                binding.senhaInput.setError("Têm que ser maior ou igual à 8");
+                new Handler(getMainLooper()).postDelayed(() -> {
+                    binding.senhaInput.setError(null);
+                }, 2000);
             }
             binding.progressBar.setVisibility(View.INVISIBLE);
         });

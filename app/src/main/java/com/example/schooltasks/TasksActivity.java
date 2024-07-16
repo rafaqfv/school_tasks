@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.schooltasks.databinding.ActivityTasksBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,10 +22,10 @@ import java.util.List;
 
 public class TasksActivity extends AppCompatActivity {
     private ActivityTasksBinding binding;
+    private FirebaseAuth mAuth;
     private static final int REQUEST_ADD_TASK = 1;
     List<Task> taskList = new ArrayList<>();
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,14 @@ public class TasksActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        mAuth = FirebaseAuth.getInstance();
+
+        binding.btnLogOut.setOnClickListener(v -> {
+            mAuth.signOut();
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
         });
 
         binding.intentAddTask.setOnClickListener(v -> {

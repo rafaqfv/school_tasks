@@ -44,7 +44,6 @@ public class Task implements Parcelable {
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public Task createFromParcel(Parcel in) {
             return new Task(in);

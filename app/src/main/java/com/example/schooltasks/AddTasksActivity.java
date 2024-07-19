@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.RequiresApi;
@@ -15,7 +16,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.databinding.ActivityAddTasksBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -27,7 +32,7 @@ import java.util.Locale;
 
 public class AddTasksActivity extends AppCompatActivity {
     private ActivityAddTasksBinding binding;
-    Calendar calendar;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,80 +45,62 @@ public class AddTasksActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        db = FirebaseFirestore.getInstance();
 
-
-        calendar = Calendar.getInstance();
-
-        binding.salvarButton.setOnClickListener(v -> validateAndSaveTask());
-        binding.data.setOnClickListener(v -> showDatePickerDialog());
+        binding.salvarButton.setOnClickListener(v -> {
+            if (validateFields()) {
+                saveTask();
+                clearInputsAndErrors();
+            }
+        });
     }
 
-    private void validateAndSaveTask() {
-        boolean isValid = true;
-
-        // Discipline validation (example: required, minimum length)
+    private boolean validateFields() {
         String disciplina = binding.disciplina.getText().toString().trim();
-        if (disciplina.isEmpty()) {
-            binding.disciplina.setError("Disciplina é obrigatória");
-            isValid = false;
-        } else {
-            binding.disciplina.setError(null);
-        }
-
-        // Data validation
         String dataStr = binding.data.getText().toString().trim();
-        LocalDate data = null;
-        if (!isValidData(dataStr)) {
-            binding.data.setError("Data inválida. Use o formato DD/MM/YYYY");
-            isValid = false;
-        } else {
-            data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            binding.data.setError(null);
-        }
-
-        // Title validation (example: optional, maximum length)
         String titulo = binding.titulo.getText().toString().trim();
-
-        // Description validation (example: no specific validation)
         String descricao = binding.descricao.getText().toString().trim();
 
-        if (isValid) {
-            saveTask(disciplina, data, titulo, descricao);
-            clearInputsAndErrors();
+        if (
+                !titulo.isEmpty()
+                        && isValidData(dataStr)
+                        && !dataStr.isEmpty()
+                        && !disciplina.isEmpty()
+                        && !descricao.isEmpty()
+        ) {
+            return true;
         }
+
+        if (descricao.isEmpty()) {
+            binding.descricao.setError("Disciplina é obrigatória");
+        }
+
+        if (titulo.isEmpty()) {
+            binding.titulo.setError("Disciplina é obrigatória");
+        }
+
+        if (disciplina.isEmpty()) {
+            binding.disciplina.setError("Disciplina é obrigatória");
+        }
+
+        if (!isValidData(dataStr) || dataStr.isEmpty()) {
+            binding.data.setError("Data inválida. Use o formato DD/MM/YYYY");
+        }
+        return false;
     }
-    private void saveTask(String disciplina, LocalDate data, String titulo, String descricao) {
 
-        Task newTask = new Task(disciplina, descricao, titulo, data);
+    private void saveTask() {
+        String disciplina = binding.disciplina.getText().toString().trim();
+        String dataStr = binding.data.getText().toString().trim();
+        String titulo = binding.titulo.getText().toString().trim();
+        String descricao = binding.descricao.getText().toString().trim();
 
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("newTask", newTask);
-        setResult(RESULT_OK, resultIntent);
-
-        finish();
-    }
-
-    private void showDatePickerDialog() {
-        // Defina a data mínima como o dia de hoje
-        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Selecionar Data")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build();
-        datePicker.addOnPositiveButtonClickListener(selection -> {
-            calendar.setTimeInMillis(selection);
-            updateDataEntregaEditText();
-        });
-        datePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+        Task newTask = new Task(disciplina, descricao, titulo, dataStr);
+        addDocumentDB(newTask);
     }
 
     private boolean isValidData(String data) {
         return data.matches("\\d{2}/\\d{2}/\\d{4}"); // Simple DD/MM/YYYY format check
-    }
-
-    private void updateDataEntregaEditText() {
-        String dataStr = String.format(Locale.getDefault(), "%02d/%02d/%04d", calendar.get(Calendar.DAY_OF_MONTH),
-                calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
-        binding.data.setText(dataStr);
     }
 
     private void clearInputsAndErrors() {
@@ -121,5 +108,12 @@ public class AddTasksActivity extends AppCompatActivity {
         binding.data.setText("");
         binding.titulo.setText("");
         binding.descricao.setText("");
+    }
+
+    private void addDocumentDB(Task task) {
+        db.collection("tasks")
+                .add(task)
+                .addOnSuccessListener(documentReference -> Toast.makeText(AddTasksActivity.this, "Sucesso", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(AddTasksActivity.this, "Falha", Toast.LENGTH_SHORT).show());
     }
 }

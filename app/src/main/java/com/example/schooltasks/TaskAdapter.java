@@ -6,13 +6,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    private List<Task> tasks;
+    private ArrayList<Task> tasks;
 
-    public TaskAdapter(List<Task> tasks) {
+    public TaskAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
 

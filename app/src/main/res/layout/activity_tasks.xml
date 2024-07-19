@@ -26,51 +26,13 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/nav"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@color/verde_escuro"
-        android:orientation="horizontal"
-        android:paddingHorizontal="80dp"
-        app:layout_constraintTop_toBottomOf="@id/header">
-
-        <TextView
-            android:id="@+id/atividades"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Atividades"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:text="Avisos"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="150dp"
-        android:layout_height="2dp"
-        android:layout_marginHorizontal="45dp"
-        android:background="@color/verde_claro"
-        app:layout_constraintBottom_toBottomOf="@id/nav"
-        app:layout_constraintStart_toStartOf="@id/nav" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerTasks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="100dp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/nav"
+        app:layout_constraintTop_toBottomOf="@+id/header"
         tools:listitem="@layout/list_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

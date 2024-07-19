@@ -23,8 +23,7 @@ import java.util.List;
 public class TasksActivity extends AppCompatActivity {
     private ActivityTasksBinding binding;
     private FirebaseAuth mAuth;
-    private static final int REQUEST_ADD_TASK = 1;
-    List<Task> taskList = new ArrayList<>();
+    ArrayList<Task> taskList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,26 +47,10 @@ public class TasksActivity extends AppCompatActivity {
 
         binding.intentAddTask.setOnClickListener(v -> {
             Intent intent = new Intent(this, AddTasksActivity.class);
-            startActivityForResult(intent, REQUEST_ADD_TASK);
         });
 
         binding.recyclerTasks.setLayoutManager(new LinearLayoutManager(this));
         TaskAdapter adapter = new TaskAdapter(taskList);
         binding.recyclerTasks.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ADD_TASK && resultCode == RESULT_OK && data != null) {
-            // Receba os dados da nova tarefa da AddTasksActivity
-            Task newTask = data.getParcelableExtra("newTask");
-            if (newTask != null) {
-                // Adicione a nova tarefa ao RecyclerView
-                taskList.add(newTask);
-                TaskAdapter adapter = new TaskAdapter(taskList);
-                binding.recyclerTasks.setAdapter(adapter);
-            }
-        }
     }
 }

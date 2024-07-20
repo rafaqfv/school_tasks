@@ -72,11 +72,11 @@ public class AddTasksActivity extends AppCompatActivity {
         }
 
         if (descricao.isEmpty()) {
-            binding.descricao.setError("Disciplina é obrigatória");
+            binding.descricao.setError("Descrição é obrigatório");
         }
 
         if (titulo.isEmpty()) {
-            binding.titulo.setError("Disciplina é obrigatória");
+            binding.titulo.setError("Título é obrigatório");
         }
 
         if (disciplina.isEmpty()) {
@@ -113,7 +113,11 @@ public class AddTasksActivity extends AppCompatActivity {
     private void addDocumentDB(Task task) {
         db.collection("tasks")
                 .add(task)
-                .addOnSuccessListener(documentReference -> Toast.makeText(AddTasksActivity.this, "Sucesso", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(documentReference -> {
+                            Toast.makeText(AddTasksActivity.this, "Sucesso", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                )
                 .addOnFailureListener(e -> Toast.makeText(AddTasksActivity.this, "Falha", Toast.LENGTH_SHORT).show());
     }
 }

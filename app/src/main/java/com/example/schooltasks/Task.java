@@ -7,6 +7,10 @@ public class Task {
     private String titulo;
     private String dataDeEntrega;
 
+    public Task() {
+
+    }
+
     public Task(String disciplina, String descricao, String titulo, String dataDeEntrega) {
         this.disciplina = disciplina;
         this.descricao = descricao;

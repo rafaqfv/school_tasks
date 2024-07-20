@@ -47,6 +47,8 @@ public class AddTasksActivity extends AppCompatActivity {
         });
         db = FirebaseFirestore.getInstance();
 
+        binding.backBtn.setOnClickListener(v -> finish());
+
         binding.salvarButton.setOnClickListener(v -> {
             if (validateFields()) {
                 saveTask();

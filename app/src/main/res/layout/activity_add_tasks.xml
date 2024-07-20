@@ -9,7 +9,8 @@
     tools:context=".AddTasksActivity">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/taskTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="30dp"
@@ -18,7 +19,19 @@
         android:textColor="@color/verde_escuro"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:src="@drawable/back_btn"
+        app:layout_constraintBottom_toBottomOf="@id/taskTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/taskTextView" />
 
     <LinearLayout
         android:id="@+id/inputs"

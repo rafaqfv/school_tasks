@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        binding.backBtn.setOnClickListener(v -> finish());
+
         binding.btnSalvar.setOnClickListener(v -> {
             binding.progressBar2.setVisibility(View.VISIBLE);
 

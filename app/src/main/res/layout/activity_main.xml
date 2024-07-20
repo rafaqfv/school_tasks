@@ -9,7 +9,8 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/cadastroTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
         android:gravity="center"
@@ -17,7 +18,20 @@
         android:textColor="@color/verde_escuro"
         android:textSize="32sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_btn"
+        android:layout_marginEnd="42dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="@id/cadastroTextView"
+        app:layout_constraintTop_toTopOf="@id/cadastroTextView" />
 
     <LinearLayout
         android:id="@+id/inputs"
@@ -74,7 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="Senha"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/verde_escuro">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/senhaInput"

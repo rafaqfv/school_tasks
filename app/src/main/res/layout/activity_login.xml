@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:backgroundTint="@color/md_theme_surface"
     tools:context=".MainActivity">
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_margin="32dp"
         android:text="LOGIN"
         android:textAlignment="center"
-        android:textColor="@color/verde_escuro"
+        android:textColor="@color/md_theme_primary"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +59,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="10dp"
-        android:paddingVertical="12dp"
         android:text="LOGIN"
         app:layout_constraintTop_toBottomOf="@+id/senha" />
 
@@ -87,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:indeterminateTint="@color/verde_escuro"
+        android:indeterminateTint="@color/md_theme_primary"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@id/btnLogin"
         app:layout_constraintStart_toStartOf="@id/btnLogin"

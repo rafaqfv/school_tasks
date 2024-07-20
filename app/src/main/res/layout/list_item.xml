@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    app:cardCornerRadius="21dp"
-    app:cardElevation="15dp">
+    android:backgroundTint="@color/md_theme_surfaceContainer"
+    app:cardCornerRadius="21dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/corners"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="16dp"
+            >
 
             <TextView
                 android:id="@+id/disciplina"
@@ -28,8 +30,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Disciplina"
-                android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textAlignment="textStart"
+                android:textColor="@color/md_theme_onPrimaryContainer"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -39,8 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Data"
-                android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textAlignment="textEnd"
+                android:textColor="@color/md_theme_onPrimaryContainer"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -59,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Título"
-                android:textColor="@android:color/black"
+                android:textColor="@color/md_theme_onSurface"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -68,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Descrição"
-                android:textColor="#B3000000"
+                android:textColor="@color/md_theme_onSurface"
                 android:textSize="14sp" />
 
         </LinearLayout>

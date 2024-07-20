@@ -5,16 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/md_theme_surface"
     tools:context=".TasksActivity">
 
     <TextView
+        android:id="@+id/stTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
+        android:fontFamily="@font/inter"
         android:text="School Tasks"
-        android:textColor="@color/verde_escuro"
-        android:textSize="24sp"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
-        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/list_item" />
 
@@ -34,7 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:backgroundTint="@color/amarelo"
+        android:padding="16dp"
+        android:backgroundTint="@color/md_theme_secondaryContainer"
         android:src="@drawable/baseline_blind_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -43,10 +45,11 @@
         android:id="@+id/btnLogOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="38dp"
         android:src="@drawable/log_out"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/stTextView"
+        app:layout_constraintTop_toTopOf="@id/stTextView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

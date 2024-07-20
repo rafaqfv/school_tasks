@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:backgroundTint="@color/md_theme_surface"
     tools:context=".AddTasksActivity">
 
     <TextView
@@ -15,8 +15,8 @@
         android:layout_gravity="center"
         android:layout_margin="30dp"
         android:gravity="center"
-        android:text="Cadastre uma nova task"
-        android:textColor="@color/verde_escuro"
+        android:text="Cadastre uma\nnova tarefa"
+        android:textColor="@color/md_theme_primary"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="100dp"
-        android:background="@color/white"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="32dp"
@@ -54,7 +53,7 @@
                 android:id="@+id/disciplina"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapWords" />
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

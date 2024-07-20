@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
-        android:text="LOGIN"
+        android:text="Login"
         android:textAlignment="center"
         android:textColor="@color/md_theme_primary"
         android:textSize="32sp"
@@ -68,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Cadastrar"
+        android:textColor="@color/md_theme_onSurface"
         app:layout_constraintStart_toStartOf="@id/btnLogin"
         app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 

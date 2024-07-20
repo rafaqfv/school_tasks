@@ -36,13 +36,12 @@
     <LinearLayout
         android:id="@+id/inputs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/taskTextView">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -61,12 +60,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Data de entrega">
+            android:hint="Data de entrega (dd/mm/aaaa)">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="date"
                 android:maxLength="10" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,7 +74,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Título da atividade">
+            android:hint="Título da tarefa"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titulo"

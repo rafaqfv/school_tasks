@@ -18,7 +18,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
-public class TasksActivity extends AppCompatActivity {
+public class TasksActivity extends AppCompatActivity implements OnItemClickListener {
     private ActivityTasksBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -39,7 +39,7 @@ public class TasksActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         taskList = new ArrayList<>();
-        adapter = new TaskAdapter(taskList);
+        adapter = new TaskAdapter(taskList, this);
 
         binding.btnLogOut.setOnClickListener(v -> {
             mAuth.signOut();
@@ -57,6 +57,10 @@ public class TasksActivity extends AppCompatActivity {
         binding.recyclerTasks.setAdapter(adapter);
     }
 
+    private void getItem() {
+
+    }
+
     private void listenForTaskChanges() {
         db.collection("tasks")
                 .addSnapshotListener((value, e) -> {
@@ -66,9 +70,31 @@ public class TasksActivity extends AppCompatActivity {
                     }
                     taskList.clear();
                     for (QueryDocumentSnapshot doc : value) {
-                        taskList.add(doc.toObject(Task.class));
+                        Task task = doc.toObject(Task.class);
+                        task.setId(doc.getId());
+                        taskList.add(task);
+
                     }
                     adapter.notifyDataSetChanged();
                 });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Task task = taskList.get(position);
+        String disciplina, titulo, data, descricao, id;
+        disciplina = task.getDisciplina();
+        titulo = task.getTitulo();
+        data = task.getDataDeEntrega();
+        descricao = task.getDescricao();
+        id = task.getId();
+
+        Intent intent = new Intent(this, UpdateTask.class);
+        intent.putExtra("disciplina", disciplina);
+        intent.putExtra("titulo", titulo);
+        intent.putExtra("data", data);
+        intent.putExtra("descricao", descricao);
+        intent.putExtra("id", id);
+        startActivity(intent);
     }
 }

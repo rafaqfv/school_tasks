@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class AddTasksActivity extends AppCompatActivity {
@@ -46,9 +47,9 @@ public class AddTasksActivity extends AppCompatActivity {
             return insets;
         });
         db = FirebaseFirestore.getInstance();
-
         binding.backBtn.setOnClickListener(v -> finish());
 
+        datePicker();
         binding.salvarButton.setOnClickListener(v -> {
             if (validateFields()) {
                 saveTask();
@@ -99,6 +100,28 @@ public class AddTasksActivity extends AppCompatActivity {
 
         Task newTask = new Task(disciplina, descricao, titulo, dataStr);
         addDocumentDB(newTask);
+    }
+
+    private void datePicker() {
+        binding.data.setOnClickListener(v -> {
+            MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                    .setTitleText("Selecione uma data")
+                    .build();
+
+            datePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+
+            datePicker.addOnPositiveButtonClickListener(selection -> {
+                // Obtém a data selecionada
+                Date date = new Date(selection);
+
+                // Formata a data para o formato dd/MM/yyyy
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                String formattedDate = formatter.format(date);
+
+                // Exibe a data formatada no TextView
+                binding.data.setText(formattedDate);
+            });
+        });
     }
 
     private boolean isValidData(String data) {

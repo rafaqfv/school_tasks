@@ -6,6 +6,15 @@ public class Task {
     private String descricao;
     private String titulo;
     private String dataDeEntrega;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Task() {
 

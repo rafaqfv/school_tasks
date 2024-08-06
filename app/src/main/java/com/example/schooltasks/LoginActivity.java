@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (email.isEmpty()) {
-            binding.emailInput.setError("Email vazio");
+            binding.email.setError("Email vazio");
         }
         if (senha.length() < 8) {
             binding.senha.setError("Senha inválida: menor que 8 caracteres");

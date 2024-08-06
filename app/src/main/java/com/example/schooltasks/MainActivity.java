@@ -19,7 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-//import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -38,7 +37,10 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         mAuth = FirebaseAuth.getInstance();
-        binding.backBtn.setOnClickListener(v -> finish());
+        binding.backBtn.setOnClickListener(v -> {
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        });
 
         binding.btnSalvar.setOnClickListener(v -> {
             binding.progressBar2.setVisibility(View.VISIBLE);
@@ -108,20 +110,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (nome.isEmpty()) {
-            binding.nomeInput.setError("Nome vazio.");
-            binding.nomeInput.setError(null);
+            binding.nome.setError("Nome vazio.");
         }
         if (telefone.isEmpty()) {
-            binding.telefoneInput.setError("Telefone Vazio.");
-            binding.telefoneInput.setError(null);
+            binding.telefone.setError("Telefone Vazio.");
         }
         if (email.isEmpty()) {
-            binding.emailInput.setError("Email vazio.");
-            binding.emailInput.setError(null);
+            binding.email.setError("Email vazio.");
         }
         if (senha.length() < 8) {
-            binding.senhaInput.setError("Senha menor do que 8 dígitos.");
-            binding.senhaInput.setError(null);
+            binding.senha.setError("Senha menor do que 8 dígitos.");
         }
         return false;
     }

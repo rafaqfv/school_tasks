@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
-        android:text="Login"
+        android:text="Bem vindo!"
         android:textAlignment="center"
         android:textColor="@color/md_theme_primary"
         android:textSize="32sp"
@@ -31,7 +31,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="10dp"
-        android:text="LOGIN"
+        android:text="ENTRAR"
         app:layout_constraintTop_toBottomOf="@+id/senha" />
 
     <TextView

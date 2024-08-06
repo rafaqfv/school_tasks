@@ -75,19 +75,19 @@ public class AddTasksActivity extends AppCompatActivity {
         }
 
         if (descricao.isEmpty()) {
-            binding.descricao.setError("Descrição é obrigatório");
+            binding.descricaoLayout.setError("Descrição é obrigatório");
         }
 
         if (titulo.isEmpty()) {
-            binding.titulo.setError("Título é obrigatório");
+            binding.tituloLayout.setError("Título é obrigatório");
         }
 
         if (disciplina.isEmpty()) {
-            binding.disciplina.setError("Disciplina é obrigatória");
+            binding.disciplinaLayout.setError("Disciplina é obrigatória");
         }
 
         if (!isValidData(dataStr) || dataStr.isEmpty()) {
-            binding.data.setError("Data inválida. Use o formato DD/MM/YYYY");
+            binding.dataLayout.setError("Data inválida. Use o formato DD/MM/YYYY");
         }
         return false;
     }

@@ -16,8 +16,8 @@
         android:fontFamily="@font/inter"
         android:text="Tarefas"
         android:textColor="@color/md_theme_primary"
-        android:textStyle="bold"
         android:textSize="32sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,8 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:padding="16dp"
         android:backgroundTint="@color/md_theme_secondaryContainer"
+        android:padding="16dp"
         app:icon="@drawable/add_task"
         app:iconTint="@color/md_theme_onSecondaryContainer"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,12 +44,13 @@
 
     <ImageView
         android:id="@+id/btnLogOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logout_icon"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="42dp"
+        android:src="@drawable/log_out_ionicons"
         app:layout_constraintBottom_toBottomOf="@id/stTextView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/stTextView" />
 
 

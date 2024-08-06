@@ -82,7 +82,8 @@ public class LoginActivity extends AppCompatActivity {
                         binding.progressBar.setVisibility(View.INVISIBLE);
                         startActivity(new Intent(this, TasksActivity.class));
                     } else {
-                        Toast.makeText(this, "Falha ao logar", Toast.LENGTH_SHORT).show();
+                        Exception e = task.getException();
+                        Toast.makeText(this, "Erro ao logar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         binding.progressBar.setVisibility(View.INVISIBLE);
                     }
                 });

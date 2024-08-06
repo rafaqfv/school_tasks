@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
         String email = binding.emailInput.getText().toString().trim();
 
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("Nome", nome);
-        userMap.put("Telefone", telefone);
-        userMap.put("Email", email);
+        userMap.put("nome", nome);
+        userMap.put("telefone", telefone);
+        userMap.put("email", email);
 
         db.collection("users").document(user.getUid()).set(userMap)
                 .addOnSuccessListener(documentReference -> {

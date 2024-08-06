@@ -80,7 +80,6 @@ public class UpdateTask extends AppCompatActivity {
                 .update(task)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Tarefa atualizada com sucesso!", Toast.LENGTH_SHORT).show();
-
                     finish();
                 })
                 .addOnFailureListener(e -> {

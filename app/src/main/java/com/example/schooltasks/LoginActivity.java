@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         binding.btnCadastrar.setOnClickListener(v -> {
+            finish();
             startActivity(new Intent(this, MainActivity.class));
         });
 
@@ -57,20 +58,14 @@ public class LoginActivity extends AppCompatActivity {
 
         if (email.isEmpty()) {
             binding.emailInput.setError("Email vazio");
-            new Handler(getMainLooper()).postDelayed(() -> {
-                binding.emailInput.setError(null);
-            }, 2000);
         }
         if (senha.length() < 8) {
-            binding.senhaInput.setError("Senha tem que ser maior ou igual à 8");
-            new Handler(getMainLooper()).postDelayed(() -> {
-                binding.senhaInput.setError(null);
-            }, 2000);
+            binding.senha.setError("Senha inválida: menor que 8 caracteres");
         }
         return false;
     }
 
-    public void login() {
+    private void login() {
         String email = binding.emailInput.getText().toString().trim();
         String senha = binding.senhaInput.getText().toString().trim();
 
@@ -87,7 +82,6 @@ public class LoginActivity extends AppCompatActivity {
                         binding.progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
-
     }
 
     @Override

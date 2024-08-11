@@ -105,9 +105,8 @@ public class MainActivity extends AppCompatActivity {
         String email = binding.emailInput.getText().toString().trim();
         String senha = binding.senhaInput.getText().toString().trim();
 
-        if (!nome.isEmpty() && !telefone.isEmpty() && !email.isEmpty() && senha.length() >= 8) {
+        if (!nome.isEmpty() && !telefone.isEmpty() && !email.isEmpty() && senha.length() >= 8)
             return true;
-        }
 
         if (nome.isEmpty()) {
             binding.nome.setError("Nome vazio.");

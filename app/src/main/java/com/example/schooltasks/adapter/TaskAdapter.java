@@ -1,4 +1,4 @@
-package com.example.schooltasks;
+package com.example.schooltasks.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.schooltasks.OnItemClickListener;
+import com.example.schooltasks.R;
+import com.example.schooltasks.Task;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 

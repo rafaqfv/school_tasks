@@ -8,9 +8,8 @@ public class Turma {
     public Turma() {
     }
 
-    public Turma(String nome, String id, String admin) {
+    public Turma(String nome, String admin) {
         this.nome = nome;
-        this.id = id;
         this.admin = admin;
     }
 

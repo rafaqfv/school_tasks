@@ -7,4 +7,68 @@
     android:layout_height="match_parent"
     tools:context=".CriarTurmasActivity">
 
+    <ImageView
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32sp"
+        android:src="@drawable/back_btn"
+        app:layout_constraintBottom_toBottomOf="@id/titleActivity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/titleActivity" />
+
+    <TextView
+        android:id="@+id/titleActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="32dp"
+        android:text="Criar Turma"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nomeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:hint="Nome da turma"
+        app:layout_constraintTop_toBottomOf="@id/titleActivity">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nomeInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/cursoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:hint="Curso"
+        app:layout_constraintTop_toBottomOf="@id/nomeLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/cursoInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/salvarBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/md_theme_primaryContainer"
+        android:text="Criar Turma"
+        android:textColor="@color/md_theme_onPrimaryContainer"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/cursoLayout"
+        app:layout_constraintTop_toBottomOf="@id/cursoLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

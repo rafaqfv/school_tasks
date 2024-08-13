@@ -1,22 +1,31 @@
 package com.example.schooltasks;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.schooltasks.adapter.Turma;
 import com.example.schooltasks.databinding.ActivityCriarTurmasBinding;
-import com.example.schooltasks.databinding.ActivityTurmasBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class CriarTurmasActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private ActivityCriarTurmasBinding binding;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private String nomeUser;
 
 
     @Override
@@ -30,6 +39,11 @@ public class CriarTurmasActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        getUserName();
+
         binding.backBtn.setOnClickListener(v -> finish());
 
         binding.salvarBtn.setOnClickListener(v -> {
@@ -38,22 +52,40 @@ public class CriarTurmasActivity extends AppCompatActivity {
         });
     }
 
+    private void getUserName() {
+        DocumentReference userDocRef = db.collection("users").document(user.getUid());
+        userDocRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            // Supondo que você quer buscar um campo chamado "nome"
+                            nomeUser = documentSnapshot.getString("nome");
+                            // Faça algo com o valor do campo "nome"
+                            Log.d("Firestore", "Nome do usuário: " + nomeUser);
+                        } else {
+                            Log.d("Firestore", "Documento do usuário não encontrado.");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Firestore", "Erro ao buscar o documento", e);
+                    }
+                });
+    }
+
     private Turma validateFields() {
         String nome = binding.nomeInput.getText().toString().trim();
-        String curso = binding.cursoInput.getText().toString().trim();
 
-        if (!nome.isEmpty() && !curso.isEmpty()) {
-            criarTurma(new Turma(nome, curso));
+        if (!nome.isEmpty()) {
+            criarTurma(new Turma(nome, user.getUid(), nomeUser));
         }
 
         if (nome.isEmpty()) {
             Toast.makeText(this, "Nome está vazio", Toast.LENGTH_SHORT).show();
             binding.nomeLayout.setError("Nome é obrigatório");
-        }
-
-        if (curso.isEmpty()) {
-            Toast.makeText(this, "Curso está vazio", Toast.LENGTH_SHORT).show();
-            binding.cursoLayout.setError("Curso é obrigatório");
         }
 
         return null;

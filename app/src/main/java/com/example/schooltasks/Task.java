@@ -8,6 +8,16 @@ public class Task {
     private String dataDeEntrega;
     private String id;
 
+    public String getIdTurma() {
+        return idTurma;
+    }
+
+    public void setIdTurma(String idTurma) {
+        this.idTurma = idTurma;
+    }
+
+    private String idTurma;
+
     public String getId() {
         return id;
     }
@@ -20,12 +30,12 @@ public class Task {
 
     }
 
-    public Task(String disciplina, String descricao, String titulo, String dataDeEntrega) {
+    public Task(String disciplina, String descricao, String titulo, String dataDeEntrega, String idTurma) {
         this.disciplina = disciplina;
         this.descricao = descricao;
         this.titulo = titulo;
         this.dataDeEntrega = dataDeEntrega;
-//        this.dataDeEntrega = Task.converterParaPortugues(dataLocalDate.getDayOfWeek());
+        this.idTurma = idTurma;
     }
 
     public String getDisciplina() {

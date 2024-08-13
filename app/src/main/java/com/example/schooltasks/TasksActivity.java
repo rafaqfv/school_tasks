@@ -2,6 +2,7 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -25,6 +26,8 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
     private FirebaseFirestore db;
     private ArrayList<Task> taskList;
     private TaskAdapter adapter;
+    private String idTurma;
+    private String idAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,10 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         taskList = new ArrayList<>();
         adapter = new TaskAdapter(taskList, this);
 
+        Intent intent = getIntent();
+        idTurma = intent.getStringExtra("idTurma");
+        idAdmin = intent.getStringExtra("idAdmin");
+
         binding.btnLogOut.setOnClickListener(v -> {
             mAuth.signOut();
             finish();
@@ -49,8 +56,11 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         });
 
         binding.intentAddTask.setOnClickListener(v -> {
+            Intent intentAddTask = new Intent(this, AddTasksActivity.class);
+            intentAddTask.putExtra("idTurma", idTurma);
+
             finish();
-            startActivity(new Intent(this, AddTasksActivity.class));
+            startActivity(intentAddTask);
         });
 
         listenForTaskChanges();
@@ -64,6 +74,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
 
     private void listenForTaskChanges() {
         db.collection("tasks")
+                .whereEqualTo("idTurma", idTurma)
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
                         Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show();
@@ -96,6 +107,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         intent.putExtra("data", data);
         intent.putExtra("descricao", descricao);
         intent.putExtra("id", id);
+        intent.putExtra("idTurma", idTurma);
         startActivity(intent);
     }
 }

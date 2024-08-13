@@ -1,16 +1,26 @@
-package com.example.schooltasks.adapter;
+package com.example.schooltasks;
 
 public class Turma {
     private String nome;
     private String id;
     private String admin;
+    private String nomeAdmin;
+
+    public String getNomeAdmin() {
+        return nomeAdmin;
+    }
+
+    public void setNomeAdmin(String nomeAdmin) {
+        this.nomeAdmin = nomeAdmin;
+    }
 
     public Turma() {
     }
 
-    public Turma(String nome, String admin) {
+    public Turma(String nome, String admin, String nomeAdmin) {
         this.nome = nome;
         this.admin = admin;
+        this.nomeAdmin = nomeAdmin;
     }
 
     public String getNome() {

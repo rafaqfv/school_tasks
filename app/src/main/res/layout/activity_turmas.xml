@@ -7,18 +7,31 @@
     android:layout_height="match_parent"
     tools:context=".TurmasActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Minhas turmas"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_margin="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/turmasRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
         tools:listitem="@layout/turmas_card" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addTurma"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/md_theme_secondaryContainer"
         android:layout_margin="32dp"
+        android:backgroundTint="@color/md_theme_secondaryContainer"
         android:src="@drawable/add_task"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

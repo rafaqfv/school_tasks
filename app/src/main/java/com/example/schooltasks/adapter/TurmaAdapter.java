@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooltasks.OnItemClickListener;
 import com.example.schooltasks.R;
+import com.example.schooltasks.Turma;
 
 import java.util.ArrayList;
 
 public class TurmaAdapter extends RecyclerView.Adapter<TurmaAdapter.ViewHolder> {
 
-    ArrayList<Turma> turmaArrayList;
+    private ArrayList<Turma> turmaArrayList;
     private OnItemClickListener listener;
 
     public TurmaAdapter(ArrayList<Turma> turmaArrayList, OnItemClickListener listener) {
@@ -25,36 +26,40 @@ public class TurmaAdapter extends RecyclerView.Adapter<TurmaAdapter.ViewHolder> 
 
     @NonNull
     @Override
-    public TurmaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.turmas_card, parent, false);
-        return new TurmaAdapter.ViewHolder(view);
+        return new ViewHolder(view, listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TurmaAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Turma turma = turmaArrayList.get(position);
-        holder.bind(turma, listener);
+        holder.nomeTurma.setText(turma.getNome());
+        holder.nomeAdmin.setText(turma.getAdmin());
     }
 
     @Override
     public int getItemCount() {
-        return turmaArrayList.size();
+        return (turmaArrayList != null) ? turmaArrayList.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView nomeTurma;
+        TextView nomeTurma, nomeAdmin;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             nomeTurma = itemView.findViewById(R.id.nome_turma);
-        }
+            nomeAdmin = itemView.findViewById(R.id.nomeAdmin);
 
-        public void bind(final Turma turma, final OnItemClickListener listener) {
-            nomeTurma.setText(turma.getNome());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    listener.onItemClick(getAdapterPosition());
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
                 }
             });
         }

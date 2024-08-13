@@ -30,10 +30,12 @@ import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class AddTasksActivity extends AppCompatActivity {
     private ActivityAddTasksBinding binding;
     private FirebaseFirestore db;
+    private String idTurma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class AddTasksActivity extends AppCompatActivity {
         });
         db = FirebaseFirestore.getInstance();
         binding.backBtn.setOnClickListener(v -> finish());
+        Intent intent = getIntent();
+        idTurma = intent.getStringExtra("idTurma");
 
         datePicker();
         binding.salvarButton.setOnClickListener(v -> {
@@ -98,7 +102,7 @@ public class AddTasksActivity extends AppCompatActivity {
         String titulo = binding.titulo.getText().toString().trim();
         String descricao = binding.descricao.getText().toString().trim();
 
-        Task newTask = new Task(disciplina, descricao, titulo, dataStr);
+        Task newTask = new Task(disciplina, descricao, titulo, dataStr, idTurma);
         addDocumentDB(newTask);
     }
 
@@ -111,12 +115,12 @@ public class AddTasksActivity extends AppCompatActivity {
             datePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
 
             datePicker.addOnPositiveButtonClickListener(selection -> {
-                // Obtém a data selecionada
-                Date date = new Date(selection);
 
                 // Formata a data para o formato dd/MM/yyyy
-                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                String formattedDate = formatter.format(date);
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+                String formattedDate = formatter.format(new Date(selection));
 
                 // Exibe a data formatada no TextView
                 binding.data.setText(formattedDate);
@@ -141,6 +145,7 @@ public class AddTasksActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentReference -> {
                             Toast.makeText(AddTasksActivity.this, "Sucesso", Toast.LENGTH_SHORT).show();
                             finish();
+                            startActivity(new Intent(AddTasksActivity.this, TasksActivity.class));
                         }
                 )
                 .addOnFailureListener(e -> Toast.makeText(AddTasksActivity.this, "Falha", Toast.LENGTH_SHORT).show());

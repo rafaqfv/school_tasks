@@ -11,9 +11,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.schooltasks.adapter.Turma;
 import com.example.schooltasks.adapter.TurmaAdapter;
 import com.example.schooltasks.databinding.ActivityTurmasBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -21,10 +21,11 @@ import java.util.ArrayList;
 
 public class TurmasActivity extends AppCompatActivity implements OnItemClickListener {
     private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
     private ActivityTurmasBinding binding;
     private TurmaAdapter adapter;
-    private ArrayList<Turma> listaTurmas = new ArrayList<>();
-    private OnItemClickListener listener;
+    private ArrayList<Turma> listaTurmas;
+    private String nomeUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +38,22 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        binding.turmasRecycler.setLayoutManager(new LinearLayoutManager(this));
-
+        mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        adapter = new TurmaAdapter(listaTurmas, listener);
-        binding.turmasRecycler.setAdapter(adapter);
+        listaTurmas = new ArrayList<>();
 
         binding.addTurma.setOnClickListener(v -> {
             startActivity(new Intent(this, CriarTurmasActivity.class));
         });
 
+        binding.turmasRecycler.setLayoutManager(new LinearLayoutManager(this));
+        binding.turmasRecycler.setAdapter(adapter);
+        getTurmas();
     }
 
     private void getTurmas() {
+
+        System.out.println("Tentando pegar turmas");
 
         db.collection("turma")
                 .addSnapshotListener((value, e) -> {
@@ -62,16 +66,28 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
                         Turma turma = dc.toObject(Turma.class);
                         turma.setId(dc.getId());
                         listaTurmas.add(turma);
+                        System.out.println(turma.getNome());
                     }
-                });
+                    for (Turma turma : listaTurmas) {
+                        System.out.println("Passou e buscou todas as turmas, aqui uma turma: " + turma.getNome());
+                    }
 
-        adapter.notifyDataSetChanged();
+                    adapter = new TurmaAdapter(listaTurmas, this);
+                    binding.turmasRecycler.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                });
     }
 
     @Override
     public void onItemClick(int position) {
         Turma turma = listaTurmas.get(position);
 
+        Intent intent = new Intent(this, TasksActivity.class);
+        intent.putExtra("idTurma", turma.getId());
+        intent.putExtra("idAdmin", turma.getAdmin());
+
+        finish();
+        startActivity(intent);
         // Todo
 
     }

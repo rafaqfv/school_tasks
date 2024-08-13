@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
         binding.btnCadastrar.setOnClickListener(v -> {
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, TurmasActivity.class));
         });
 
         binding.btnLogin.setOnClickListener(v -> {
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(this, "Sucesso", Toast.LENGTH_SHORT).show();
                         binding.progressBar.setVisibility(View.INVISIBLE);
-                        startActivity(new Intent(this, TasksActivity.class));
+                        startActivity(new Intent(this, TurmasActivity.class));
                     } else {
                         Exception e = task.getException();
                         Toast.makeText(this, "Erro ao logar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(this, TasksActivity.class));
+            startActivity(new Intent(this, TurmasActivity.class));
         }
     }
 }

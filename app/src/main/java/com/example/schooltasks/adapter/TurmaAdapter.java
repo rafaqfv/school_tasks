@@ -35,7 +35,7 @@ public class TurmaAdapter extends RecyclerView.Adapter<TurmaAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Turma turma = turmaArrayList.get(position);
         holder.nomeTurma.setText(turma.getNome());
-        holder.nomeAdmin.setText(turma.getAdmin());
+        holder.nomeAdmin.setText("Criado por: " + turma.getNomeAdmin());
     }
 
     @Override

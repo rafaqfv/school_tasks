@@ -28,6 +28,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
     private TaskAdapter adapter;
     private String idTurma;
     private String idAdmin;
+    private String nomeTurma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +49,15 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         Intent intent = getIntent();
         idTurma = intent.getStringExtra("idTurma");
         idAdmin = intent.getStringExtra("idAdmin");
+        nomeTurma = intent.getStringExtra("nomeTurma");
+        binding.titleActivity.setText(nomeTurma);
 
-        binding.btnLogOut.setOnClickListener(v -> {
-            mAuth.signOut();
+        // TODO: lógica de verificação de admin para acessar a tela de edição / criação
+
+
+        binding.btnBack.setOnClickListener(v -> {
             finish();
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, TurmasActivity.class));
         });
 
         binding.intentAddTask.setOnClickListener(v -> {
@@ -66,10 +71,6 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         listenForTaskChanges();
         binding.recyclerTasks.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerTasks.setAdapter(adapter);
-    }
-
-    private void getItem() {
-
     }
 
     private void listenForTaskChanges() {

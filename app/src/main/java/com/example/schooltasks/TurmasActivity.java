@@ -47,13 +47,11 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
         });
 
         binding.turmasRecycler.setLayoutManager(new LinearLayoutManager(this));
-        binding.turmasRecycler.setAdapter(adapter);
         getTurmas();
     }
 
     private void getTurmas() {
-
-        System.out.println("Tentando pegar turmas");
+        listaTurmas.clear();
 
         db.collection("turma")
                 .addSnapshotListener((value, e) -> {
@@ -66,10 +64,6 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
                         Turma turma = dc.toObject(Turma.class);
                         turma.setId(dc.getId());
                         listaTurmas.add(turma);
-                        System.out.println(turma.getNome());
-                    }
-                    for (Turma turma : listaTurmas) {
-                        System.out.println("Passou e buscou todas as turmas, aqui uma turma: " + turma.getNome());
                     }
 
                     adapter = new TurmaAdapter(listaTurmas, this);
@@ -85,10 +79,10 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
         Intent intent = new Intent(this, TasksActivity.class);
         intent.putExtra("idTurma", turma.getId());
         intent.putExtra("idAdmin", turma.getAdmin());
+        intent.putExtra("nomeTurma", turma.getNome());
 
         finish();
         startActivity(intent);
-        // Todo
 
     }
 }

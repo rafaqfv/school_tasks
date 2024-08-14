@@ -8,18 +8,27 @@
     android:backgroundTint="@color/md_theme_surface"
     tools:context=".TasksActivity">
 
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/person"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="titleActivity"
+        app:layout_constraintBottom_toBottomOf="@id/titleActivity"
+        android:layout_marginEnd="32dp" />
+
     <TextView
-        android:id="@+id/stTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:id="@+id/titleActivity"
+        android:layout_width="230dp"
+        android:layout_height="40dp"
+        android:layout_marginVertical="32dp"
+        android:layout_marginStart="16dp"
         android:fontFamily="@font/inter"
         android:text="Tarefas"
         android:textColor="@color/md_theme_primary"
-        android:textSize="32sp"
+        android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnBack"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -43,15 +52,14 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/btnLogOut"
+        android:id="@+id/btnBack"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="42dp"
-        android:src="@drawable/log_out_ionicons"
-        app:layout_constraintBottom_toBottomOf="@id/stTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/stTextView" />
+        android:layout_marginStart="24dp"
+        android:src="@drawable/back_btn"
+        app:layout_constraintBottom_toBottomOf="@id/titleActivity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/titleActivity" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,11 +9,12 @@
     tools:context=".TasksActivity">
 
     <ImageView
+        android:id="@+id/alunos"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/person"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="titleActivity"
+        app:layout_constraintTop_toTopOf="@id/titleActivity"
         app:layout_constraintBottom_toBottomOf="@id/titleActivity"
         android:layout_marginEnd="32dp" />
 

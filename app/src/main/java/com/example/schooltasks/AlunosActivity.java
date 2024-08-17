@@ -2,6 +2,9 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +13,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.databinding.ActivityAlunosBinding;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class AlunosActivity extends AppCompatActivity {
     private ActivityAlunosBinding binding;
@@ -30,5 +37,29 @@ public class AlunosActivity extends AppCompatActivity {
             finish();
         });
 
+        binding.addAluno.setOnClickListener(v -> {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+            View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
+            bottomSheetDialog.setContentView(view1);
+            bottomSheetDialog.show();
+
+            TextInputLayout emailLayout = view1.findViewById(R.id.email);
+            TextInputEditText emailInput = view1.findViewById(R.id.emailInput);
+            MaterialButton btnSalvar = view1.findViewById(R.id.btnSalvar);
+
+            btnSalvar.setOnClickListener(vv -> {
+                if (emailInput.getText().toString().isEmpty()) {
+                    emailLayout.setError("Digite um e-mail válido.");
+                    return;
+                }
+
+                Toast.makeText(this, "Vai dar certo " + emailInput.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                bottomSheetDialog.dismiss();
+            });
+            bottomSheetDialog.setOnDismissListener(vvv -> {
+                Toast.makeText(this, "Bottom Sheet fechado.", Toast.LENGTH_SHORT).show();
+            });
+        });
     }
 }

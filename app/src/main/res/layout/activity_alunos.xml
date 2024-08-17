@@ -28,40 +28,25 @@
         app:layout_constraintStart_toEndOf="@id/backBtn"
         app:layout_constraintTop_toTopOf="@id/backBtn" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailAlunoLayout"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="80dp"
-        android:hint="Email do aluno"
-        app:helperText="Convide um aluno para a turma"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputEmailAluno"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="100dp"
-        android:layout_height="67dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/md_theme_secondaryContainer"
-        app:cornerRadius="10dp"
-        app:icon="@drawable/add_task"
-        app:iconTint="@color/md_theme_onSecondaryContainer"
-        app:iconSize="55dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/emailAlunoLayout" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerAlunos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="100dp"
         tools:listitem="@layout/turmas_card" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/addAluno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:backgroundTint="@color/md_theme_secondaryContainer"
+        android:text="Adicionar"
+        android:textColor="@color/md_theme_onSecondaryContainer"
+        android:textStyle="bold"
+        app:icon="@drawable/add_task"
+        app:iconTint="@color/md_theme_onSecondaryContainer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

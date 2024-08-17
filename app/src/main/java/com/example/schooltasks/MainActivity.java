@@ -53,12 +53,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void addUserDoc(FirebaseUser user) {
         String nome = binding.nomeInput.getText().toString().trim();
-        String telefone = binding.telefoneInput.getText().toString().trim();
         String email = binding.emailInput.getText().toString().trim();
 
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("nome", nome);
-        userMap.put("telefone", telefone);
         userMap.put("email", email);
 
         db.collection("users").document(user.getUid()).set(userMap)
@@ -101,18 +99,14 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean validateFields() {
         String nome = binding.nomeInput.getText().toString().trim();
-        String telefone = binding.telefoneInput.getText().toString().trim();
         String email = binding.emailInput.getText().toString().trim();
         String senha = binding.senhaInput.getText().toString().trim();
 
-        if (!nome.isEmpty() && !telefone.isEmpty() && !email.isEmpty() && senha.length() >= 8)
+        if (!nome.isEmpty() && !email.isEmpty() && senha.length() >= 8)
             return true;
 
         if (nome.isEmpty()) {
             binding.nome.setError("Nome vazio.");
-        }
-        if (telefone.isEmpty()) {
-            binding.telefone.setError("Telefone Vazio.");
         }
         if (email.isEmpty()) {
             binding.email.setError("Email vazio.");

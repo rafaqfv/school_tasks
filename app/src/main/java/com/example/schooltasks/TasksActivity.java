@@ -53,10 +53,17 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         binding.titleActivity.setText(nomeTurma.toString());
 
         // TODO: lógica de verificação de admin para acessar a tela de edição / criação
+        binding.intentAddTask.setVisibility(View.GONE);
+
+        if (mAuth.getUid().equals(idAdmin)) {
+            binding.intentAddTask.setVisibility(View.VISIBLE);
+        }
 
 
         binding.alunos.setOnClickListener(v -> {
-
+            Intent intentAlunos = new Intent(this, AlunosActivity.class);
+            intentAlunos.putExtra("idTurma", idTurma);
+            startActivity(intentAlunos);
         });
 
         binding.btnBack.setOnClickListener(v -> {

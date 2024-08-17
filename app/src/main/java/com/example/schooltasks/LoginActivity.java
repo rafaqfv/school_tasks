@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
         binding.btnCadastrar.setOnClickListener(v -> {
             finish();
-            startActivity(new Intent(this, TurmasActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         });
 
         binding.btnLogin.setOnClickListener(v -> {

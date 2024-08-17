@@ -42,6 +42,12 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
         db = FirebaseFirestore.getInstance();
         listaTurmas = new ArrayList<>();
 
+        binding.btnLogOut.setOnClickListener(v -> {
+            mAuth.signOut();
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        });
+
         binding.addTurma.setOnClickListener(v -> {
             startActivity(new Intent(this, CriarTurmasActivity.class));
         });

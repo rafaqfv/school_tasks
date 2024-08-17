@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -46,6 +47,8 @@ public class AlunosActivity extends AppCompatActivity {
             TextInputLayout emailLayout = view1.findViewById(R.id.email);
             TextInputEditText emailInput = view1.findViewById(R.id.emailInput);
             MaterialButton btnSalvar = view1.findViewById(R.id.btnSalvar);
+            TextView btnCancelar = view1.findViewById(R.id.btnCancelar);
+            emailInput.requestFocus();
 
             btnSalvar.setOnClickListener(vv -> {
                 if (emailInput.getText().toString().isEmpty()) {
@@ -53,13 +56,11 @@ public class AlunosActivity extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(this, "Vai dar certo " + emailInput.getText().toString(), Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(this, emailInput.getText().toString(), Toast.LENGTH_SHORT).show();
                 bottomSheetDialog.dismiss();
             });
-            bottomSheetDialog.setOnDismissListener(vvv -> {
-                Toast.makeText(this, "Bottom Sheet fechado.", Toast.LENGTH_SHORT).show();
-            });
+
+            btnCancelar.setOnClickListener(vvv -> bottomSheetDialog.dismiss());
         });
     }
 }

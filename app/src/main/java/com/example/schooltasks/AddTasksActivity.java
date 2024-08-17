@@ -78,15 +78,18 @@ public class AddTasksActivity extends AppCompatActivity {
         }
 
         if (descricao.isEmpty()) {
-            binding.descricaoLayout.setError("Descrição é obrigatório");
+            binding.descricaoLayout.setError("Descrição é obrigatório.");
         }
 
         if (titulo.isEmpty()) {
-            binding.tituloLayout.setError("Título é obrigatório");
+            binding.tituloLayout.setError("Título é obrigatório.");
         }
 
         if (disciplina.isEmpty()) {
-            binding.disciplinaLayout.setError("Disciplina é obrigatória");
+            binding.disciplinaLayout.setError("Disciplina é obrigatória.");
+        }
+        if (dataStr.isEmpty()) {
+            binding.dataLayout.setError("Data é obrigatória.");
         }
         return false;
     }

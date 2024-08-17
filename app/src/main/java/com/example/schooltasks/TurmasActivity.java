@@ -76,22 +76,17 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
             TextInputEditText nomeTurmaInput = view1.findViewById(R.id.nomeTurmaInput);
             MaterialButton btnCriarTurma = view1.findViewById(R.id.btnCriarTurma);
             TextView btnCancelar = view1.findViewById(R.id.cancelarBottomSheet);
+            nomeTurmaInput.requestFocus();
 
             btnCriarTurma.setOnClickListener(vv -> {
                 if (nomeTurmaInput.getText().toString().isEmpty()) {
                     nomeLayout.setError("Digite um nome válido.");
                     return;
                 }
-
                 criarTurma(new Turma(nomeTurmaInput.getText().toString(), mAuth.getUid(), nomeUser));
                 bottomSheetDialog.dismiss();
             });
-            btnCancelar.setOnClickListener(vvv -> {
-                bottomSheetDialog.dismiss();
-            });
-            bottomSheetDialog.setOnDismissListener(vvvv -> {
-                Toast.makeText(this, "Bottom Sheet fechado.", Toast.LENGTH_SHORT).show();
-            });
+            btnCancelar.setOnClickListener(vvv -> bottomSheetDialog.dismiss());
         });
     }
 

@@ -54,13 +54,11 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         nomeTurma = intent.getStringExtra("nomeTurma");
         binding.titleActivity.setText(nomeTurma.toString());
 
-        // TODO: lógica de verificação de admin para acessar a tela de edição / criação
         binding.intentAddTask.setVisibility(View.GONE);
 
         if (mAuth.getUid().equals(idAdmin)) {
             binding.intentAddTask.setVisibility(View.VISIBLE);
         }
-
 
         binding.alunos.setOnClickListener(v -> {
             Intent intentAlunos = new Intent(this, AlunosActivity.class);
@@ -92,6 +90,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
                         Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show();
                         return;
                     }
+
                     taskList.clear();
                     for (QueryDocumentSnapshot doc : value) {
                         Task task = doc.toObject(Task.class);

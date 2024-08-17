@@ -31,6 +31,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TurmasActivity extends AppCompatActivity implements OnItemClickListener {
     private FirebaseFirestore db;
@@ -114,7 +116,9 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
     }
 
     private void getTurmas() {
-        db.collection("turma")
+        listaTurmas.clear();
+
+        db.collection("turmaAlunos").whereEqualTo("idAluno", mAuth.getUid())
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
                         Toast.makeText(this, "Erro ao buscar turmas", Toast.LENGTH_SHORT).show();
@@ -122,14 +126,28 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
                     }
 
                     assert value != null;
-                    listaTurmas.clear();
-                    for (QueryDocumentSnapshot dc : value) {
-                        Turma turma = dc.toObject(Turma.class);
-                        turma.setId(dc.getId());
-                        listaTurmas.add(turma);
-                    }
+                    for (QueryDocumentSnapshot doc : value) {
+                        String idTurma = doc.getString("idTurma");
 
-                    adapter.notifyDataSetChanged();
+                        db.collection("turma")
+                                .document(idTurma)
+                                .get()
+                                .addOnSuccessListener(documentSnapshot -> {
+                                    if (documentSnapshot.exists()) {
+                                        Turma turma = documentSnapshot.toObject(Turma.class);
+                                        if (turma != null) {
+                                            turma.setId(documentSnapshot.getId());
+                                            listaTurmas.add(turma);
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    } else {
+                                        Toast.makeText(this, "Turma não encontrada: " + idTurma, Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(e1 -> {
+                                    Toast.makeText(this, "Erro ao buscar detalhes da turma.", Toast.LENGTH_SHORT).show();
+                                });
+                    }
                 });
     }
 
@@ -137,9 +155,21 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
         db.collection("turma")
                 .add(turma)
                 .addOnSuccessListener(documentReference -> {
+                    entrarNaTurma(mAuth.getUid(), documentReference.getId());
                     Toast.makeText(this, "Sucesso ao criar a turma: " + turma.getNome(), Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Falha ao criar a turma", Toast.LENGTH_SHORT).show());
+    }
+
+    private void entrarNaTurma(String idUser, String idTurma) {
+        Map<String, Object> turmaAlunos = new HashMap<>();
+        turmaAlunos.put("idTurma", idTurma);
+        turmaAlunos.put("idAluno", idUser);
+        db.collection("turmaAlunos").add(turmaAlunos)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this, "Aluno entrou na turma!", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Erro ao entrar na turma.", Toast.LENGTH_SHORT).show());
     }
 
     @Override

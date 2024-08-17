@@ -64,30 +64,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         binding.backBtn.setOnClickListener(v -> finish());
 
         binding.addAluno.setOnClickListener(v -> {
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-            View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
-            bottomSheetDialog.setContentView(view1);
-            bottomSheetDialog.show();
-
-            TextInputLayout emailLayout = view1.findViewById(R.id.email);
-            TextInputEditText emailInput = view1.findViewById(R.id.emailInput);
-            MaterialButton btnSalvar = view1.findViewById(R.id.btnSalvar);
-            TextView btnCancelar = view1.findViewById(R.id.btnCancelar);
-            emailInput.requestFocus();
-
-            btnSalvar.setOnClickListener(vv -> {
-                String email = emailInput.getText().toString().trim();
-                if (email.isEmpty()) {
-                    emailLayout.setError("Digite um e-mail válido.");
-                    return;
-                }
-                addAluno(email);
-
-                Toast.makeText(this, emailInput.getText().toString(), Toast.LENGTH_SHORT).show();
-                bottomSheetDialog.dismiss();
-            });
-
-            btnCancelar.setOnClickListener(vvv -> bottomSheetDialog.dismiss());
+            bottomSheetAluno();
         });
     }
 
@@ -145,6 +122,32 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
 
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Erro ao cadastrar o aluno", Toast.LENGTH_SHORT).show());
+    }
+
+    private void bottomSheetAluno() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
+        bottomSheetDialog.setContentView(view1);
+        bottomSheetDialog.show();
+
+        TextInputLayout emailLayout = view1.findViewById(R.id.email);
+        TextInputEditText emailInput = view1.findViewById(R.id.emailInput);
+        MaterialButton btnSalvar = view1.findViewById(R.id.btnSalvar);
+        TextView btnCancelar = view1.findViewById(R.id.btnCancelar);
+        emailInput.requestFocus();
+
+        btnSalvar.setOnClickListener(vv -> {
+            String email = emailInput.getText().toString().trim();
+            if (email.isEmpty()) {
+                emailLayout.setError("Digite um e-mail válido.");
+                return;
+            }
+            addAluno(email);
+
+            Toast.makeText(this, emailInput.getText().toString(), Toast.LENGTH_SHORT).show();
+            bottomSheetDialog.dismiss();
+        });
+        btnCancelar.setOnClickListener(vvv -> bottomSheetDialog.dismiss());
     }
 
     @Override

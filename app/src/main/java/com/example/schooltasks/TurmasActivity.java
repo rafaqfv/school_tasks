@@ -69,26 +69,7 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
         });
 
         binding.addTurma.setOnClickListener(v -> {
-            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-            View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_turmas, null);
-            bottomSheetDialog.setContentView(view1);
-            bottomSheetDialog.show();
-
-            TextInputLayout nomeLayout = view1.findViewById(R.id.nomeTurma);
-            TextInputEditText nomeTurmaInput = view1.findViewById(R.id.nomeTurmaInput);
-            MaterialButton btnCriarTurma = view1.findViewById(R.id.btnCriarTurma);
-            TextView btnCancelar = view1.findViewById(R.id.cancelarBottomSheet);
-            nomeTurmaInput.requestFocus();
-
-            btnCriarTurma.setOnClickListener(vv -> {
-                if (nomeTurmaInput.getText().toString().isEmpty()) {
-                    nomeLayout.setError("Digite um nome válido.");
-                    return;
-                }
-                criarTurma(new Turma(nomeTurmaInput.getText().toString(), mAuth.getUid(), nomeUser));
-                bottomSheetDialog.dismiss();
-            });
-            btnCancelar.setOnClickListener(vvv -> bottomSheetDialog.dismiss());
+            bottomSheetTurma();
         });
     }
 
@@ -170,6 +151,29 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
                     Toast.makeText(this, "Aluno entrou na turma!", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Erro ao entrar na turma.", Toast.LENGTH_SHORT).show());
+    }
+
+    private void bottomSheetTurma() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_turmas, null);
+        bottomSheetDialog.setContentView(view1);
+        bottomSheetDialog.show();
+
+        TextInputLayout nomeLayout = view1.findViewById(R.id.nomeTurma);
+        TextInputEditText nomeTurmaInput = view1.findViewById(R.id.nomeTurmaInput);
+        MaterialButton btnCriarTurma = view1.findViewById(R.id.btnCriarTurma);
+        TextView btnCancelar = view1.findViewById(R.id.cancelarBottomSheet);
+        nomeTurmaInput.requestFocus();
+
+        btnCriarTurma.setOnClickListener(vv -> {
+            if (nomeTurmaInput.getText().toString().isEmpty()) {
+                nomeLayout.setError("Digite um nome válido.");
+                return;
+            }
+            criarTurma(new Turma(nomeTurmaInput.getText().toString(), mAuth.getUid(), nomeUser));
+            bottomSheetDialog.dismiss();
+        });
+        btnCancelar.setOnClickListener(vvv -> bottomSheetDialog.dismiss());
     }
 
     @Override

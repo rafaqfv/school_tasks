@@ -70,7 +70,6 @@ public class AddTasksActivity extends AppCompatActivity {
 
         if (
                 !titulo.isEmpty()
-                        && isValidData(dataStr)
                         && !dataStr.isEmpty()
                         && !disciplina.isEmpty()
                         && !descricao.isEmpty()
@@ -88,10 +87,6 @@ public class AddTasksActivity extends AppCompatActivity {
 
         if (disciplina.isEmpty()) {
             binding.disciplinaLayout.setError("Disciplina é obrigatória");
-        }
-
-        if (!isValidData(dataStr) || dataStr.isEmpty()) {
-            binding.dataLayout.setError("Data inválida. Use o formato DD/MM/YYYY");
         }
         return false;
     }
@@ -111,25 +106,14 @@ public class AddTasksActivity extends AppCompatActivity {
             MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                     .setTitleText("Selecione uma data")
                     .build();
-
             datePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
-
             datePicker.addOnPositiveButtonClickListener(selection -> {
-
-                // Formata a data para o formato dd/MM/yyyy
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-
                 String formattedDate = formatter.format(new Date(selection));
-
-                // Exibe a data formatada no TextView
                 binding.data.setText(formattedDate);
             });
         });
-    }
-
-    private boolean isValidData(String data) {
-        return data.matches("\\d{2}/\\d{2}/\\d{4}"); // Simple DD/MM/YYYY format check
     }
 
     private void clearInputsAndErrors() {

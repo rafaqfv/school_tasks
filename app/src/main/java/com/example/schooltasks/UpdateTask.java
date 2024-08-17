@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class UpdateTask extends AppCompatActivity {
     private ActivityUpdateTaskBinding binding;
@@ -92,18 +93,12 @@ public class UpdateTask extends AppCompatActivity {
             MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                     .setTitleText("Selecione uma data")
                     .build();
-
             datePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
-
             datePicker.addOnPositiveButtonClickListener(selection -> {
-                // Obtém a data selecionada
                 Date date = new Date(selection);
-
-                // Formata a data para o formato dd/MM/yyyy
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
                 String formattedDate = formatter.format(date);
-
-                // Exibe a data formatada no TextView
                 binding.data.setText(formattedDate);
             });
         });

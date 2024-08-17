@@ -45,6 +45,8 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         mAuth = FirebaseAuth.getInstance();
         taskList = new ArrayList<>();
         adapter = new TaskAdapter(taskList, this);
+        binding.recyclerTasks.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerTasks.setAdapter(adapter);
 
         Intent intent = getIntent();
         idTurma = intent.getStringExtra("idTurma");
@@ -80,8 +82,6 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         });
 
         listenForTaskChanges();
-        binding.recyclerTasks.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerTasks.setAdapter(adapter);
     }
 
     private void listenForTaskChanges() {

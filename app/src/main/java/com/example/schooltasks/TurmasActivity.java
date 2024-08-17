@@ -24,7 +24,7 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
     private FirebaseAuth mAuth;
     private ActivityTurmasBinding binding;
     private TurmaAdapter adapter;
-    private ArrayList<Turma> listaTurmas;
+    private ArrayList<Turma> listaTurmas = new ArrayList<>();
     private String nomeUser;
 
     @Override
@@ -40,7 +40,9 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
         });
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        listaTurmas = new ArrayList<>();
+        adapter = new TurmaAdapter(listaTurmas, this);
+        binding.turmasRecycler.setAdapter(adapter);
+        binding.turmasRecycler.setHasFixedSize(true);
 
         binding.btnLogOut.setOnClickListener(v -> {
             mAuth.signOut();
@@ -72,8 +74,6 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
                         listaTurmas.add(turma);
                     }
 
-                    adapter = new TurmaAdapter(listaTurmas, this);
-                    binding.turmasRecycler.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                 });
     }

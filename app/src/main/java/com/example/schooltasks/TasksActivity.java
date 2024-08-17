@@ -53,16 +53,21 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         idAdmin = intent.getStringExtra("idAdmin");
         nomeTurma = intent.getStringExtra("nomeTurma");
         binding.titleActivity.setText(nomeTurma.toString());
+        boolean isAdmin;
 
         binding.intentAddTask.setVisibility(View.GONE);
 
         if (mAuth.getUid().equals(idAdmin)) {
             binding.intentAddTask.setVisibility(View.VISIBLE);
+            isAdmin = true;
+        } else {
+            isAdmin = false;
         }
 
         binding.alunos.setOnClickListener(v -> {
             Intent intentAlunos = new Intent(this, AlunosActivity.class);
             intentAlunos.putExtra("idTurma", idTurma);
+            intentAlunos.putExtra("isAdmin", isAdmin);
             startActivity(intentAlunos);
         });
 

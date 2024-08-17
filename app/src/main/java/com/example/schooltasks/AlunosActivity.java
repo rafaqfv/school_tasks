@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class AlunosActivity extends AppCompatActivity {
     private ActivityAlunosBinding binding;
+    private boolean admin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +34,13 @@ public class AlunosActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Intent intent = getIntent();
+        admin = intent.getBooleanExtra("isAdmin", false);
+        binding.addAluno.setVisibility(View.GONE);
 
-        binding.backBtn.setOnClickListener(v -> {
-            finish();
-        });
+        if (admin) binding.addAluno.setVisibility(View.VISIBLE);
+
+        binding.backBtn.setOnClickListener(v -> finish());
 
         binding.addAluno.setOnClickListener(v -> {
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);

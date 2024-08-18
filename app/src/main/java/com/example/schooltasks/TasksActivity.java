@@ -29,6 +29,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
     private String idTurma;
     private String idAdmin;
     private String nomeTurma;
+    private boolean isAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,6 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         idAdmin = intent.getStringExtra("idAdmin");
         nomeTurma = intent.getStringExtra("nomeTurma");
         binding.titleActivity.setText(nomeTurma.toString());
-        boolean isAdmin;
 
         binding.intentAddTask.setVisibility(View.GONE);
 
@@ -108,6 +108,9 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
 
     @Override
     public void onItemClick(int position) {
+
+        if (!isAdmin) return;
+
         Task task = taskList.get(position);
         String disciplina, titulo, data, descricao, id;
         disciplina = task.getDisciplina();

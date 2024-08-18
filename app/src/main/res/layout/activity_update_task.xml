@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/md_theme_surface"
     tools:context=".UpdateTask">
 
     <TextView
@@ -33,15 +32,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/taskTextView" />
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/second_image"
+        app:layout_constraintBottom_toTopOf="@id/inputs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/taskTextView" />
+
     <LinearLayout
         android:id="@+id/inputs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="32dp"
+        android:paddingHorizontal="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/taskTextView">
+        app:layout_constraintTop_toBottomOf="@id/image">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -60,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:clickable="true"
-            android:hint="Data de entrega (dd/mm/aaaa)">
+            android:hint="Data de entrega">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/data"
@@ -110,10 +119,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/md_theme_errorContainer_highContrast"
+            android:backgroundTint="@color/md_theme_errorContainer_mediumContrast"
             android:paddingVertical="12dp"
             android:text="Excluir"
-            android:textColor="@color/md_theme_onError_highContrast" />
+            android:textColor="@color/md_theme_onErrorContainer_mediumContrast" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_margin="30dp"
         android:gravity="center"
-        android:text="Cadastre uma\nnova tarefa"
+        android:text="Criar uma tarefa"
         android:textColor="@color/md_theme_primary"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -33,21 +33,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/taskTextView" />
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/second_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/inputs"
+        app:layout_constraintTop_toBottomOf="@id/taskTextView" />
+
     <LinearLayout
         android:id="@+id/inputs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="32dp"
+        android:paddingHorizontal="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/taskTextView">
+        app:layout_constraintTop_toBottomOf="@id/image">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/disciplinaLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Disciplina">
+            android:hint="Disciplina"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/disciplina"
@@ -59,9 +70,9 @@
             android:id="@+id/dataLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:clickable="true"
-            android:hint="Data de entrega (dd/mm/aaaa)">
+            android:hint="Data de entrega (dd/mm/aaaa)"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/data"
@@ -75,8 +86,8 @@
             android:id="@+id/tituloLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Título da tarefa">
+            android:hint="Título da tarefa"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titulo"
@@ -88,8 +99,8 @@
             android:id="@+id/descricaoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Descrição">
+            android:hint="Descrição"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descricao"
@@ -103,7 +114,6 @@
             style="@style/PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:paddingVertical="12dp"
             android:text="Salvar" />
 

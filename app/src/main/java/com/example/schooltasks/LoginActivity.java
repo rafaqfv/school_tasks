@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         binding.btnCadastrar.setOnClickListener(v -> {
-            finish();
             startActivity(new Intent(this, MainActivity.class));
         });
 

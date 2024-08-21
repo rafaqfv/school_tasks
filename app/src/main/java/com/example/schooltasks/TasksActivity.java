@@ -72,14 +72,12 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         });
 
         binding.btnBack.setOnClickListener(v -> {
-            finish();
             startActivity(new Intent(this, TurmasActivity.class));
         });
 
         binding.intentAddTask.setOnClickListener(v -> {
             Intent intentAddTask = new Intent(this, AddTasksActivity.class);
             intentAddTask.putExtra("idTurma", idTurma);
-
             startActivity(intentAddTask);
         });
 
@@ -100,7 +98,6 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
                         Task task = doc.toObject(Task.class);
                         task.setId(doc.getId());
                         taskList.add(task);
-
                     }
                     adapter.notifyDataSetChanged();
                 });

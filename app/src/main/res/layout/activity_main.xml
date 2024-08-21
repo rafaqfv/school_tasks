@@ -37,8 +37,8 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/third_image"
         android:layout_marginHorizontal="32dp"
+        android:src="@drawable/third_image"
         app:layout_constraintBottom_toTopOf="@id/inputs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,8 @@
             android:id="@+id/nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nome">
+            android:hint="Nome"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nomeInput"
@@ -69,8 +70,8 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Email">
+            android:hint="Email"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailInput"
@@ -82,9 +83,9 @@
             android:id="@+id/senha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:hint="Senha"
-            app:endIconMode="password_toggle">
+            app:endIconMode="password_toggle"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/senhaInput"
@@ -99,7 +100,6 @@
             style="@style/PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="Salvar" />
 
         <ProgressBar

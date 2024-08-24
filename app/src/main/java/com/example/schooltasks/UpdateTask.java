@@ -82,6 +82,7 @@ public class UpdateTask extends AppCompatActivity {
         String updatedDataDeEntrega = binding.data.getText().toString();
         String updatedDescricao = binding.descricao.getText().toString();
 
+        // TODO: 24/08/2024 Atualizar os métodos de validação do UpdateTask.java 
         if (updatedDisciplina.isEmpty() || updatedTitulo.isEmpty() || updatedDataDeEntrega.isEmpty() || updatedDescricao.isEmpty()) {
             Toast.makeText(this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
             return;

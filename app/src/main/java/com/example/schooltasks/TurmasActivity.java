@@ -27,6 +27,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -59,7 +60,7 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
         adapter = new TurmaAdapter(listaTurmas, this);
         binding.turmasRecycler.setLayoutManager(new LinearLayoutManager(this));
         binding.turmasRecycler.setAdapter(adapter);
-        getTurmas();
+        listenForTurmaChanges();
         getUserName();
 
         binding.btnLogOut.setOnClickListener(v -> {
@@ -77,28 +78,18 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
         DocumentReference userDocRef = db.collection("users").document(mAuth.getUid());
 
         userDocRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            nomeUser = documentSnapshot.getString("nome");
-                            Log.d("Firestore", "Nome do usuário: " + nomeUser);
-                        } else {
-                            Log.d("Firestore", "Documento do usuário não encontrado.");
-                        }
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        nomeUser = documentSnapshot.getString("nome");
+                        System.out.println("Nome do usuário: " + nomeUser);
+                    } else {
+                        System.out.println("Documento do usuário não encontrado");
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Firestore", "Erro ao buscar o documento", e);
-                    }
-                });
+                .addOnFailureListener(e -> Log.w("Firestore", "Erro ao buscar o documento", e));
     }
 
-    private void getTurmas() {
-        listaTurmas.clear();
-
+    private void listenForTurmaChanges() {
         db.collection("turmaAlunos").whereEqualTo("idAluno", mAuth.getUid())
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
@@ -106,28 +97,48 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
                         return;
                     }
 
-                    assert value != null;
+                    if (value == null || value.isEmpty()) {
+                        Toast.makeText(this, "Nenhuma turma encontrada", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    ArrayList<String> idTurmas = new ArrayList<>();
                     for (QueryDocumentSnapshot doc : value) {
                         String idTurma = doc.getString("idTurma");
+                        if (idTurma != null) {
+                            idTurmas.add(idTurma);
+                        }
+                    }
 
-                        db.collection("turma")
-                                .document(idTurma)
-                                .get()
-                                .addOnSuccessListener(documentSnapshot -> {
-                                    if (documentSnapshot.exists()) {
-                                        Turma turma = documentSnapshot.toObject(Turma.class);
-                                        if (turma != null) {
-                                            turma.setId(documentSnapshot.getId());
-                                            listaTurmas.add(turma);
-                                            adapter.notifyDataSetChanged();
-                                        }
-                                    } else {
-                                        Toast.makeText(this, "Turma não encontrada: " + idTurma, Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(e1 -> {
-                                    Toast.makeText(this, "Erro ao buscar detalhes da turma.", Toast.LENGTH_SHORT).show();
-                                });
+                    if (!idTurmas.isEmpty()) {
+                        listenForTurmaDetails(idTurmas);
+                    }
+                });
+    }
+
+    private void listenForTurmaDetails(ArrayList<String> idTurmas) {
+        listaTurmas.clear();
+
+        db.collection("turma")
+                .whereIn(FieldPath.documentId(), idTurmas)
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Toast.makeText(this, "Erro ao buscar detalhes das turmas", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (value != null && !value.isEmpty()) {
+                        listaTurmas.clear();
+                        for (QueryDocumentSnapshot doc : value) {
+                            Turma turma = doc.toObject(Turma.class);
+                            if (turma != null) {
+                                turma.setId(doc.getId());
+                                listaTurmas.add(turma);
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(this, "Nenhuma turma encontrada.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

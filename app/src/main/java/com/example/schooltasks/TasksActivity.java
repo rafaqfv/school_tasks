@@ -64,6 +64,11 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
             isAdmin = false;
         }
 
+        botoes();
+        listenForTaskChanges();
+    }
+
+    private void botoes() {
         binding.alunos.setOnClickListener(v -> {
             Intent intentAlunos = new Intent(this, AlunosActivity.class);
             intentAlunos.putExtra("idTurma", idTurma);
@@ -80,8 +85,6 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
             intentAddTask.putExtra("idTurma", idTurma);
             startActivity(intentAddTask);
         });
-
-        listenForTaskChanges();
     }
 
     private void listenForTaskChanges() {

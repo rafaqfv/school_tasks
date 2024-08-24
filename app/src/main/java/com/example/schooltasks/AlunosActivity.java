@@ -23,13 +23,13 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class AlunosActivity extends AppCompatActivity implements OnItemClickListener {
     private ActivityAlunosBinding binding;
@@ -53,7 +53,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
             return insets;
         });
         inicializarComponentes();
-        getAlunos();
+        listenForAlunosChanges();
         cliques();
     }
 
@@ -78,44 +78,64 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
     }
 
-    // TODO: 24/08/2024 Refatorar método de pegar alunos da turma. 
-    private void getAlunos() {
-        listaAlunos.clear();
-
+    // Método para monitorar as mudanças na coleção de 'turmaAlunos' e 'users' de forma eficiente
+    private void listenForAlunosChanges() {
         db.collection("turmaAlunos").whereEqualTo("idTurma", idTurma)
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
-                        Toast.makeText(this, "Erro ao buscar turmas", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Erro ao buscar alunos", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    assert value != null;
+                    if (value == null || value.isEmpty()) {
+                        Toast.makeText(this, "Nenhum aluno encontrado", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    ArrayList<String> idAlunos = new ArrayList<>();
                     for (QueryDocumentSnapshot doc : value) {
                         String idAluno = doc.getString("idAluno");
+                        if (idAluno != null) {
+                            idAlunos.add(idAluno);
+                        }
+                    }
 
-                        db.collection("users")
-                                .document(idAluno)
-                                .get()
-                                .addOnSuccessListener(documentSnapshot -> {
-                                    if (documentSnapshot.exists()) {
-                                        Aluno aluno = documentSnapshot.toObject(Aluno.class);
-                                        if (aluno != null) {
-                                            aluno.setId(documentSnapshot.getId());
-                                            listaAlunos.add(aluno);
-                                            adapter.notifyDataSetChanged();
-                                        }
-                                    } else {
-                                        Toast.makeText(this, "Aluno não encontrado: " + idAluno, Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(e1 -> {
-                                    Toast.makeText(this, "Erro ao buscar detalhes do aluno.", Toast.LENGTH_SHORT).show();
-                                });
+                    if (!idAlunos.isEmpty()) {
+                        listenForAlunoDetails(idAlunos);
+                    }
+                });
+    }
+
+    private void listenForAlunoDetails(ArrayList<String> idAlunos) {
+        listaAlunos.clear();
+
+        db.collection("users")
+                .whereIn(FieldPath.documentId(), idAlunos)
+                .addSnapshotListener((value, e) -> {
+                    if (e != null) {
+                        Toast.makeText(this, "Erro ao buscar detalhes dos alunos.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (value != null && !value.isEmpty()) {
+                        listaAlunos.clear();
+                        for (QueryDocumentSnapshot doc : value) {
+                            Aluno aluno = doc.toObject(Aluno.class);
+                            if (aluno != null) {
+                                aluno.setId(doc.getId());
+                                listaAlunos.add(aluno);
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(this, "Nenhum aluno encontrado.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void addAluno(String idAluno) {
+        TextInputEditText emailAluno = view1.findViewById(R.id.emailInput);
+        emailAluno.setText(null);
         Map<String, Object> turmaAlunos = new HashMap<>();
         turmaAlunos.put("idTurma", idTurma);
         turmaAlunos.put("idAluno", idAluno);
@@ -170,6 +190,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         db.collection("users").whereEqualTo("email", emailAluno)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    System.out.println(queryDocumentSnapshots.size());
                     if (queryDocumentSnapshots.isEmpty()) {
                         emailLayout.setError("Usuário não encontrado.");
                         emailInput.addTextChangedListener(new TextWatcher() {
@@ -204,6 +225,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         db.collection("turmaAlunos").whereEqualTo("idAluno", idAluno)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    System.out.println("Encontrou quantos? " + queryDocumentSnapshots.size());
                     if (!queryDocumentSnapshots.isEmpty()) {
                         emailLayout.setError("Aluno já faz parte da turma");
                         emailInput.addTextChangedListener(new TextWatcher() {

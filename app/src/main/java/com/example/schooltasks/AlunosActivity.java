@@ -2,6 +2,8 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -36,6 +38,8 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
     private ArrayList<Aluno> listaAlunos;
     private String idTurma;
     private AlunoAdapter adapter;
+    private BottomSheetDialog bottomSheetDialog;
+    private View view1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         adapter = new AlunoAdapter(listaAlunos, this);
         binding.recyclerAlunos.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerAlunos.setAdapter(adapter);
+        bottomSheetDialog = new BottomSheetDialog(this);
+        view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
         getAlunos();
 
         if (admin) binding.addAluno.setVisibility(View.VISIBLE);
@@ -108,6 +114,28 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         db.collection("users").whereEqualTo("email", email)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        TextInputLayout emailLayout = view1.findViewById(R.id.email);
+                        TextInputEditText emailInput = view1.findViewById(R.id.emailInput);
+                        emailLayout.setError("Usuário não encontrado.");
+                        emailInput.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                emailLayout.setError(null);
+                            }
+                        });
+                        return;
+                    }
                     DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                     String idAluno = documentSnapshot.getId();
                     Map<String, Object> turmaAlunos = new HashMap<>();
@@ -117,6 +145,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                     db.collection("turmaAlunos").add(turmaAlunos)
                             .addOnSuccessListener(documentReference -> {
                                 Toast.makeText(this, "Aluno entrou na turma!", Toast.LENGTH_SHORT).show();
+                                bottomSheetDialog.dismiss();
                             })
                             .addOnFailureListener(e -> Toast.makeText(this, "Erro ao entrar na turma", Toast.LENGTH_SHORT).show());
 
@@ -125,8 +154,6 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
     }
 
     private void bottomSheetAluno() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
         bottomSheetDialog.setContentView(view1);
         bottomSheetDialog.show();
 
@@ -143,9 +170,6 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                 return;
             }
             addAluno(email);
-
-            Toast.makeText(this, emailInput.getText().toString(), Toast.LENGTH_SHORT).show();
-            bottomSheetDialog.dismiss();
         });
         btnCancelar.setOnClickListener(vvv -> bottomSheetDialog.dismiss());
     }

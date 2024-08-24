@@ -12,6 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.databinding.ActivityUpdateTaskBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -44,7 +46,18 @@ public class UpdateTask extends AppCompatActivity {
         updateFields();
         datePicker();
         binding.salvarButton.setOnClickListener(v -> updateTask(id));
-        binding.excluirBtn.setOnClickListener(v -> deleteTask(id));
+        binding.excluirBtn.setOnClickListener(v -> {
+            new MaterialAlertDialogBuilder(v.getContext())
+                    .setTitle("Confirmação de Exclusão")
+                    .setMessage("Tem certeza que deseja excluir esta tarefa?")
+                    .setPositiveButton("Sim", (dialog, which) -> {
+                        deleteTask(id);
+                    })
+                    .setNegativeButton("Não", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
+        });
     }
 
     private void deleteTask(String id) {

@@ -41,10 +41,13 @@ public class UpdateTask extends AppCompatActivity {
             return insets;
         });
         db = FirebaseFirestore.getInstance();
-        binding.backBtn.setOnClickListener(v -> finish());
-        intent = getIntent();
+        botoes();
         updateFields();
         datePicker();
+    }
+
+    private void botoes() {
+        binding.backBtn.setOnClickListener(v -> finish());
         binding.salvarButton.setOnClickListener(v -> updateTask(id));
         binding.excluirBtn.setOnClickListener(v -> {
             new MaterialAlertDialogBuilder(v.getContext())
@@ -118,6 +121,7 @@ public class UpdateTask extends AppCompatActivity {
     }
 
     private void updateFields() {
+        intent = getIntent();
         String disciplina = intent.getStringExtra("disciplina");
         String titulo = intent.getStringExtra("titulo");
         String dataDeEntrega = intent.getStringExtra("data");

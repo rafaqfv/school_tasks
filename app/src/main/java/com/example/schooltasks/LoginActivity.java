@@ -33,21 +33,18 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
         mAuth = FirebaseAuth.getInstance();
+        botoes();
+    }
 
-        binding.btnCadastrar.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
-        });
+    private void botoes() {
+        binding.btnCadastrar.setOnClickListener(v -> startActivity(new Intent(this, MainActivity.class)));
 
         binding.btnLogin.setOnClickListener(v -> {
-            if (validateFields()) {
-                binding.progressBar.setVisibility(View.VISIBLE);
-                login();
-            }
-            binding.progressBar.setVisibility(View.INVISIBLE);
+            if (validateFields()) login();
         });
     }
 
-    public boolean validateFields() {
+    private boolean validateFields() {
         String email = binding.emailInput.getText().toString().trim();
         String senha = binding.senhaInput.getText().toString().trim();
 
@@ -65,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
+        binding.progressBar.setVisibility(View.VISIBLE);
         String email = binding.emailInput.getText().toString().trim();
         String senha = binding.senhaInput.getText().toString().trim();
 
@@ -73,12 +71,12 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(this, "Sucesso", Toast.LENGTH_SHORT).show();
-                        binding.progressBar.setVisibility(View.INVISIBLE);
+                        binding.progressBar.setVisibility(View.GONE);
                         startActivity(new Intent(this, TurmasActivity.class));
                     } else {
                         Exception e = task.getException();
                         Toast.makeText(this, "Erro ao logar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        binding.progressBar.setVisibility(View.INVISIBLE);
+                        binding.progressBar.setVisibility(View.GONE);
                     }
                 });
     }

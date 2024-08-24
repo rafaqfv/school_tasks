@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="20dp">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/add_admin"
+            app:layout_constraintBottom_toBottomOf="@id/addAdmin"
+            app:layout_constraintStart_toStartOf="@id/addAdmin"
+            app:layout_constraintTop_toTopOf="@id/addAdmin" />
+
+        <TextView
+            android:id="@+id/addAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="20dp"
+            android:paddingStart="40dp"
+            android:text="Tornar Admin"
+            android:textColor="@color/md_theme_onSurface"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            app:layout_constraintBottom_toTopOf="@id/deleteAluno"
+            app:layout_constraintTop_toBottomOf="@id/addAdmin" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/trash"
+            app:layout_constraintBottom_toBottomOf="@id/deleteAluno"
+            app:layout_constraintStart_toStartOf="@id/deleteAluno"
+            app:layout_constraintTop_toTopOf="@id/deleteAluno" />
+
+        <TextView
+            android:id="@+id/deleteAluno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingVertical="20dp"
+            android:paddingStart="40dp"
+            android:text="Remover aluno da turma"
+            android:textColor="@color/md_theme_onSurface"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/addAdmin" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

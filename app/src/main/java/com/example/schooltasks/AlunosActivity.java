@@ -78,7 +78,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
     }
 
-    // Método para monitorar as mudanças na coleção de 'turmaAlunos' e 'users' de forma eficiente
+    // Método para monitorar as mudanças na coleção de 'turmaAlunos' e 'users'
     private void listenForAlunosChanges() {
         db.collection("turmaAlunos").whereEqualTo("idTurma", idTurma)
                 .addSnapshotListener((value, e) -> {
@@ -254,5 +254,23 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
     @Override
     public void onItemClick(int position) {
         Aluno aluno = listaAlunos.get(position);
+        String idAluno = aluno.getId();
+
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_update_aluno, null);
+        bottomSheetDialog.setContentView(view1);
+        bottomSheetDialog.show();
+
+        TextView removerAluno = view1.findViewById(R.id.deleteAluno);
+        TextView addAdmin = view1.findViewById(R.id.addAdmin);
+
+        addAdmin.setOnClickListener(vv -> {
+            // TODO: 24/08/2024 Torná-lo admin da turma
+        });
+        removerAluno.setOnClickListener(vvv -> {
+            // TODO: 24/08/2024 Removê-lo da turma
+        });
+
+
     }
 }

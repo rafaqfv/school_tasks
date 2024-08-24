@@ -111,12 +111,14 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
     }
 
     private void addAluno(String email) {
+        TextInputLayout emailLayout = view1.findViewById(R.id.email);
+        TextInputEditText emailInput = view1.findViewById(R.id.emailInput);
+
+        // Buscar para ver se existe o aluno
         db.collection("users").whereEqualTo("email", email)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (queryDocumentSnapshots.isEmpty()) {
-                        TextInputLayout emailLayout = view1.findViewById(R.id.email);
-                        TextInputEditText emailInput = view1.findViewById(R.id.emailInput);
                         emailLayout.setError("Usuário não encontrado.");
                         emailInput.addTextChangedListener(new TextWatcher() {
                             @Override
@@ -138,19 +140,43 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                     }
                     DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                     String idAluno = documentSnapshot.getId();
-                    Map<String, Object> turmaAlunos = new HashMap<>();
-                    turmaAlunos.put("idTurma", idTurma);
-                    turmaAlunos.put("idAluno", idAluno);
 
-                    db.collection("turmaAlunos").add(turmaAlunos)
-                            .addOnSuccessListener(documentReference -> {
-                                Toast.makeText(this, "Aluno entrou na turma!", Toast.LENGTH_SHORT).show();
-                                bottomSheetDialog.dismiss();
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(this, "Erro ao entrar na turma", Toast.LENGTH_SHORT).show());
+                    // Verificar se o aluno já está na turma
+                    db.collection("alunoTurmas").whereEqualTo("idAluno", idAluno)
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots1 -> {
+                                if (!queryDocumentSnapshots.isEmpty()) {
+                                    emailLayout.setError("Aluno já faz parte da turma");
+                                    emailInput.addTextChangedListener(new TextWatcher() {
+                                        @Override
+                                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                })
-                .addOnFailureListener(e -> Toast.makeText(this, "Erro ao cadastrar o aluno", Toast.LENGTH_SHORT).show());
+                                        }
+
+                                        @Override
+                                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                        }
+
+                                        @Override
+                                        public void afterTextChanged(Editable editable) {
+                                            emailLayout.setError(null);
+                                        }
+                                    });
+                                    return;
+                                }
+
+                                // Adicionar aluno à turma.
+                                Map<String, Object> turmaAlunos = new HashMap<>();
+                                turmaAlunos.put("idTurma", idTurma);
+                                turmaAlunos.put("idAluno", idAluno);
+                                db.collection("turmaAlunos").add(turmaAlunos)
+                                        .addOnSuccessListener(documentReference -> {
+                                            Toast.makeText(this, "Aluno entrou na turma!", Toast.LENGTH_SHORT).show();
+                                            bottomSheetDialog.dismiss();
+                                        }).addOnFailureListener(e -> Toast.makeText(this, "Erro ao entrar na turma", Toast.LENGTH_SHORT).show());
+                            });
+                }).addOnFailureListener(e -> Toast.makeText(this, "Erro ao cadastrar o aluno", Toast.LENGTH_SHORT).show());
     }
 
     private void bottomSheetAluno() {
@@ -167,6 +193,22 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
             String email = emailInput.getText().toString().trim();
             if (email.isEmpty()) {
                 emailLayout.setError("Digite um e-mail válido.");
+                emailInput.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        emailLayout.setError(null);
+                    }
+                });
                 return;
             }
             addAluno(email);

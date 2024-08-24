@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         binding.btnSalvar.setOnClickListener(v -> {
             binding.progressBar2.setVisibility(View.VISIBLE);
             if (validateFields()) {
-                cadastraUsuarioAuth();
+                cadastrarUsuarioAuth();
             }
             binding.progressBar2.setVisibility(View.INVISIBLE);
         });
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void cadastraUsuarioAuth() {
+    private void cadastrarUsuarioAuth() {
         if (validateFields()) {
 
             String email = binding.emailInput.getText().toString().trim();

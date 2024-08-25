@@ -54,37 +54,38 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        inicializarComponentes();
+        listenForTurmaChanges();
+        botoes();
+
+    }
+
+    private void botoes() {
+        binding.btnMenu.setOnClickListener(v -> bottomSheetUserActions());
+
+        binding.addTurma.setOnClickListener(v -> bottomSheetTurma());
+    }
+
+    private void inicializarComponentes() {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         listaTurmas = new ArrayList<>();
         adapter = new TurmaAdapter(listaTurmas, this);
         binding.turmasRecycler.setLayoutManager(new LinearLayoutManager(this));
         binding.turmasRecycler.setAdapter(adapter);
-        listenForTurmaChanges();
         getUserName();
-
-        binding.btnLogOut.setOnClickListener(v -> {
-            mAuth.signOut();
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
-        });
-
-        binding.addTurma.setOnClickListener(v -> {
-            bottomSheetTurma();
-        });
     }
 
     private void getUserName() {
         DocumentReference userDocRef = db.collection("users").document(mAuth.getUid());
-
         userDocRef.get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         nomeUser = documentSnapshot.getString("nome");
                         System.out.println("Nome do usuário: " + nomeUser);
-                    } else {
-                        System.out.println("Documento do usuário não encontrado");
+                        return;
                     }
+                    System.out.println("Documento do usuário não encontrado");
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Erro ao buscar o documento", e));
     }
@@ -185,6 +186,31 @@ public class TurmasActivity extends AppCompatActivity implements OnItemClickList
             bottomSheetDialog.dismiss();
         });
         btnCancelar.setOnClickListener(vvv -> bottomSheetDialog.dismiss());
+    }
+
+    private void bottomSheetUserActions() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_main_actions, null);
+
+        MaterialButton logOut = view1.findViewById(R.id.logOut);
+        MaterialButton userBtn = view1.findViewById(R.id.usuario);
+
+        userBtn.setText(nomeUser);
+
+        logOut.setOnClickListener(vv -> {
+            bottomSheetDialog.dismiss();
+            mAuth.signOut();
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+        });
+
+        userBtn.setOnClickListener(vvv -> {
+            bottomSheetDialog.dismiss();
+            Toast.makeText(this, "Ainda precisamos criar esta atividade, " + nomeUser, Toast.LENGTH_SHORT).show();
+        });
+
+        bottomSheetDialog.setContentView(view1);
+        bottomSheetDialog.show();
     }
 
     @Override

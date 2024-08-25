@@ -55,8 +55,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText=" "
-            android:hint="Disciplina">
+            android:hint="Disciplina"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/disciplina"
@@ -68,9 +68,9 @@
             android:id="@+id/dataLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText=" "
             android:clickable="true"
-            android:hint="Data de entrega">
+            android:hint="Data de entrega"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/data"
@@ -83,8 +83,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText=" "
-            android:hint="Título da tarefa">
+            android:hint="Título da tarefa"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titulo"
@@ -95,8 +95,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:helperText=" "
-            android:hint="Descrição">
+            android:hint="Descrição"
+            app:helperText=" ">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descricao"
@@ -111,7 +111,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
-            android:text="Salvar" />
+            android:text="Atualizar Tarefa"
+            android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/excluirBtn"
@@ -122,7 +123,8 @@
             android:backgroundTint="@color/md_theme_errorContainer_mediumContrast"
             android:paddingVertical="12dp"
             android:text="Excluir"
-            android:textColor="@color/md_theme_onErrorContainer_mediumContrast" />
+            android:textColor="@color/md_theme_onErrorContainer_mediumContrast"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,7 @@ import com.example.schooltasks.databinding.ActivityTasksBinding;
 import com.example.schooltasks.adapter.TaskAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
@@ -131,7 +132,16 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
 
         deleteTurma.setOnClickListener(vvv -> {
             bottomSheetDialog.dismiss();
-            deletarRelacoes();
+            new MaterialAlertDialogBuilder(vvv.getContext())
+                    .setTitle("Confirmação de Exclusão")
+                    .setMessage("Tem certeza que deseja excluir esta turma?")
+                    .setPositiveButton("Sim", (dialog, which) -> {
+                        deletarRelacoes();
+                    })
+                    .setNegativeButton("Não", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
 
         bottomSheetDialog.setContentView(view1);

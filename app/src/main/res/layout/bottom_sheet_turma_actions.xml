@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="20dp">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/verAlunos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:text="Ver alunos"
+        android:textAlignment="textStart"
+        android:textColor="@color/md_theme_onSurface"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:icon="@drawable/person"
+        app:iconPadding="20dp"
+        app:iconSize="30dp"
+        app:iconTint="@color/md_theme_tertiaryContainer" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginStart="60dp"
+        app:layout_constraintBottom_toTopOf="@id/deleteAluno"
+        app:layout_constraintTop_toBottomOf="@id/addAdmin" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/deleteTurma"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:text="Excluir turma"
+        android:textAlignment="textStart"
+        android:textColor="@color/md_theme_onSurface"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:icon="@drawable/trash"
+        app:iconPadding="20dp"
+        app:iconSize="30dp"
+        app:iconTint="@color/md_theme_errorContainer_mediumContrast" />
+
+
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,7 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.schooltasks.databinding.ActivityTasksBinding;
 import com.example.schooltasks.adapter.TaskAdapter;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -42,6 +47,12 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        inicializarComponentes();
+        botoes();
+        listenForTaskChanges();
+    }
+
+    private void inicializarComponentes() {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         taskList = new ArrayList<>();
@@ -63,22 +74,12 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         } else {
             isAdmin = false;
         }
-
-        botoes();
-        listenForTaskChanges();
     }
 
     private void botoes() {
-        binding.alunos.setOnClickListener(v -> {
-            Intent intentAlunos = new Intent(this, AlunosActivity.class);
-            intentAlunos.putExtra("idTurma", idTurma);
-            intentAlunos.putExtra("isAdmin", isAdmin);
-            startActivity(intentAlunos);
-        });
+        binding.btnMenu.setOnClickListener(v -> bottomSheetTurmaActions());
 
-        binding.btnBack.setOnClickListener(v -> {
-            startActivity(new Intent(this, TurmasActivity.class));
-        });
+        binding.btnBack.setOnClickListener(v -> startActivity(new Intent(this, TurmasActivity.class)));
 
         binding.intentAddTask.setOnClickListener(v -> {
             Intent intentAddTask = new Intent(this, AddTasksActivity.class);
@@ -104,6 +105,53 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
                     }
                     adapter.notifyDataSetChanged();
                 });
+    }
+
+    private void bottomSheetTurmaActions() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_turma_actions, null);
+
+        MaterialButton verAlunos = view1.findViewById(R.id.verAlunos);
+        MaterialButton deleteTurma = view1.findViewById(R.id.deleteTurma);
+
+        verAlunos.setOnClickListener(vv -> {
+            bottomSheetDialog.dismiss();
+            Intent intentAlunos = new Intent(this, AlunosActivity.class);
+            intentAlunos.putExtra("idTurma", idTurma);
+            intentAlunos.putExtra("isAdmin", isAdmin);
+            startActivity(intentAlunos);
+        });
+
+        deleteTurma.setOnClickListener(vvv -> {
+            bottomSheetDialog.dismiss();
+            deletarRelacoes();
+        });
+
+        bottomSheetDialog.setContentView(view1);
+        bottomSheetDialog.show();
+    }
+
+    private void deletarRelacoes() {
+        db.collection("turmaAlunos")
+                .whereEqualTo("idTurma", idTurma)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                        db.collection("turmaAlunos").document(document.getId()).delete();
+                    }
+                    deletarTurma();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Falha ao excluir relações.", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void deletarTurma() {
+        db.collection("turma").document(idTurma).delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Turma excluída.", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Falha ao excluir turma.", Toast.LENGTH_SHORT).show());
     }
 
     @Override

@@ -9,14 +9,16 @@
     tools:context=".TasksActivity">
 
     <ImageView
-        android:id="@+id/alunos"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/person"
+        android:id="@+id/btnMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
+        android:padding="10dp"
+        android:src="@drawable/menu_ellipsis"
+        app:layout_constraintBottom_toBottomOf="@id/titleActivity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/titleActivity"
-        app:layout_constraintBottom_toBottomOf="@id/titleActivity"
-        android:layout_marginEnd="32dp" />
+        app:tint="@color/md_theme_onSurface" />
 
     <TextView
         android:id="@+id/titleActivity"

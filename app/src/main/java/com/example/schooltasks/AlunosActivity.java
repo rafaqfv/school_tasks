@@ -54,10 +54,10 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         });
         inicializarComponentes();
         listenForAlunosChanges();
-        cliques();
+        botoes();
     }
 
-    private void cliques() {
+    private void botoes() {
         binding.backBtn.setOnClickListener(v -> finish());
 
         binding.addAluno.setOnClickListener(v -> bottomSheetAluno());
@@ -253,6 +253,9 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
 
     @Override
     public void onItemClick(int position) {
+
+        if (!admin) return;
+
         Aluno aluno = listaAlunos.get(position);
         String idAluno = aluno.getId();
 
@@ -261,16 +264,34 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         bottomSheetDialog.setContentView(view1);
         bottomSheetDialog.show();
 
-        TextView removerAluno = view1.findViewById(R.id.deleteAluno);
-        TextView addAdmin = view1.findViewById(R.id.addAdmin);
+        MaterialButton removerAluno = view1.findViewById(R.id.deleteAluno);
+        MaterialButton addAdmin = view1.findViewById(R.id.addAdmin);
 
         addAdmin.setOnClickListener(vv -> {
             // TODO: 24/08/2024 Torná-lo admin da turma
         });
         removerAluno.setOnClickListener(vvv -> {
-            // TODO: 24/08/2024 Removê-lo da turma
+            bottomSheetDialog.dismiss();
+            db.collection("turmaAlunos")
+                    .whereEqualTo("idAluno", idAluno)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            String docId = documentSnapshot.getId();
+
+                            db.collection("turmaAlunos").document(docId).delete()
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(this, "Aluno removido da turma.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    })
+                                    .addOnFailureListener(e -> Toast.makeText(this, "Erro ao remover aluno da turma.", Toast.LENGTH_SHORT).show());
+                        } else {
+                            bottomSheetDialog.dismiss();
+                            Toast.makeText(this, "Aluno não encontrado na turma.", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(this, "Erro ao buscar aluno na turma.", Toast.LENGTH_SHORT).show());
         });
-
-
     }
 }

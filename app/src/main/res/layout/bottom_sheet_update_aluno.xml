@@ -15,53 +15,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/add_admin"
-            app:layout_constraintBottom_toBottomOf="@id/addAdmin"
-            app:layout_constraintStart_toStartOf="@id/addAdmin"
-            app:layout_constraintTop_toTopOf="@id/addAdmin" />
-
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/addAdmin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
-            android:paddingStart="40dp"
-            android:text="Tornar Admin"
+            android:backgroundTint="@android:color/transparent"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:text="Tornar aluno admin"
+            android:textAlignment="textStart"
             android:textColor="@color/md_theme_onSurface"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:icon="@drawable/add_admin"
+            app:iconPadding="20dp"
+            app:iconSize="30dp"
+            app:iconTint="@color/md_theme_tertiaryContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/div"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="60dp"
             app:layout_constraintBottom_toTopOf="@id/deleteAluno"
             app:layout_constraintTop_toBottomOf="@id/addAdmin" />
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/trash"
-            app:layout_constraintBottom_toBottomOf="@id/deleteAluno"
-            app:layout_constraintStart_toStartOf="@id/deleteAluno"
-            app:layout_constraintTop_toTopOf="@id/deleteAluno" />
-
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteAluno"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
             android:layout_marginTop="10dp"
-            android:paddingVertical="20dp"
-            android:paddingStart="40dp"
             android:text="Remover aluno da turma"
+            android:textAlignment="textStart"
             android:textColor="@color/md_theme_onSurface"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/addAdmin" />
+            app:icon="@drawable/trash"
+            app:iconPadding="20dp"
+            app:iconSize="30dp"
+            app:iconTint="@color/md_theme_errorContainer_mediumContrast"
+            app:layout_constraintTop_toBottomOf="@id/div"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

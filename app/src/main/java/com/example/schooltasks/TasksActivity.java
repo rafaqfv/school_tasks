@@ -157,6 +157,8 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         db.collection("turma").document(idTurma).delete()
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Turma excluída.", Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(new Intent(this, TurmasActivity.class));
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Falha ao excluir turma.", Toast.LENGTH_SHORT).show());
     }

@@ -222,7 +222,9 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         TextInputLayout emailLayout = view1.findViewById(R.id.email);
         TextInputEditText emailInput = view1.findViewById(R.id.emailInput);
         // Verificar se o aluno já está na turma
-        db.collection("turmaAlunos").whereEqualTo("idAluno", idAluno)
+        db.collection("turmaAlunos")
+                .whereEqualTo("idAluno", idAluno)
+                .whereEqualTo("idTurma", idTurma)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     System.out.println("Encontrou quantos? " + queryDocumentSnapshots.size());

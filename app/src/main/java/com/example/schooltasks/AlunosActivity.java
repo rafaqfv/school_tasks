@@ -276,6 +276,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
             bottomSheetDialog.dismiss();
             db.collection("turmaAlunos")
                     .whereEqualTo("idAluno", idAluno)
+                    .whereEqualTo("idTurma", idTurma)
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         if (!queryDocumentSnapshots.isEmpty()) {

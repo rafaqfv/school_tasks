@@ -113,6 +113,13 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
 
         MaterialButton verAlunos = view1.findViewById(R.id.verAlunos);
         MaterialButton deleteTurma = view1.findViewById(R.id.deleteTurma);
+        deleteTurma.setVisibility(View.GONE);
+        view1.findViewById(R.id.div).setVisibility(View.GONE);
+
+        if (isAdmin) {
+            deleteTurma.setVisibility(View.VISIBLE);
+            view1.findViewById(R.id.div).setVisibility(View.VISIBLE);
+        }
 
         verAlunos.setOnClickListener(vv -> {
             bottomSheetDialog.dismiss();

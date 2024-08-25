@@ -134,6 +134,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
     }
 
     private void addAluno(String idAluno) {
+        bottomSheetDialog.dismiss();
         TextInputEditText emailAluno = view1.findViewById(R.id.emailInput);
         emailAluno.setText(null);
         Map<String, Object> turmaAlunos = new HashMap<>();
@@ -142,7 +143,6 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         db.collection("turmaAlunos").add(turmaAlunos)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Aluno entrou na turma!", Toast.LENGTH_SHORT).show();
-                    bottomSheetDialog.dismiss();
                 }).addOnFailureListener(e -> Toast.makeText(this, "Erro ao entrar na turma", Toast.LENGTH_SHORT).show());
     }
 

@@ -2,11 +2,11 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_marginVertical="8dp"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    app:strokeWidth="0dp"
-    android:backgroundTint="@color/md_theme_surfaceVariant">
+    android:layout_marginVertical="8dp"
+    android:backgroundTint="@color/md_theme_surfaceVariant"
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,9 +17,9 @@
             android:id="@+id/nome_turma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
             android:text="Nome da turma"
             android:textColor="@color/md_theme_onSurfaceVariant_highContrast"
-            android:inputType="textCapSentences"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,12 +29,12 @@
             android:id="@+id/nomeAdmin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:text="Criado por: Nome do admin"
             android:textColor="@color/md_theme_onSurfaceVariant"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/nome_turma" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

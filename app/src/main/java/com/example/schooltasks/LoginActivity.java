@@ -3,6 +3,8 @@ package com.example.schooltasks;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
@@ -54,9 +56,41 @@ public class LoginActivity extends AppCompatActivity {
 
         if (email.isEmpty()) {
             binding.email.setError("Email vazio");
+            binding.emailInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.email.setError(null);
+                }
+            });
         }
         if (senha.length() < 8) {
             binding.senha.setError("Senha inválida: menor que 8 caracteres");
+            binding.senhaInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.senha.setError(null);
+                }
+            });
         }
         return false;
     }

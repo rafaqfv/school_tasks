@@ -25,9 +25,11 @@
 
     <ImageView
         android:id="@+id/backBtn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="5dp"
         android:src="@drawable/back_btn"
         app:layout_constraintBottom_toBottomOf="@id/taskTextView"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,9 +40,9 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:src="@drawable/second_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/inputs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/taskTextView" />
 
     <LinearLayout
@@ -115,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
-            android:text="Salvar" />
+            android:text="Criar tarefa" />
 
     </LinearLayout>
 

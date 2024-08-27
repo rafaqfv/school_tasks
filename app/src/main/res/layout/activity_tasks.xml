@@ -13,7 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="18dp"
-        android:padding="10dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="5dp"
         android:src="@drawable/menu_ellipsis"
         app:layout_constraintBottom_toBottomOf="@id/titleActivity"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,9 +57,11 @@
 
     <ImageView
         android:id="@+id/btnBack"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="5dp"
         android:src="@drawable/back_btn"
         app:layout_constraintBottom_toBottomOf="@id/titleActivity"
         app:layout_constraintStart_toStartOf="parent"

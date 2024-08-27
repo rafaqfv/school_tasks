@@ -26,10 +26,10 @@
         android:id="@+id/backBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/back_btn"
+        android:layout_marginStart="32dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="5dp"
+        android:src="@drawable/back_btn"
         app:layout_constraintBottom_toBottomOf="@id/taskTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/taskTextView" />
@@ -63,7 +63,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/disciplina"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -91,7 +92,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titulo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -103,7 +105,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descricao"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

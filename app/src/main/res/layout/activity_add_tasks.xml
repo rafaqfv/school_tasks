@@ -27,7 +27,7 @@
         android:id="@+id/backBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="32dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="5dp"
         android:src="@drawable/back_btn"
@@ -64,6 +64,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/disciplina"
+                inputType="textCapSentences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -93,6 +94,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titulo"
+                android:inputType="textCapSentences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -106,6 +108,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descricao"
+                android:inputType="textCapSentences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

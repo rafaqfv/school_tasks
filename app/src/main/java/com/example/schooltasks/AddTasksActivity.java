@@ -13,6 +13,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.databinding.ActivityAddTasksBinding;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointBackward;
+import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -153,6 +156,9 @@ public class AddTasksActivity extends AppCompatActivity {
         binding.data.setOnClickListener(v -> {
             MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                     .setTitleText("Selecione uma data")
+                    .setCalendarConstraints(new CalendarConstraints.Builder()
+                            .setValidator(DateValidatorPointForward.now())
+                            .build())
                     .build();
             datePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
             datePicker.addOnPositiveButtonClickListener(selection -> {

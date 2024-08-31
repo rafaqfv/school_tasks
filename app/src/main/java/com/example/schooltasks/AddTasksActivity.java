@@ -1,37 +1,23 @@
 package com.example.schooltasks;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.databinding.ActivityAddTasksBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class AddTasksActivity extends AppCompatActivity {
@@ -194,11 +180,15 @@ public class AddTasksActivity extends AppCompatActivity {
         db.collection("tasks")
                 .add(task)
                 .addOnSuccessListener(documentReference -> {
-                            Toast.makeText(AddTasksActivity.this, "Sucesso", Toast.LENGTH_SHORT).show();
+                            View rootView = findViewById(android.R.id.content);
+                            SnackbarHelper.showSnackbar(rootView, this, "Tarefa salva com sucesso!");
                             finish();
                             startActivity(new Intent(AddTasksActivity.this, TasksActivity.class));
                         }
                 )
-                .addOnFailureListener(e -> Toast.makeText(AddTasksActivity.this, "Falha", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao salvar tarefa.");
+                });
     }
 }

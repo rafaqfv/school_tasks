@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -90,7 +89,8 @@ public class CadastroActivity extends AppCompatActivity {
                             addUserDoc(user);
                         } else {
                             Exception e = task.getException();
-                            Toast.makeText(this, "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            View rootView = findViewById(android.R.id.content);
+                            SnackbarHelper.showSnackbar(rootView, this, "Erro ao cadastrar usuário.");
                             binding.progressBar2.setVisibility(View.GONE);
                         }
                     });
@@ -120,7 +120,7 @@ public class CadastroActivity extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                 binding.nome.setError(null);
+                    binding.nome.setError(null);
                 }
             });
         }

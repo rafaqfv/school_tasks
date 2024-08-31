@@ -1,5 +1,6 @@
 package com.example.schooltasks;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -231,6 +232,12 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         bottomSheetDialog.setContentView(view1);
         bottomSheetDialog.show();
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+
     }
 
     @Override

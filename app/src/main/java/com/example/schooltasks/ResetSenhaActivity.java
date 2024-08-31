@@ -53,7 +53,22 @@ public class ResetSenhaActivity extends AppCompatActivity {
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.email.setError("Email inválido.");
-            HelperClass.afterTextChanged(binding.emailInput);
+            binding.emailInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.email.setError(null);
+                }
+            });
             return;
         }
 

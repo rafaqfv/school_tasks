@@ -199,7 +199,22 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (queryDocumentSnapshots.isEmpty()) {
                         emailLayout.setError("Usuário inexistente.");
-                        HelperClass.afterTextChanged(emailInput);
+                        emailInput.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                emailLayout.setError(null);
+                            }
+                        });
                         return;
                     }
                     DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
@@ -223,7 +238,22 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         emailLayout.setError("Aluno já faz parte da turma");
-                        HelperClass.afterTextChanged(emailInput);
+                        emailInput.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+                                emailLayout.setError(null);
+                            }
+                        });
                         return;
                     }
                     addAluno(idAluno);

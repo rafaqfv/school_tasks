@@ -2,6 +2,8 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -181,7 +183,22 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         btnCriarTurma.setOnClickListener(vv -> {
             if (nomeTurmaInput.getText().toString().isEmpty()) {
                 nomeLayout.setError("Digite um nome válido.");
-                HelperClass.afterTextChanged(nomeTurmaInput);
+                nomeTurmaInput.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        nomeLayout.setError(null);
+                    }
+                });
                 return;
             }
             criarTurma(new Turma(nomeTurmaInput.getText().toString(), mAuth.getUid(), nomeUser));

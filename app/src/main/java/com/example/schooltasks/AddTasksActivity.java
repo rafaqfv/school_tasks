@@ -67,19 +67,79 @@ public class AddTasksActivity extends AppCompatActivity {
 
         if (descricao.isEmpty()) {
             binding.descricaoLayout.setError("Descrição é obrigatório.");
-            HelperClass.afterTextChanged(binding.descricao);
+            binding.descricao.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.descricaoLayout.setError(null);
+                }
+            });
         }
         if (titulo.isEmpty()) {
             binding.tituloLayout.setError("Título é obrigatório.");
-            HelperClass.afterTextChanged(binding.titulo);
+            binding.titulo.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.tituloLayout.setError(null);
+                }
+            });
         }
         if (disciplina.isEmpty()) {
             binding.disciplinaLayout.setError("Disciplina é obrigatória.");
-            HelperClass.afterTextChanged(binding.disciplina);
+            binding.disciplina.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.disciplinaLayout.setError(null);
+                }
+            });
         }
         if (dataStr.isEmpty()) {
             binding.dataLayout.setError("Data é obrigatória.");
-            HelperClass.afterTextChanged(binding.data);
+            binding.data.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.dataLayout.setError(null);
+                }
+            });
         }
     }
 

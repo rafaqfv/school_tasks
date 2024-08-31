@@ -105,15 +105,60 @@ public class CadastroActivity extends AppCompatActivity {
 
         if (nome.isEmpty()) {
             binding.nome.setError("Nome vazio.");
-            HelperClass.afterTextChanged(binding.nomeInput);
+            binding.nomeInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.nome.setError(null);
+                }
+            });
         }
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.email.setError("Email inválido.");
-            HelperClass.afterTextChanged(binding.emailInput);
+            binding.emailInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.email.setError(null);
+                }
+            });
         }
         if (senha.length() < 6) {
             binding.senha.setError("Senha menor do que 6 dígitos.");
-            HelperClass.afterTextChanged(binding.senhaInput);
+            binding.senhaInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    binding.senha.setError(null);
+                }
+            });
         }
         return false;
     }

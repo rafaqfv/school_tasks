@@ -77,12 +77,13 @@ public class ResetSenhaActivity extends AppCompatActivity {
         db.collection("users").whereEqualTo("email", email)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (queryDocumentSnapshots.getDocuments().get(0).exists()) {
-                        sendEmail(email);
-                    } else {
+                    if (queryDocumentSnapshots.getDocuments().isEmpty()) {
                         View rootView = findViewById(android.R.id.content);
                         HelperClass.showSnackbar(rootView, this, "Conta inexistente.");
+                        binding.progressBar.setVisibility(View.GONE);
+                        return;
                     }
+                    sendEmail(email);
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);

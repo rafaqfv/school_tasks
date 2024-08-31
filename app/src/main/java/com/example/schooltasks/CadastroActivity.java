@@ -2,7 +2,6 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
@@ -15,8 +14,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.databinding.ActivityCadastroBinding;
-import com.example.schooltasks.databinding.ActivityMainBinding;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -64,7 +61,7 @@ public class CadastroActivity extends AppCompatActivity {
         db.collection("users").document(user.getUid()).set(userMap)
                 .addOnSuccessListener(documentReference -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Usuário cadastrado com sucesso!");
+                    HelperClass.showSnackbar(rootView, this, "Usuário cadastrado com sucesso!");
                     binding.progressBar2.setVisibility(View.GONE);
                     finish();
                     startActivity(new Intent(this, VerificarEmailActivity.class));
@@ -72,7 +69,7 @@ public class CadastroActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao cadastrar usuário.");
+                    HelperClass.showSnackbar(rootView, this, "Erro ao cadastrar usuário.");
                     binding.progressBar2.setVisibility(View.GONE);
                 });
     }
@@ -91,7 +88,7 @@ public class CadastroActivity extends AppCompatActivity {
                         } else {
                             Exception e = task.getException();
                             View rootView = findViewById(android.R.id.content);
-                            SnackbarHelper.showSnackbar(rootView, this, "Erro ao cadastrar usuário.");
+                            HelperClass.showSnackbar(rootView, this, "Erro ao cadastrar usuário.");
                             binding.progressBar2.setVisibility(View.GONE);
                         }
                     });
@@ -108,73 +105,15 @@ public class CadastroActivity extends AppCompatActivity {
 
         if (nome.isEmpty()) {
             binding.nome.setError("Nome vazio.");
-            binding.nomeInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.nome.setError(null);
-                }
-            });
+            HelperClass.afterTextChanged(binding.nomeInput);
         }
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.email.setError("Email inválido.");
-            binding.emailInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.emailInput.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-                            binding.email.setError(null);
-                        }
-                    });
-                }
-            });
+            HelperClass.afterTextChanged(binding.emailInput);
         }
         if (senha.length() < 6) {
             binding.senha.setError("Senha menor do que 6 dígitos.");
-            binding.senhaInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.senha.setError(null);
-                }
-            });
+            HelperClass.afterTextChanged(binding.senhaInput);
         }
         return false;
     }

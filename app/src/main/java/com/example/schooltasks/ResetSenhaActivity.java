@@ -14,12 +14,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.databinding.ActivityResetSenhaBinding;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ResetSenhaActivity extends AppCompatActivity {
     private ActivityResetSenhaBinding binding;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class ResetSenhaActivity extends AppCompatActivity {
             return insets;
         });
         binding.progressBar.setVisibility(View.GONE);
+        db = FirebaseFirestore.getInstance();
 
         binding.backBtn.setOnClickListener(v -> {
             finish();
@@ -40,54 +42,51 @@ public class ResetSenhaActivity extends AppCompatActivity {
         });
 
         binding.recuperaContaBtn.setOnClickListener(v -> {
-            recuperarConta();
+            buscaConta();
         });
 
     }
 
-    private void recuperarConta() {
+    private void buscaConta() {
         mAuth = FirebaseAuth.getInstance();
         String email = binding.emailInput.getText().toString().trim();
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.email.setError("Email inválido.");
-            binding.emailInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.email.setError(null);
-                }
-            });
+            HelperClass.afterTextChanged(binding.emailInput);
             return;
         }
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
+        db.collection("users").whereEqualTo("email", email)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.getDocuments().get(0).exists()) {
+                        sendEmail(email);
+                    } else {
+                        View rootView = findViewById(android.R.id.content);
+                        HelperClass.showSnackbar(rootView, this, "Conta inexistente.");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    View rootView = findViewById(android.R.id.content);
+                    HelperClass.showSnackbar(rootView, this, "Erro ao buscar conta.");
+                });
+
+    }
+
+    private void sendEmail(String email) {
         mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         View rootView = findViewById(android.R.id.content);
-                        Snackbar snackbar = Snackbar.make(rootView, "Email de redefinição de senha enviado.", Snackbar.LENGTH_LONG);
-                        snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
-                        snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
-                        snackbar.show();
+                        HelperClass.showSnackbar(rootView, this, "Email de redefinição de senha enviado.");
                         binding.emailInput.setText("");
                         binding.progressBar.setVisibility(View.GONE);
                     } else {
                         View rootView = findViewById(android.R.id.content);
-                        Snackbar snackbar = Snackbar.make(rootView, "Falha ao enviar email de redefinição de senha.", Snackbar.LENGTH_LONG);
-                        snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
-                        snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
-                        snackbar.show();
+                        HelperClass.showSnackbar(rootView, this, "Email de redefinição de senha enviado.");
                         binding.progressBar.setVisibility(View.GONE);
                     }
                 });

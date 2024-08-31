@@ -166,13 +166,13 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         db.collection("turma").document(idTurma).delete()
                 .addOnSuccessListener(aVoid -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Turma excluída com sucesso!");
+                    HelperClass.showSnackbar(rootView, this, "Turma excluída com sucesso!");
                     finish();
                     startActivity(new Intent(this, MainActivity.class));
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Falha ao excluir turma.");
+                    HelperClass.showSnackbar(rootView, this, "Falha ao excluir turma.");
                 });
     }
 

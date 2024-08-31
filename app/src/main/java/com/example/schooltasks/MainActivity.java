@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         inicializarComponentes();
         listenForTurmaChanges();
         botoes();
-
     }
 
     private void botoes() {
@@ -70,17 +69,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         binding.turmasRecycler.setLayoutManager(new LinearLayoutManager(this));
         binding.turmasRecycler.setAdapter(adapter);
         getUserName();
-        isEmailVerified();
-    }
-
-    private void isEmailVerified() {
-        boolean isEmailVerified = mAuth.getCurrentUser().isEmailVerified();
-        if (!isEmailVerified) {
-            binding.turmasRecycler.setVisibility(View.GONE);
-            binding.addTurma.setVisibility(View.GONE);
-            View rootView = findViewById(android.R.id.content);
-            SnackbarHelper.showSnackbar(rootView, this, "E-mail não verificado.");
-        }
     }
 
     private void getUserName() {
@@ -89,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         nomeUser = documentSnapshot.getString("nome");
-                        System.out.println("Nome do usuário: " + nomeUser);
                         return;
                     }
                     Log.w("Firestore", "Documento do usuário não encontrado");
@@ -158,17 +145,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 .addOnSuccessListener(documentReference -> {
                     entrarNaTurma(mAuth.getUid(), documentReference.getId());
                     View rootView = findViewById(android.R.id.content);
-                    Snackbar snackbar = Snackbar.make(rootView, "Turma criada com sucesso", Snackbar.LENGTH_LONG);
-                    snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
-                    snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
-                    snackbar.show();
+                    HelperClass.showSnackbar(rootView, this, "Turma criada!");
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    Snackbar snackbar = Snackbar.make(rootView, "Erro criar turma.", Snackbar.LENGTH_LONG);
-                    snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
-                    snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
-                    snackbar.show();
+                    HelperClass.showSnackbar(rootView, this, "Erro ao criar turma.");
                 });
     }
 
@@ -200,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         btnCriarTurma.setOnClickListener(vv -> {
             if (nomeTurmaInput.getText().toString().isEmpty()) {
                 nomeLayout.setError("Digite um nome válido.");
+                HelperClass.afterTextChanged(nomeTurmaInput);
                 return;
             }
             criarTurma(new Turma(nomeTurmaInput.getText().toString(), mAuth.getUid(), nomeUser));
@@ -227,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         userBtn.setOnClickListener(vvv -> {
             bottomSheetDialog.dismiss();
             View rootView = findViewById(android.R.id.content);
-            SnackbarHelper.showSnackbar(rootView, this, "Ainda precisamos criar esta atividade, " + nomeUser);
+            HelperClass.showSnackbar(rootView, this, "Ainda precisamos criar esta atividade, " + nomeUser);
         });
 
         bottomSheetDialog.setContentView(view1);

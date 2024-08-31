@@ -17,8 +17,6 @@ import com.example.schooltasks.databinding.ActivityLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.concurrent.RecursiveAction;
-
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private FirebaseAuth mAuth;
@@ -60,41 +58,11 @@ public class LoginActivity extends AppCompatActivity {
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.email.setError("Email inválido.");
-            binding.emailInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.email.setError(null);
-                }
-            });
+            HelperClass.afterTextChanged(binding.emailInput);
         }
         if (senha.length() < 6) {
-            binding.senha.setError("Senha inválida: menor que 8 caracteres");
-            binding.senhaInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.senha.setError(null);
-                }
-            });
+            binding.senha.setError("Senha inválida: menor que 6 caracteres");
+            HelperClass.afterTextChanged(binding.senhaInput);
         }
         return false;
     }
@@ -113,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         Exception e = task.getException();
                         View rootView = findViewById(android.R.id.content);
-                        SnackbarHelper.showSnackbar(rootView, this, "Erro ao fazer login");
+                        HelperClass.showSnackbar(rootView, this, "Erro ao fazer login");
                         binding.progressBar.setVisibility(View.GONE);
                     }
                 });

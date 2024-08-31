@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.schooltasks.databinding.ActivityUpdateTaskBinding;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.dialog.MaterialDialogs;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -68,12 +67,12 @@ public class UpdateTask extends AppCompatActivity {
                 .delete()
                 .addOnSuccessListener(aVoid -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Tarefa excluída com sucesso!");
+                    HelperClass.showSnackbar(rootView, this, "Tarefa excluída com sucesso!");
                     finish();
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao excluir tarefa.");
+                    HelperClass.showSnackbar(rootView, this, "Erro ao excluir tarefa.");
                 });
     }
 
@@ -87,7 +86,7 @@ public class UpdateTask extends AppCompatActivity {
         // TODO: 24/08/2024 Atualizar os métodos de validação do UpdateTask.java 
         if (updatedDisciplina.isEmpty() || updatedTitulo.isEmpty() || updatedDataDeEntrega.isEmpty() || updatedDescricao.isEmpty()) {
             View rootView = findViewById(android.R.id.content);
-            SnackbarHelper.showSnackbar(rootView, this, "Por favor, preencha todos os campos.");
+            HelperClass.showSnackbar(rootView, this, "Por favor, preencha todos os campos.");
             return;
         }
 
@@ -101,12 +100,12 @@ public class UpdateTask extends AppCompatActivity {
                 .update(task)
                 .addOnSuccessListener(aVoid -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Tarefa atualizada com sucesso!");
+                    HelperClass.showSnackbar(rootView, this, "Tarefa atualizada com sucesso!");
                     finish();
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao atualizar tarefa.");
+                    HelperClass.showSnackbar(rootView, this, "Erro ao atualizar tarefa.");
                 });
     }
 

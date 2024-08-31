@@ -135,18 +135,21 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
 
     private void addAluno(String idAluno) {
         bottomSheetDialog.dismiss();
+
         TextInputEditText emailAluno = view1.findViewById(R.id.emailInput);
         emailAluno.setText(null);
+
         Map<String, Object> turmaAlunos = new HashMap<>();
         turmaAlunos.put("idTurma", idTurma);
         turmaAlunos.put("idAluno", idAluno);
+
         db.collection("turmaAlunos").add(turmaAlunos)
                 .addOnSuccessListener(documentReference -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Aluno adicionado à turma!");
+                    HelperClass.showSnackbar(rootView, this, "Aluno adicionado à turma!");
                 }).addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao adicionar aluno à turma.");
+                    HelperClass.showSnackbar(rootView, this, "Erro ao adicionar aluno à turma.");
                 });
     }
 
@@ -190,29 +193,13 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
     private void buscaAluno(String emailAluno) {
         TextInputLayout emailLayout = view1.findViewById(R.id.email);
         TextInputEditText emailInput = view1.findViewById(R.id.emailInput);
-        // Buscar para ver se existe o aluno
+
         db.collection("users").whereEqualTo("email", emailAluno)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    System.out.println(queryDocumentSnapshots.size());
                     if (queryDocumentSnapshots.isEmpty()) {
-                        emailLayout.setError("Usuário não encontrado.");
-                        emailInput.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                emailLayout.setError(null);
-                            }
-                        });
+                        emailLayout.setError("Usuário inexistente.");
+                        HelperClass.afterTextChanged(emailInput);
                         return;
                     }
                     DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
@@ -221,7 +208,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao cadastrar aluno.");
+                    HelperClass.showSnackbar(rootView, this, "Erro ao buscar aluno.");
                 });
     }
 
@@ -234,32 +221,16 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                 .whereEqualTo("idTurma", idTurma)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    System.out.println("Encontrou quantos? " + queryDocumentSnapshots.size());
                     if (!queryDocumentSnapshots.isEmpty()) {
                         emailLayout.setError("Aluno já faz parte da turma");
-                        emailInput.addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                            }
-
-                            @Override
-                            public void afterTextChanged(Editable editable) {
-                                emailLayout.setError(null);
-                            }
-                        });
+                        HelperClass.afterTextChanged(emailInput);
                         return;
                     }
                     addAluno(idAluno);
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao adicionar aluno.");
+                    HelperClass.showSnackbar(rootView, this, "Erro ao adicionar aluno.");
                 });
     }
 
@@ -282,7 +253,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         addAdmin.setOnClickListener(vv -> {
             // TODO: 24/08/2024 Torná-lo admin da turma
             View rootView = findViewById(android.R.id.content);
-            SnackbarHelper.showSnackbar(rootView, this, "Função ainda não desenvolvida.");
+            HelperClass.showSnackbar(rootView, this, "Função ainda não desenvolvida.");
         });
         removerAluno.setOnClickListener(vvv -> {
             bottomSheetDialog.dismiss();
@@ -298,22 +269,22 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                             db.collection("turmaAlunos").document(docId).delete()
                                     .addOnSuccessListener(aVoid -> {
                                         View rootView = findViewById(android.R.id.content);
-                                        SnackbarHelper.showSnackbar(rootView, this, "Aluno removido da turma!");
+                                        HelperClass.showSnackbar(rootView, this, "Aluno removido da turma!");
                                         return;
                                     })
                                     .addOnFailureListener(e -> {
                                         View rootView = findViewById(android.R.id.content);
-                                        SnackbarHelper.showSnackbar(rootView, this, "Erro ao remover o aluno da turma");
+                                        HelperClass.showSnackbar(rootView, this, "Erro ao remover o aluno da turma");
                                     });
                         } else {
                             bottomSheetDialog.dismiss();
                             View rootView = findViewById(android.R.id.content);
-                            SnackbarHelper.showSnackbar(rootView, this, "Aluno não encontrado na turma");
+                            HelperClass.showSnackbar(rootView, this, "Aluno não encontrado na turma");
                         }
                     })
                     .addOnFailureListener(e -> {
                         View rootView = findViewById(android.R.id.content);
-                        SnackbarHelper.showSnackbar(rootView, this, "Erro ao remover o aluno da turma");
+                        HelperClass.showSnackbar(rootView, this, "Erro ao remover o aluno da turma");
                     });
         });
     }

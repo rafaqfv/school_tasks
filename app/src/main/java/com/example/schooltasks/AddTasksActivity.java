@@ -24,6 +24,7 @@ public class AddTasksActivity extends AppCompatActivity {
     private ActivityAddTasksBinding binding;
     private FirebaseFirestore db;
     private String idTurma;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +37,20 @@ public class AddTasksActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        inicializarComponents();
+        binding.salvarButton.setOnClickListener(v -> validateFields());
+    }
+
+    private void inicializarComponents() {
         db = FirebaseFirestore.getInstance();
         binding.backBtn.setOnClickListener(v -> finish());
-        Intent intent = getIntent();
+        intent = getIntent();
         idTurma = intent.getStringExtra("idTurma");
 
         datePicker();
-        binding.salvarButton.setOnClickListener(v -> {
-            if (validateFields()) {
-                saveTask();
-                clearInputsAndErrors();
-            }
-        });
     }
 
-    private boolean validateFields() {
+    private void validateFields() {
         String disciplina = binding.disciplina.getText().toString().trim();
         String dataStr = binding.data.getText().toString().trim();
         String titulo = binding.titulo.getText().toString().trim();
@@ -62,96 +62,31 @@ public class AddTasksActivity extends AppCompatActivity {
                         && !disciplina.isEmpty()
                         && !descricao.isEmpty()
         ) {
-            return true;
+            saveTask(disciplina, dataStr, titulo, descricao);
         }
 
         if (descricao.isEmpty()) {
             binding.descricaoLayout.setError("Descrição é obrigatório.");
-            binding.descricao.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.descricaoLayout.setError(null);
-                }
-            });
+            HelperClass.afterTextChanged(binding.descricao);
         }
         if (titulo.isEmpty()) {
             binding.tituloLayout.setError("Título é obrigatório.");
-            binding.titulo.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.tituloLayout.setError(null);
-                }
-            });
+            HelperClass.afterTextChanged(binding.titulo);
         }
         if (disciplina.isEmpty()) {
             binding.disciplinaLayout.setError("Disciplina é obrigatória.");
-            binding.disciplina.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.disciplinaLayout.setError(null);
-                }
-            });
+            HelperClass.afterTextChanged(binding.disciplina);
         }
         if (dataStr.isEmpty()) {
             binding.dataLayout.setError("Data é obrigatória.");
-            binding.data.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.dataLayout.setError(null);
-                }
-            });
+            HelperClass.afterTextChanged(binding.data);
         }
-        return false;
     }
 
-    private void saveTask() {
-        String disciplina = binding.disciplina.getText().toString().trim();
-        String dataStr = binding.data.getText().toString().trim();
-        String titulo = binding.titulo.getText().toString().trim();
-        String descricao = binding.descricao.getText().toString().trim();
-
+    private void saveTask(String disciplina, String dataStr, String titulo, String descricao) {
         Task newTask = new Task(disciplina, descricao, titulo, dataStr, idTurma);
         addDocumentDB(newTask);
+        clearInputsAndErrors();
     }
 
     private void datePicker() {
@@ -181,14 +116,14 @@ public class AddTasksActivity extends AppCompatActivity {
                 .add(task)
                 .addOnSuccessListener(documentReference -> {
                             View rootView = findViewById(android.R.id.content);
-                            SnackbarHelper.showSnackbar(rootView, this, "Tarefa salva com sucesso!");
+                            HelperClass.showSnackbar(rootView, this, "Tarefa salva com sucesso!");
                             finish();
                             startActivity(new Intent(AddTasksActivity.this, TasksActivity.class));
                         }
                 )
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao salvar tarefa.");
+                    HelperClass.showSnackbar(rootView, this, "Erro ao salvar tarefa.");
                 });
     }
 }

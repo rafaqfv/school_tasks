@@ -32,7 +32,6 @@ public class VerificarEmailActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
@@ -52,11 +51,7 @@ public class VerificarEmailActivity extends AppCompatActivity {
                     if (currentUser.isEmailVerified()) {
                         // Email foi verificado com sucesso
                         View rootView = findViewById(android.R.id.content);
-                        Snackbar snackbar = Snackbar.make(rootView, "Email verificado com sucesso.", Snackbar.LENGTH_LONG);
-                        snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
-                        snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
-                        snackbar.show();
-
+                        HelperClass.showSnackbar(rootView, this, "Email verificado com sucesso!");
                         finish();
                         startActivity(new Intent(this, MainActivity.class));
                     }
@@ -71,18 +66,12 @@ public class VerificarEmailActivity extends AppCompatActivity {
             user.sendEmailVerification().addOnSuccessListener(task -> {
                         binding.progressBarVerification.setVisibility(View.GONE);
                         View rootView = findViewById(android.R.id.content);
-                        Snackbar snackbar = Snackbar.make(rootView, "Email de verificação enviado.", Snackbar.LENGTH_LONG);
-                        snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
-                        snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
-                        snackbar.show();
+                        HelperClass.showSnackbar(rootView, this, "Email de verificação enviado.");
                     })
                     .addOnFailureListener(e -> {
                         binding.progressBarVerification.setVisibility(View.GONE);
                         View rootView = findViewById(android.R.id.content);
-                        Snackbar snackbar = Snackbar.make(rootView, "Falha ao enviar email de verificação.", Snackbar.LENGTH_LONG);
-                        snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
-                        snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
-                        snackbar.show();
+                        HelperClass.showSnackbar(rootView, this, "Erro ao enviar o email de verificação.");
                     });
         });
     }

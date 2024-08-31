@@ -49,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="5dp"
         android:hint="Senha"
         app:endIconMode="password_toggle"
         app:helperText="Sua senha"
@@ -68,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="5dp"
         android:text="Entrar"
         app:layout_constraintTop_toBottomOf="@+id/senha" />
 
@@ -98,7 +100,7 @@
         android:layout_height="30dp"
         android:indeterminateTint="@color/md_theme_onPrimaryContainer"
         android:visibility="gone"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="@id/btnLogin"
         app:layout_constraintStart_toStartOf="@id/btnLogin"
         app:layout_constraintTop_toTopOf="@id/btnLogin"

@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.schooltasks.adapter.TurmaAdapter;
-import com.example.schooltasks.databinding.ActivityTurmasBinding;
+import com.example.schooltasks.databinding.ActivityMainBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,7 +34,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements OnItemClickListener {
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
-    private ActivityTurmasBinding binding;
+    private ActivityMainBinding binding;
     private TurmaAdapter adapter;
     private ArrayList<Turma> listaTurmas;
     private String nomeUser;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivityTurmasBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

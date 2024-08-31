@@ -15,6 +15,7 @@
         android:layout_marginVertical="32dp"
         android:padding="5dp"
         android:src="@drawable/back_btn"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

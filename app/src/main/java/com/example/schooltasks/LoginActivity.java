@@ -18,6 +18,8 @@ import com.example.schooltasks.databinding.ActivityLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.concurrent.RecursiveAction;
+
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private FirebaseAuth mAuth;
@@ -39,6 +41,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void botoes() {
         binding.btnCadastrar.setOnClickListener(v -> startActivity(new Intent(this, CadastroActivity.class)));
+
+        binding.btnRecuperar.setOnClickListener(v -> {
+            startActivity(new Intent(this, ResetSenhaActivity.class));
+        });
 
         binding.btnLogin.setOnClickListener(v -> {
             if (validateFields()) login();

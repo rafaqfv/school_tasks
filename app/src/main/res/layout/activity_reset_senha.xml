@@ -5,51 +5,55 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VerificarEmailActivity">
+    tools:context=".ResetSenhaActivity">
 
     <ImageView
-        android:id="@+id/btnBack"
+        android:id="@+id/backBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="27dp"
         android:layout_marginVertical="32dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="5dp"
         android:src="@drawable/back_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:text="Caso já tenha verificado seu email, tente fazer login novamente."
-        android:textColor="@color/md_theme_onSurface"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/btnVerificaEmail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginHorizontal="32dp"
+        android:hint="Email"
+        app:helperText="Informe o seu e-mail para recuperar a sua conta"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnVerificaEmail"
+        android:id="@+id/recuperaContaBtn"
         style="@style/PrimaryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
-        android:text="Enviar email de verificação"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="16dp"
+        android:text="Recuperar conta"
+        app:layout_constraintTop_toBottomOf="@id/email" />
 
     <ProgressBar
-        android:id="@+id/progressBarVerification"
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:indeterminateTint="@color/md_theme_primary"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnVerificaEmail"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@id/recuperaContaBtn" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

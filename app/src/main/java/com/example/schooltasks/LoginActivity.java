@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -109,12 +108,12 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(this, "Sucesso", Toast.LENGTH_SHORT).show();
                         binding.progressBar.setVisibility(View.GONE);
                         startActivity(new Intent(this, MainActivity.class));
                     } else {
                         Exception e = task.getException();
-                        Toast.makeText(this, "Erro ao logar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        View rootView = findViewById(android.R.id.content);
+                        SnackbarHelper.showSnackbar(rootView, this, "Erro ao fazer login");
                         binding.progressBar.setVisibility(View.GONE);
                     }
                 });

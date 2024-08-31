@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +18,7 @@ import com.example.schooltasks.adapter.TurmaAdapter;
 import com.example.schooltasks.databinding.ActivityTurmasBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         if (!isEmailVerified) {
             binding.turmasRecycler.setVisibility(View.GONE);
             binding.addTurma.setVisibility(View.GONE);
-            Toast.makeText(this, "Verifique a sua conta para utilizar os recursos.", Toast.LENGTH_SHORT).show();
+            View rootView = findViewById(android.R.id.content);
+            SnackbarHelper.showSnackbar(rootView, this, "E-mail não verificado.");
         }
     }
 
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                         System.out.println("Nome do usuário: " + nomeUser);
                         return;
                     }
-                    System.out.println("Documento do usuário não encontrado");
+                    Log.w("Firestore", "Documento do usuário não encontrado");
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Erro ao buscar o documento", e));
     }
@@ -100,12 +101,12 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         db.collection("turmaAlunos").whereEqualTo("idAluno", mAuth.getUid())
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
-                        Toast.makeText(this, "Erro ao buscar turmas", Toast.LENGTH_SHORT).show();
+                        Log.w("Firestore", "Erro ao buscar turmas do usuário", e);
                         return;
                     }
 
                     if (value == null || value.isEmpty()) {
-                        Toast.makeText(this, "Nenhuma turma encontrada", Toast.LENGTH_SHORT).show();
+                        Log.w("Firestore", "Nenhuma turma encontrada para o usuário");
                         return;
                     }
 
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 .whereIn(FieldPath.documentId(), idTurmas)
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
-                        Toast.makeText(this, "Erro ao buscar detalhes das turmas", Toast.LENGTH_SHORT).show();
+                        Log.w("Firestore", "Erro ao buscar detalhes das turmas", e);
                         return;
                     }
 
@@ -145,19 +146,30 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                         }
                         adapter.notifyDataSetChanged();
                     } else {
-                        Toast.makeText(this, "Nenhuma turma encontrada.", Toast.LENGTH_SHORT).show();
+                        Log.w("Firestore", "Nenhuma turma encontrada");
                     }
                 });
     }
+
 
     private void criarTurma(Turma turma) {
         db.collection("turma")
                 .add(turma)
                 .addOnSuccessListener(documentReference -> {
                     entrarNaTurma(mAuth.getUid(), documentReference.getId());
-                    Toast.makeText(this, "Sucesso ao criar a turma: " + turma.getNome(), Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar snackbar = Snackbar.make(rootView, "Turma criada com sucesso", Snackbar.LENGTH_LONG);
+                    snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
+                    snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
+                    snackbar.show();
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Falha ao criar a turma", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar snackbar = Snackbar.make(rootView, "Erro criar turma.", Snackbar.LENGTH_LONG);
+                    snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
+                    snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
+                    snackbar.show();
+                });
     }
 
     private void entrarNaTurma(String idUser, String idTurma) {
@@ -166,9 +178,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         turmaAlunos.put("idAluno", idUser);
         db.collection("turmaAlunos").add(turmaAlunos)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(this, "Aluno entrou na turma!", Toast.LENGTH_SHORT).show();
+                    Log.d("Firestore", "Aluno entrou na turma com ID: " + documentReference.getId());
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Erro ao entrar na turma.", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Erro ao entrar no aluno na turma", e);
+                });
     }
 
     private void bottomSheetTurma() {
@@ -212,7 +226,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         userBtn.setOnClickListener(vvv -> {
             bottomSheetDialog.dismiss();
-            Toast.makeText(this, "Ainda precisamos criar esta atividade, " + nomeUser, Toast.LENGTH_SHORT).show();
+            View rootView = findViewById(android.R.id.content);
+            SnackbarHelper.showSnackbar(rootView, this, "Ainda precisamos criar esta atividade, " + nomeUser);
         });
 
         bottomSheetDialog.setContentView(view1);

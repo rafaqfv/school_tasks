@@ -2,6 +2,7 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -67,11 +68,13 @@ public class UpdateTask extends AppCompatActivity {
         db.collection("tasks").document(id)
                 .delete()
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Tarefa excluída com sucesso!", Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Tarefa excluída com sucesso!");
                     finish();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Erro ao excluir tarefa.", Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao excluir tarefa.");
                 });
     }
 
@@ -84,7 +87,8 @@ public class UpdateTask extends AppCompatActivity {
 
         // TODO: 24/08/2024 Atualizar os métodos de validação do UpdateTask.java 
         if (updatedDisciplina.isEmpty() || updatedTitulo.isEmpty() || updatedDataDeEntrega.isEmpty() || updatedDescricao.isEmpty()) {
-            Toast.makeText(this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
+            View rootView = findViewById(android.R.id.content);
+            SnackbarHelper.showSnackbar(rootView, this, "Por favor, preencha todos os campos.");
             return;
         }
 
@@ -97,11 +101,13 @@ public class UpdateTask extends AppCompatActivity {
         db.collection("tasks").document(id)
                 .update(task)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Tarefa atualizada com sucesso!", Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Tarefa atualizada com sucesso!");
                     finish();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Erro ao atualizar tarefa: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao atualizar tarefa.");
                 });
     }
 

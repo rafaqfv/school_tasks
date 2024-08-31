@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -83,12 +83,12 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         db.collection("turmaAlunos").whereEqualTo("idTurma", idTurma)
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
-                        Toast.makeText(this, "Erro ao buscar alunos", Toast.LENGTH_SHORT).show();
+                        Log.w("Firestore", "Erro ao buscar alunos da turma", e);
                         return;
                     }
 
                     if (value == null || value.isEmpty()) {
-                        Toast.makeText(this, "Nenhum aluno encontrado", Toast.LENGTH_SHORT).show();
+                        Log.w("Firestore", "Nenhum aluno encontrado para a turma");
                         return;
                     }
 
@@ -113,7 +113,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                 .whereIn(FieldPath.documentId(), idAlunos)
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
-                        Toast.makeText(this, "Erro ao buscar detalhes dos alunos.", Toast.LENGTH_SHORT).show();
+                        Log.w("Firestore", "Erro ao buscar detalhes dos alunos", e);
                         return;
                     }
 
@@ -128,7 +128,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                         }
                         adapter.notifyDataSetChanged();
                     } else {
-                        Toast.makeText(this, "Nenhum aluno encontrado.", Toast.LENGTH_SHORT).show();
+                        Log.w("Firestore", "Nenhum aluno encontrado");
                     }
                 });
     }
@@ -142,8 +142,12 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         turmaAlunos.put("idAluno", idAluno);
         db.collection("turmaAlunos").add(turmaAlunos)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(this, "Aluno entrou na turma!", Toast.LENGTH_SHORT).show();
-                }).addOnFailureListener(e -> Toast.makeText(this, "Erro ao entrar na turma", Toast.LENGTH_SHORT).show());
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Aluno adicionado à turma!");
+                }).addOnFailureListener(e -> {
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao adicionar aluno à turma.");
+                });
     }
 
     private void bottomSheetAluno() {
@@ -215,7 +219,10 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                     String idAluno = documentSnapshot.getId();
                     validaAlunoNaTurma(idAluno);
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Erro ao cadastrar o aluno", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao cadastrar aluno.");
+                });
     }
 
     private void validaAlunoNaTurma(String idAluno) {
@@ -250,7 +257,10 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                     }
                     addAluno(idAluno);
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Aluno já está na turma", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao adicionar aluno.");
+                });
     }
 
     @Override
@@ -271,6 +281,8 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
 
         addAdmin.setOnClickListener(vv -> {
             // TODO: 24/08/2024 Torná-lo admin da turma
+            View rootView = findViewById(android.R.id.content);
+            SnackbarHelper.showSnackbar(rootView, this, "Função ainda não desenvolvida.");
         });
         removerAluno.setOnClickListener(vvv -> {
             bottomSheetDialog.dismiss();
@@ -285,16 +297,24 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
 
                             db.collection("turmaAlunos").document(docId).delete()
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(this, "Aluno removido da turma.", Toast.LENGTH_SHORT).show();
+                                        View rootView = findViewById(android.R.id.content);
+                                        SnackbarHelper.showSnackbar(rootView, this, "Aluno removido da turma!");
                                         return;
                                     })
-                                    .addOnFailureListener(e -> Toast.makeText(this, "Erro ao remover aluno da turma.", Toast.LENGTH_SHORT).show());
+                                    .addOnFailureListener(e -> {
+                                        View rootView = findViewById(android.R.id.content);
+                                        SnackbarHelper.showSnackbar(rootView, this, "Erro ao remover o aluno da turma");
+                                    });
                         } else {
                             bottomSheetDialog.dismiss();
-                            Toast.makeText(this, "Aluno não encontrado na turma.", Toast.LENGTH_SHORT).show();
+                            View rootView = findViewById(android.R.id.content);
+                            SnackbarHelper.showSnackbar(rootView, this, "Aluno não encontrado na turma");
                         }
                     })
-                    .addOnFailureListener(e -> Toast.makeText(this, "Erro ao buscar aluno na turma.", Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e -> {
+                        View rootView = findViewById(android.R.id.content);
+                        SnackbarHelper.showSnackbar(rootView, this, "Erro ao remover o aluno da turma");
+                    });
         });
     }
 }

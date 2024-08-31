@@ -2,9 +2,9 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -93,7 +93,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
                 .whereEqualTo("idTurma", idTurma)
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
-                        Toast.makeText(this, "Erro", Toast.LENGTH_SHORT).show();
+                        Log.w("Firestore", "Erro ao buscar tarefas", e);
                         return;
                     }
 
@@ -158,18 +158,22 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
                     deletarTurma();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Falha ao excluir relações.", Toast.LENGTH_SHORT).show();
+                    Log.w("Firestore", "Erro ao buscar alunos da turma", e);
                 });
     }
 
     private void deletarTurma() {
         db.collection("turma").document(idTurma).delete()
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Turma excluída.", Toast.LENGTH_SHORT).show();
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Turma excluída com sucesso!");
                     finish();
                     startActivity(new Intent(this, MainActivity.class));
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Falha ao excluir turma.", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    View rootView = findViewById(android.R.id.content);
+                    SnackbarHelper.showSnackbar(rootView, this, "Falha ao excluir turma.");
+                });
     }
 
     @Override

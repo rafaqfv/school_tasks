@@ -64,10 +64,7 @@ public class CadastroActivity extends AppCompatActivity {
         db.collection("users").document(user.getUid()).set(userMap)
                 .addOnSuccessListener(documentReference -> {
                     View rootView = findViewById(android.R.id.content);
-                    Snackbar snackbar = Snackbar.make(rootView, "Cadastro realizado com sucesso.", Snackbar.LENGTH_LONG);
-                    snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
-                    snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
-                    snackbar.show();
+                    SnackbarHelper.showSnackbar(rootView, this, "Usuário cadastrado com sucesso!");
                     binding.progressBar2.setVisibility(View.GONE);
                     finish();
                     startActivity(new Intent(this, VerificarEmailActivity.class));
@@ -75,10 +72,7 @@ public class CadastroActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);
-                    Snackbar snackbar = Snackbar.make(rootView, "Erro ao cadastrar usuário.", Snackbar.LENGTH_LONG);
-                    snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
-                    snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
-                    snackbar.show();
+                    SnackbarHelper.showSnackbar(rootView, this, "Erro ao cadastrar usuário.");
                     binding.progressBar2.setVisibility(View.GONE);
                 });
     }

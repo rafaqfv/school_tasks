@@ -38,6 +38,30 @@
         app:layout_constraintTop_toBottomOf="@id/addAdmin" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/logOutTurma"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:text="Sair da turma"
+        android:textAlignment="textStart"
+        android:textColor="@color/md_theme_onSurface"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:icon="@drawable/log_out_ionicons"
+        app:iconPadding="20dp"
+        app:iconSize="30dp"
+        app:iconTint="@color/md_theme_errorContainer_mediumContrast" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginStart="60dp"
+        app:layout_constraintBottom_toTopOf="@id/deleteTurma" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/deleteTurma"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

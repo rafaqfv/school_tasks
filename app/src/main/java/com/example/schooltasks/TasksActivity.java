@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -113,6 +114,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
 
         MaterialButton verAlunos = view1.findViewById(R.id.verAlunos);
         MaterialButton deleteTurma = view1.findViewById(R.id.deleteTurma);
+        MaterialButton logOutTurmaBtn = view1.findViewById(R.id.logOutTurma);
         deleteTurma.setVisibility(View.GONE);
         view1.findViewById(R.id.div).setVisibility(View.GONE);
 
@@ -127,6 +129,20 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
             intentAlunos.putExtra("idTurma", idTurma);
             intentAlunos.putExtra("isAdmin", isAdmin);
             startActivity(intentAlunos);
+        });
+
+        logOutTurmaBtn.setOnClickListener(vvvv -> {
+            new MaterialAlertDialogBuilder(vvvv.getContext())
+                    .setTitle("Confirmação de saída")
+                    .setMessage("Tem certeza que deseja sair da turma?")
+                    .setPositiveButton("Sim", (dialog, which) -> {
+                        logOutTurma();
+                        dialog.dismiss();
+                    })
+                    .setNegativeButton("Não", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
 
         deleteTurma.setOnClickListener(vvv -> {
@@ -160,6 +176,35 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
                 .addOnFailureListener(e -> {
                     Log.w("Firestore", "Erro ao buscar alunos da turma", e);
                 });
+    }
+
+    private void logOutTurma() {
+
+        db.collection("turmaAlunos").whereEqualTo("idAluno", mAuth.getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        Log.w("Firestore", "Nenhum aluno encontrado para a turma");
+                        return;
+                    }
+                    DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                    db.collection("turmaAlunos").document(documentSnapshot.getId()).delete()
+                            .addOnSuccessListener(v -> {
+                                View rootView = findViewById(android.R.id.content);
+                                Toast.makeText(this, "Você saiu da turma.", Toast.LENGTH_SHORT).show();
+                                finish();
+                                startActivity(new Intent(this, MainActivity.class));
+                            })
+                            .addOnFailureListener(v -> {
+                                View rootView = findViewById(android.R.id.content);
+                                HelperClass.showSnackbar(rootView, this, "Erro ao sair da turma.");
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    View rootView = findViewById(android.R.id.content);
+                    HelperClass.showSnackbar(rootView, this, "Erro ao sair da turma.");
+                });
+
     }
 
     private void deletarTurma() {

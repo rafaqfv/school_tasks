@@ -16,10 +16,7 @@
             android:name=".AlunosActivity"
             android:exported="false" />
         <activity
-            android:name=".CriarTurmasActivity"
-            android:exported="false" />
-        <activity
-            android:name=".TurmasActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".UpdateTask"
@@ -28,7 +25,7 @@
             android:name=".AddTasksActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".CadastroActivity"
             android:exported="false" />
         <activity
             android:name=".TasksActivity"

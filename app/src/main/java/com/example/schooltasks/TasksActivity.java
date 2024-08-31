@@ -20,7 +20,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -80,7 +79,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
     private void botoes() {
         binding.btnMenu.setOnClickListener(v -> bottomSheetTurmaActions());
 
-        binding.btnBack.setOnClickListener(v -> startActivity(new Intent(this, TurmasActivity.class)));
+        binding.btnBack.setOnClickListener(v -> startActivity(new Intent(this, MainActivity.class)));
 
         binding.intentAddTask.setOnClickListener(v -> {
             Intent intentAddTask = new Intent(this, AddTasksActivity.class);
@@ -168,7 +167,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Turma excluída.", Toast.LENGTH_SHORT).show();
                     finish();
-                    startActivity(new Intent(this, TurmasActivity.class));
+                    startActivity(new Intent(this, MainActivity.class));
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Falha ao excluir turma.", Toast.LENGTH_SHORT).show());
     }

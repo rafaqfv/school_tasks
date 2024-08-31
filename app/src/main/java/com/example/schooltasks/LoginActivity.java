@@ -2,14 +2,12 @@ package com.example.schooltasks;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -39,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void botoes() {
-        binding.btnCadastrar.setOnClickListener(v -> startActivity(new Intent(this, MainActivity.class)));
+        binding.btnCadastrar.setOnClickListener(v -> startActivity(new Intent(this, CadastroActivity.class)));
 
         binding.btnLogin.setOnClickListener(v -> {
             if (validateFields()) login();
@@ -106,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         Toast.makeText(this, "Sucesso", Toast.LENGTH_SHORT).show();
                         binding.progressBar.setVisibility(View.GONE);
-                        startActivity(new Intent(this, TurmasActivity.class));
+                        startActivity(new Intent(this, MainActivity.class));
                     } else {
                         Exception e = task.getException();
                         Toast.makeText(this, "Erro ao logar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -120,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(this, TurmasActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 }

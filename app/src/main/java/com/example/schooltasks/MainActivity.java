@@ -70,6 +70,16 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         binding.turmasRecycler.setLayoutManager(new LinearLayoutManager(this));
         binding.turmasRecycler.setAdapter(adapter);
         getUserName();
+        isEmailVerified();
+    }
+
+    private void isEmailVerified() {
+        boolean isEmailVerified = mAuth.getCurrentUser().isEmailVerified();
+        if (!isEmailVerified) {
+            binding.turmasRecycler.setVisibility(View.GONE);
+            binding.addTurma.setVisibility(View.GONE);
+            Toast.makeText(this, "Verifique a sua conta para utilizar os recursos.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void getUserName() {
@@ -207,6 +217,15 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         bottomSheetDialog.setContentView(view1);
         bottomSheetDialog.show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!mAuth.getCurrentUser().isEmailVerified()) {
+            finish();
+            startActivity(new Intent(this, VerificarEmailActivity.class));
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -48,12 +49,12 @@ public class LoginActivity extends AppCompatActivity {
         String email = binding.emailInput.getText().toString().trim();
         String senha = binding.senhaInput.getText().toString().trim();
 
-        if (!email.isEmpty() && !senha.isEmpty() && senha.length() >= 8) {
+        if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() && !senha.isEmpty() && senha.length() >= 6) {
             return true;
         }
 
-        if (email.isEmpty()) {
-            binding.email.setError("Email vazio");
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.email.setError("Email inválido.");
             binding.emailInput.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -71,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
-        if (senha.length() < 8) {
+        if (senha.length() < 6) {
             binding.senha.setError("Senha inválida: menor que 8 caracteres");
             binding.senhaInput.addTextChangedListener(new TextWatcher() {
                 @Override

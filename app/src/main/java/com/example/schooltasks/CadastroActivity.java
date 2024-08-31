@@ -3,6 +3,7 @@ package com.example.schooltasks;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.databinding.ActivityMainBinding;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,11 +45,9 @@ public class CadastroActivity extends AppCompatActivity {
         });
 
         binding.btnSalvar.setOnClickListener(v -> {
-            binding.progressBar2.setVisibility(View.VISIBLE);
             if (validateFields()) {
                 cadastrarUsuarioAuth();
             }
-            binding.progressBar2.setVisibility(View.INVISIBLE);
         });
     }
 
@@ -61,19 +61,23 @@ public class CadastroActivity extends AppCompatActivity {
 
         db.collection("users").document(user.getUid()).set(userMap)
                 .addOnSuccessListener(documentReference -> {
-
-                    Toast.makeText(this, "Usuário salvo com sucesso", Toast.LENGTH_SHORT).show();
-                    binding.progressBar2.setVisibility(View.INVISIBLE);
-
-                    new Handler(getMainLooper()).postDelayed(() -> {
-                        finish();
-                        startActivity(new Intent(this, LoginActivity.class));
-                    }, 1500);
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar snackbar = Snackbar.make(rootView, "Cadastro realizado com sucesso.", Snackbar.LENGTH_LONG);
+                    snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
+                    snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
+                    snackbar.show();
+                    binding.progressBar2.setVisibility(View.GONE);
+                    finish();
+                    startActivity(new Intent(this, VerificarEmailActivity.class));
 
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Erro ao salvar usuário", Toast.LENGTH_SHORT).show();
-                    binding.progressBar2.setVisibility(View.INVISIBLE);
+                    View rootView = findViewById(android.R.id.content);
+                    Snackbar snackbar = Snackbar.make(rootView, "Erro ao cadastrar usuário.", Snackbar.LENGTH_LONG);
+                    snackbar.setTextColor(getColor(R.color.md_theme_onPrimaryContainer));
+                    snackbar.setBackgroundTint(getColor(R.color.md_theme_primaryContainer));
+                    snackbar.show();
+                    binding.progressBar2.setVisibility(View.GONE);
                 });
     }
 
@@ -82,7 +86,7 @@ public class CadastroActivity extends AppCompatActivity {
 
             String email = binding.emailInput.getText().toString().trim();
             String senha = binding.senhaInput.getText().toString().trim();
-
+            binding.progressBar2.setVisibility(View.VISIBLE);
             mAuth.createUserWithEmailAndPassword(email, senha)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -91,7 +95,7 @@ public class CadastroActivity extends AppCompatActivity {
                         } else {
                             Exception e = task.getException();
                             Toast.makeText(this, "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            binding.progressBar2.setVisibility(View.INVISIBLE);
+                            binding.progressBar2.setVisibility(View.GONE);
                         }
                     });
         }
@@ -102,17 +106,17 @@ public class CadastroActivity extends AppCompatActivity {
         String email = binding.emailInput.getText().toString().trim();
         String senha = binding.senhaInput.getText().toString().trim();
 
-        if (!nome.isEmpty() && !email.isEmpty() && senha.length() >= 8)
+        if (!nome.isEmpty() && !email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() && senha.length() >= 6)
             return true;
 
         if (nome.isEmpty()) {
             binding.nome.setError("Nome vazio.");
         }
-        if (email.isEmpty()) {
-            binding.email.setError("Email vazio.");
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.email.setError("Email inválido.");
         }
-        if (senha.length() < 8) {
-            binding.senha.setError("Senha menor do que 8 dígitos.");
+        if (senha.length() < 6) {
+            binding.senha.setError("Senha menor do que 6 dígitos.");
         }
         return false;
     }

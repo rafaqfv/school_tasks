@@ -93,7 +93,7 @@ public class UpdateTask extends AppCompatActivity {
         Map<String, Object> task = new HashMap<>();
         task.put("disciplina", updatedDisciplina);
         task.put("titulo", updatedTitulo);
-        task.put("dataDeEntrega", updatedDataDeEntrega);
+        task.put("dataDeEntrega", Task.converterParaTimestamp(updatedDataDeEntrega));
         task.put("descricao", updatedDescricao);
 
         db.collection("tasks").document(id)

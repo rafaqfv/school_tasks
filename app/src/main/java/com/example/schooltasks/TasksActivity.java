@@ -230,7 +230,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         String disciplina, titulo, data, descricao, id;
         disciplina = task.getDisciplina();
         titulo = task.getTitulo();
-        data = task.getDataDeEntrega();
+        data = Task.formatarData(task.getDataDeEntrega());
         descricao = task.getDescricao();
         id = task.getId();
 

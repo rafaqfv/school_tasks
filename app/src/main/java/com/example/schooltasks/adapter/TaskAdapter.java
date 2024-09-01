@@ -35,7 +35,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Task task = tasks.get(position);
         holder.disciplinaTextView.setText(task.getDisciplina());
-        holder.dataTextView.setText(task.getDataDeEntrega());
+        holder.dataTextView.setText(Task.formatarData(task.getDataDeEntrega()));
         holder.tituloTextView.setText(task.getTitulo());
         holder.descricaoTextView.setText(task.getDescricao());
     }

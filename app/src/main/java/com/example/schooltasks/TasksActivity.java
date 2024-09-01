@@ -51,7 +51,6 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         });
         inicializarComponentes();
         botoes();
-        listenForTaskChanges();
     }
 
     private void inicializarComponentes() {
@@ -221,6 +220,12 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
                     View rootView = findViewById(android.R.id.content);
                     HelperClass.showSnackbar(rootView, this, "Falha ao excluir turma.");
                 });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        listenForTaskChanges();
     }
 
     @Override

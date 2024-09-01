@@ -22,6 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -92,6 +93,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
     private void listenForTaskChanges() {
         db.collection("tasks")
                 .whereEqualTo("idTurma", idTurma)
+                .orderBy("dataDeEntrega", Query.Direction.ASCENDING)
                 .addSnapshotListener((value, e) -> {
                     if (e != null) {
                         Log.w("Firestore", "Erro ao buscar tarefas", e);

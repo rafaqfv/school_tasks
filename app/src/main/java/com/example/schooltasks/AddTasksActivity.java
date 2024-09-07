@@ -184,7 +184,6 @@ public class AddTasksActivity extends AppCompatActivity {
                             View rootView = findViewById(android.R.id.content);
                             HelperClass.showSnackbar(rootView, this, "Tarefa salva com sucesso!");
                             finish();
-                            startActivity(new Intent(AddTasksActivity.this, TasksActivity.class));
                         }
                 )
                 .addOnFailureListener(e -> {

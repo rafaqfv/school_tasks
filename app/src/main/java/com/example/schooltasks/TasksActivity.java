@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
+import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -50,6 +52,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
             return insets;
         });
         inicializarComponentes();
+        listenForTaskChanges();
         botoes();
     }
 
@@ -118,10 +121,12 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         MaterialButton logOutTurmaBtn = view1.findViewById(R.id.logOutTurma);
         deleteTurma.setVisibility(View.GONE);
         view1.findViewById(R.id.div).setVisibility(View.GONE);
+        view1.findViewById(R.id.div2).setVisibility(View.GONE);
 
         if (isAdmin) {
             deleteTurma.setVisibility(View.VISIBLE);
             view1.findViewById(R.id.div).setVisibility(View.VISIBLE);
+            view1.findViewById(R.id.div2).setVisibility(View.VISIBLE);
         }
 
         verAlunos.setOnClickListener(vv -> {
@@ -223,8 +228,8 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         listenForTaskChanges();
     }
 

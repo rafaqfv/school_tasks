@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         binding.btnMenu.setOnClickListener(v -> bottomSheetUserActions());
 
         binding.addTurma.setOnClickListener(v -> bottomSheetTurma());
+
+        binding.notificationBtn.setOnClickListener(v -> bottomSheetUserNotifications());
     }
 
     private void inicializarComponentes() {
@@ -140,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     }
                 });
     }
-
 
     private void criarTurma(Turma turma) {
         db.collection("turma")
@@ -238,6 +239,16 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         bottomSheetDialog.setContentView(view1);
         bottomSheetDialog.show();
+    }
+
+    private void bottomSheetUserNotifications() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_notification, null);
+        bottomSheetDialog.setContentView(view1);
+        bottomSheetDialog.show();
+
+
+
     }
 
     @SuppressLint("MissingSuperCall")

@@ -22,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,6 +41,8 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
     private AlunoAdapter adapter;
     private BottomSheetDialog bottomSheetDialog;
     private View view1;
+    private FirebaseAuth mAuth;
+    private String idAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,7 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         Intent intent = getIntent();
         idTurma = intent.getStringExtra("idTurma");
         admin = intent.getBooleanExtra("isAdmin", false);
+        idAdmin = intent.getStringExtra("idAdmin");
         binding.addAluno.setVisibility(View.GONE);
         if (admin) binding.addAluno.setVisibility(View.VISIBLE);
         db = FirebaseFirestore.getInstance();
@@ -78,7 +82,6 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
         view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
     }
 
-    // Método para monitorar as mudanças na coleção de 'turmaAlunos' e 'users'
     private void listenForAlunosChanges() {
         db.collection("turmaAlunos").whereEqualTo("idTurma", idTurma)
                 .addSnapshotListener((value, e) -> {
@@ -266,11 +269,14 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
 
     @Override
     public void onItemClick(int position) {
+        mAuth = FirebaseAuth.getInstance();
 
         if (!admin) return;
 
         Aluno aluno = listaAlunos.get(position);
         String idAluno = aluno.getId();
+
+        if (idAluno.equals(mAuth.getCurrentUser().getUid())) return;
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_update_aluno, null);

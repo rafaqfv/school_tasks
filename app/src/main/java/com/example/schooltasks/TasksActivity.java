@@ -134,16 +134,17 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
             Intent intentAlunos = new Intent(this, AlunosActivity.class);
             intentAlunos.putExtra("idTurma", idTurma);
             intentAlunos.putExtra("isAdmin", isAdmin);
+            intentAlunos.putExtra("idAdmin", idAdmin);
             startActivity(intentAlunos);
         });
 
         logOutTurmaBtn.setOnClickListener(vvvv -> {
+            bottomSheetDialog.dismiss();
             new MaterialAlertDialogBuilder(vvvv.getContext())
                     .setTitle("Confirmação de saída")
                     .setMessage("Tem certeza que deseja sair da turma?")
                     .setPositiveButton("Sim", (dialog, which) -> {
                         logOutTurma();
-                        dialog.dismiss();
                     })
                     .setNegativeButton("Não", (dialog, which) -> {
                         dialog.dismiss();

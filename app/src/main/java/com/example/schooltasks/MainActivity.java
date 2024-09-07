@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.schooltasks.adapter.TaskAdapter;
 import com.example.schooltasks.adapter.TurmaAdapter;
 import com.example.schooltasks.databinding.ActivityMainBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -24,13 +27,21 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,9 +49,12 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private ActivityMainBinding binding;
-    private TurmaAdapter adapter;
     private ArrayList<Turma> listaTurmas;
     private String nomeUser;
+    private ArrayList<String> idTurmas;
+    private ArrayList<Task> nextTasks;
+    private TurmaAdapter adapter;
+    private TaskAdapter taskAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         listaTurmas = new ArrayList<>();
+        nextTasks = new ArrayList<>();
+        idTurmas = new ArrayList<>();
         adapter = new TurmaAdapter(listaTurmas, this);
         binding.turmasRecycler.setLayoutManager(new LinearLayoutManager(this));
         binding.turmasRecycler.setAdapter(adapter);
@@ -102,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                         return;
                     }
 
-                    ArrayList<String> idTurmas = new ArrayList<>();
                     for (QueryDocumentSnapshot doc : value) {
                         String idTurma = doc.getString("idTurma");
                         if (idTurma != null) {
@@ -245,10 +260,47 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_notification, null);
         bottomSheetDialog.setContentView(view1);
+
+        RecyclerView rv = view1.findViewById(R.id.notificationTasks);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        taskAdapter = new TaskAdapter(nextTasks, this);
+        rv.setAdapter(taskAdapter);
+
+        getTasksBox();
+
         bottomSheetDialog.show();
+    }
 
+    private void getTasksBox() {
+// Obter a data atual e definir a hora como 00:00 em UTC
+        LocalDate today = LocalDate.now();
+        Instant todayMidnightUTC = today.atStartOfDay(ZoneOffset.UTC).toInstant();
 
+// Obter a data de daqui 3 dias e definir a hora como 00:00 em UTC
+        LocalDate threeDaysLater = today.plusDays(5);
+        Instant threeDaysLaterMidnightUTC = threeDaysLater.atStartOfDay(ZoneOffset.UTC).toInstant();
 
+// Converter para Timestamps do Firebase
+        Timestamp todayTimestamp = new Timestamp(Date.from(todayMidnightUTC));
+        Timestamp threeDaysLaterTimestamp = new Timestamp(Date.from(threeDaysLaterMidnightUTC));
+
+        db.collection("tasks").whereIn("idTurma", idTurmas)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Exception exception = task.getException();
+                        Toast.makeText(this, "Erro ao buscar tarefas.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    nextTasks.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Task taskItem = document.toObject(Task.class);
+                        taskItem.setId(document.getId());
+                        nextTasks.add(taskItem);
+                    }
+                    taskAdapter.notifyDataSetChanged();
+                });
     }
 
     @SuppressLint("MissingSuperCall")

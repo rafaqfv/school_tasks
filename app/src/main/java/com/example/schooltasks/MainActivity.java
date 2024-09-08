@@ -24,7 +24,6 @@ import com.example.schooltasks.adapter.TurmaAdapter;
 import com.example.schooltasks.databinding.ActivityMainBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
@@ -32,13 +31,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
@@ -266,23 +262,13 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         taskAdapter = new TaskAdapter(nextTasks, this);
         rv.setAdapter(taskAdapter);
 
-        getTasksBox();
+        getTasksFromTheClass();
 
         bottomSheetDialog.show();
     }
 
-    private void getTasksBox() {
-// Obter a data atual e definir a hora como 00:00 em UTC
-        LocalDate today = LocalDate.now();
-        Instant todayMidnightUTC = today.atStartOfDay(ZoneOffset.UTC).toInstant();
-
-// Obter a data de daqui 3 dias e definir a hora como 00:00 em UTC
-        LocalDate threeDaysLater = today.plusDays(5);
-        Instant threeDaysLaterMidnightUTC = threeDaysLater.atStartOfDay(ZoneOffset.UTC).toInstant();
-
-// Converter para Timestamps do Firebase
-        Timestamp todayTimestamp = new Timestamp(Date.from(todayMidnightUTC));
-        Timestamp threeDaysLaterTimestamp = new Timestamp(Date.from(threeDaysLaterMidnightUTC));
+    private void getTasksFromTheClass() {
+        ArrayList<String> idTasks = new ArrayList<>();
 
         db.collection("tasks").whereIn("idTurma", idTurmas)
                 .get()
@@ -293,6 +279,35 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                         return;
                     }
 
+                    nextTasks.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        idTasks.add(document.getId());
+                    }
+                    getTasks(idTasks);
+                });
+    }
+
+    private void getTasks(ArrayList<String> idTasks) {
+// Obter a data atual e definir a hora como 00:00 em UTC
+        LocalDate today = LocalDate.now();
+        Instant todayMidnightUTC = today.atStartOfDay(ZoneOffset.UTC).toInstant();
+
+// Obter a data de daqui 5 dias e definir a hora como 00:00 em UTC
+        LocalDate fiveDaysLater = today.plusDays(5);
+        Instant fiveDaysLaterMidnightUTC = fiveDaysLater.atStartOfDay(ZoneOffset.UTC).toInstant();
+
+// Converter para Timestamps do Firebase
+        Timestamp todayTimestamp = new Timestamp(Date.from(todayMidnightUTC));
+        Timestamp fiveDaysLaterTimestamp = new Timestamp(Date.from(fiveDaysLaterMidnightUTC));
+
+        db.collection("tasks")
+                .whereIn(FieldPath.documentId(), idTasks)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(this, "Erro ao pegar as tarefas", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     nextTasks.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Task taskItem = document.toObject(Task.class);

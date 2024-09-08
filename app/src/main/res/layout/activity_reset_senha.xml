@@ -13,11 +13,23 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="27dp"
         android:layout_marginVertical="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="5dp"
         android:src="@drawable/back_btn"
-        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Recupere sua conta"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/backBtn"
+        app:layout_constraintStart_toEndOf="@id/backBtn"
+        app:layout_constraintTop_toTopOf="@id/backBtn" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email"
@@ -48,13 +60,14 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:indeterminateTint="@color/md_theme_primary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recuperaContaBtn" />
-
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:indeterminateTint="@color/md_theme_onPrimaryContainer"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/recuperaContaBtn"
+        app:layout_constraintStart_toStartOf="@id/recuperaContaBtn"
+        app:layout_constraintTop_toTopOf="@id/recuperaContaBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

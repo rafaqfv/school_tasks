@@ -120,7 +120,6 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         MaterialButton deleteTurma = view1.findViewById(R.id.deleteTurma);
         MaterialButton logOutTurmaBtn = view1.findViewById(R.id.logOutTurma);
         deleteTurma.setVisibility(View.GONE);
-        view1.findViewById(R.id.div).setVisibility(View.GONE);
         view1.findViewById(R.id.div2).setVisibility(View.GONE);
 
         if (isAdmin) {

@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         RecyclerView rv = view1.findViewById(R.id.notificationTasks);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        taskAdapter = new TaskAdapter(nextTasks, this);
+        taskAdapter = new TaskAdapter(nextTasks);
         rv.setAdapter(taskAdapter);
 
         getTasksFromTheClass();

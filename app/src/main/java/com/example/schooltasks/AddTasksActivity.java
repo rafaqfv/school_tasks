@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -190,5 +192,11 @@ public class AddTasksActivity extends AppCompatActivity {
                     View rootView = findViewById(android.R.id.content);
                     HelperClass.showSnackbar(rootView, this, "Erro ao salvar tarefa.");
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

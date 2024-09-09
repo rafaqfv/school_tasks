@@ -324,4 +324,10 @@ public class AlunosActivity extends AppCompatActivity implements OnItemClickList
                     });
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

@@ -83,7 +83,9 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
     private void botoes() {
         binding.btnMenu.setOnClickListener(v -> bottomSheetTurmaActions());
 
-        binding.btnBack.setOnClickListener(v -> startActivity(new Intent(this, MainActivity.class)));
+        binding.btnBack.setOnClickListener(v -> {
+            finish();
+        });
 
         binding.intentAddTask.setOnClickListener(v -> {
             Intent intentAddTask = new Intent(this, AddTasksActivity.class);
@@ -254,5 +256,11 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         intent.putExtra("id", id);
         intent.putExtra("idTurma", idTurma);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

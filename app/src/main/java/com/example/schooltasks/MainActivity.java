@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     private ArrayList<Task> nextTasks;
     private TurmaAdapter adapter;
     private TaskAdapter taskAdapter;
+    private BottomSheetDialog bottomSheetDialogTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,9 +254,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     }
 
     private void bottomSheetUserNotifications() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialogTasks = new BottomSheetDialog(this);
         View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_notification, null);
-        bottomSheetDialog.setContentView(view1);
+        bottomSheetDialogTasks.setContentView(view1);
 
         RecyclerView rv = view1.findViewById(R.id.notificationTasks);
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         getTasksFromTheClass();
 
-        bottomSheetDialog.show();
+        bottomSheetDialogTasks.show();
     }
 
     private void getTasksFromTheClass() {
@@ -280,6 +281,15 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     }
 
                     nextTasks.clear();
+                    if (task.getResult().isEmpty()) {
+                        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_notification, null);
+                        bottomSheetDialogTasks.setContentView(view1);
+                        view1.findViewById(R.id.noTasks).setVisibility(View.VISIBLE);
+
+                        RecyclerView rv = view1.findViewById(R.id.notificationTasks);
+                        idTasks.clear();
+                        return;
+                    }
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         idTasks.add(document.getId());
                     }

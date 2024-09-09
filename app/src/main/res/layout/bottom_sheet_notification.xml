@@ -21,6 +21,19 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/noTasks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Não há tarefas próximas"
+        android:textColor="@color/md_theme_onSurface"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notificationTasks"
         android:layout_width="match_parent"

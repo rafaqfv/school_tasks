@@ -75,6 +75,9 @@ public class UpdateTask extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     View rootView = findViewById(android.R.id.content);
                     HelperClass.showSnackbar(rootView, this, "Tarefa excluída com sucesso!");
+
+                    // TODO: 09/09/2024 Corrigir crash de app ao deletar task 
+                    
                     finish();
                     startActivity(new Intent(this, TasksActivity.class));
                 })

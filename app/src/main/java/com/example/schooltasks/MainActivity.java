@@ -284,7 +284,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     if (task.getResult().isEmpty()) {
                         View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_notification, null);
                         bottomSheetDialogTasks.setContentView(view1);
-                        view1.findViewById(R.id.noTasks).setVisibility(View.VISIBLE);
+                        TextView titleTasks = view1.findViewById(R.id.titleTasks);
+                        titleTasks.setText("Não há tarefas próximas");
 
                         RecyclerView rv = view1.findViewById(R.id.notificationTasks);
                         idTasks.clear();

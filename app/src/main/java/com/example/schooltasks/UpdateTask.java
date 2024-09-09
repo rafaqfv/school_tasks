@@ -76,6 +76,7 @@ public class UpdateTask extends AppCompatActivity {
                     View rootView = findViewById(android.R.id.content);
                     HelperClass.showSnackbar(rootView, this, "Tarefa excluída com sucesso!");
                     finish();
+                    startActivity(new Intent(this, TasksActivity.class));
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);

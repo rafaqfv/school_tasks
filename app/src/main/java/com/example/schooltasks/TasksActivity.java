@@ -90,6 +90,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         binding.intentAddTask.setOnClickListener(v -> {
             Intent intentAddTask = new Intent(this, AddTasksActivity.class);
             intentAddTask.putExtra("idTurma", idTurma);
+            finish();
             startActivity(intentAddTask);
         });
     }

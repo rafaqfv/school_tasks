@@ -31,6 +31,16 @@
         app:layout_constraintStart_toEndOf="@id/backBtn"
         app:layout_constraintTop_toTopOf="@id/backBtn" />
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:src="@drawable/email_image"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backBtn" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email"
         android:layout_width="match_parent"
@@ -38,8 +48,7 @@
         android:layout_marginHorizontal="32dp"
         android:hint="Email"
         app:helperText="Informe o seu e-mail para recuperar a sua conta"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/image">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailInput"
@@ -62,12 +71,12 @@
         android:id="@+id/progressBar"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:indeterminateTint="@color/md_theme_onPrimaryContainer"
         android:layout_marginStart="16dp"
+        android:indeterminateTint="@color/md_theme_onPrimaryContainer"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@id/recuperaContaBtn"
         app:layout_constraintStart_toStartOf="@id/recuperaContaBtn"
-        app:layout_constraintTop_toTopOf="@id/recuperaContaBtn" />
+        app:layout_constraintTop_toTopOf="@id/recuperaContaBtn"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,10 +19,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/verify_email_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="8dp"
         android:text="Caso já tenha verificado seu email, tente fazer login novamente."
         android:textColor="@color/md_theme_onSurface"
         android:textSize="18sp"
@@ -35,21 +46,21 @@
         style="@style/PrimaryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="64dp"
         android:text="Enviar email de verificação"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/image" />
 
     <ProgressBar
         android:id="@+id/progressBarVerification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:indeterminateTint="@color/md_theme_primary"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:indeterminateTint="@color/md_theme_onPrimaryContainer"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnVerificaEmail"
+        app:layout_constraintBottom_toBottomOf="@id/btnVerificaEmail"
+        app:layout_constraintStart_toStartOf="@id/btnVerificaEmail"
+        app:layout_constraintTop_toTopOf="@id/btnVerificaEmail"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.classes.HelperClass;
 import com.example.schooltasks.classes.Task;
-import com.example.schooltasks.databinding.ActivityAddTasksBinding;
+import com.example.schooltasks.databinding.ActivityCreateTaskBinding;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class CreateTaskActivity extends AppCompatActivity {
-    private ActivityAddTasksBinding binding;
+    private ActivityCreateTaskBinding binding;
     private FirebaseFirestore db;
     private String idTurma;
     private Intent intent;
@@ -33,7 +33,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddTasksBinding.inflate(getLayoutInflater());
+        binding = ActivityCreateTaskBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

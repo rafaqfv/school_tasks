@@ -11,12 +11,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.classes.HelperClass;
-import com.example.schooltasks.databinding.ActivityVerificarEmailBinding;
+import com.example.schooltasks.databinding.ActivityVerifyEmailBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class VerifyEmailActivity extends AppCompatActivity {
-    private ActivityVerificarEmailBinding binding;
+    private ActivityVerifyEmailBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -25,7 +25,7 @@ public class VerifyEmailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivityVerificarEmailBinding.inflate(getLayoutInflater());
+        binding = ActivityVerifyEmailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

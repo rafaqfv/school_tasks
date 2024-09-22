@@ -14,12 +14,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.schooltasks.classes.HelperClass;
-import com.example.schooltasks.databinding.ActivityResetSenhaBinding;
+import com.example.schooltasks.databinding.ActivityResetPasswordBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ResetPasswordActivity extends AppCompatActivity {
-    private ActivityResetSenhaBinding binding;
+    private ActivityResetPasswordBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
@@ -27,7 +27,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivityResetSenhaBinding.inflate(getLayoutInflater());
+        binding = ActivityResetPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

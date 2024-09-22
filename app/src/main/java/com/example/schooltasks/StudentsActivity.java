@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.schooltasks.classes.Aluno;
 import com.example.schooltasks.classes.HelperClass;
 import com.example.schooltasks.adapter.AlunoAdapter;
-import com.example.schooltasks.databinding.ActivityAlunosBinding;
+import com.example.schooltasks.databinding.ActivityStudentsBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StudentsActivity extends AppCompatActivity implements OnItemClickListener {
-    private ActivityAlunosBinding binding;
+    private ActivityStudentsBinding binding;
     private boolean admin;
     private FirebaseFirestore db;
     private ArrayList<Aluno> listaAlunos;
@@ -50,7 +50,7 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivityAlunosBinding.inflate(getLayoutInflater());
+        binding = ActivityStudentsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

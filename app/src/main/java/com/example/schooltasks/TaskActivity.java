@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.schooltasks.classes.HelperClass;
 import com.example.schooltasks.classes.Task;
-import com.example.schooltasks.databinding.ActivityTasksBinding;
+import com.example.schooltasks.databinding.ActivityTaskBinding;
 import com.example.schooltasks.adapter.TaskAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
@@ -30,7 +30,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 
 public class TaskActivity extends AppCompatActivity implements OnItemClickListener {
-    private ActivityTasksBinding binding;
+    private ActivityTaskBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private ArrayList<Task> taskList;
@@ -43,7 +43,7 @@ public class TaskActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTasksBinding.inflate(getLayoutInflater());
+        binding = ActivityTaskBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

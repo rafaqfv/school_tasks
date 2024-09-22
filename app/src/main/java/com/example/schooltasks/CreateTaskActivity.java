@@ -64,30 +64,10 @@ public class CreateTaskActivity extends AppCompatActivity {
                 !titulo.isEmpty()
                         && !dataStr.isEmpty()
                         && !disciplina.isEmpty()
-                        && !descricao.isEmpty()
         ) {
             saveTask(disciplina, dataStr, titulo, descricao);
         }
 
-        if (descricao.isEmpty()) {
-            binding.descricaoLayout.setError("Descrição é obrigatório.");
-            binding.descricao.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    binding.descricaoLayout.setError(null);
-                }
-            });
-        }
         if (titulo.isEmpty()) {
             binding.tituloLayout.setError("Título é obrigatório.");
             binding.titulo.addTextChangedListener(new TextWatcher() {

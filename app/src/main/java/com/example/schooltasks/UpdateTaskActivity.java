@@ -74,7 +74,7 @@ public class UpdateTaskActivity extends AppCompatActivity {
                     HelperClass.showSnackbar(rootView, this, "Tarefa excluída com sucesso!");
 
                     // TODO: 09/09/2024 Corrigir crash de app ao deletar task 
-                    
+
                     finish();
                     startActivity(new Intent(this, TaskActivity.class));
                 })
@@ -92,7 +92,7 @@ public class UpdateTaskActivity extends AppCompatActivity {
         String updatedDescricao = binding.descricao.getText().toString();
 
         // TODO: 24/08/2024 Atualizar os métodos de validação do UpdateTask.java 
-        if (updatedDisciplina.isEmpty() || updatedTitulo.isEmpty() || updatedDataDeEntrega.isEmpty() || updatedDescricao.isEmpty()) {
+        if (updatedDisciplina.isEmpty() || updatedTitulo.isEmpty() || updatedDataDeEntrega.isEmpty()) {
             View rootView = findViewById(android.R.id.content);
             HelperClass.showSnackbar(rootView, this, "Por favor, preencha todos os campos.");
             return;

@@ -3,16 +3,15 @@ package com.example.schooltasks;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.schooltasks.Class.HelperClass;
+import com.example.schooltasks.Class.Task;
 import com.example.schooltasks.databinding.ActivityUpdateTaskBinding;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
@@ -27,9 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import javax.xml.validation.Validator;
-
-public class UpdateTask extends AppCompatActivity {
+public class UpdateTaskActivity extends AppCompatActivity {
     private ActivityUpdateTaskBinding binding;
     private FirebaseFirestore db;
     private Intent intent;

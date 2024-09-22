@@ -6,16 +6,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
-import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.schooltasks.Class.HelperClass;
+import com.example.schooltasks.Class.Task;
 import com.example.schooltasks.databinding.ActivityTasksBinding;
 import com.example.schooltasks.adapter.TaskAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -248,7 +248,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         descricao = task.getDescricao();
         id = task.getId();
 
-        Intent intent = new Intent(this, UpdateTask.class);
+        Intent intent = new Intent(this, UpdateTaskActivity.class);
         intent.putExtra("disciplina", disciplina);
         intent.putExtra("titulo", titulo);
         intent.putExtra("data", data);

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UpdateTask">
+    tools:context=".UpdateTaskActivity">
 
     <TextView
         android:id="@+id/taskTextView"

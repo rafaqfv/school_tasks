@@ -1,12 +1,11 @@
-package com.example.schooltasks;
+package com.example.schooltasks.Class;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.core.content.ContextCompat;
+
+import com.example.schooltasks.R;
 import com.google.android.material.snackbar.Snackbar;
 
 public class HelperClass {

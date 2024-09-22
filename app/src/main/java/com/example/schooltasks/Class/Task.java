@@ -1,4 +1,4 @@
-package com.example.schooltasks;
+package com.example.schooltasks.Class;
 
 import com.google.firebase.Timestamp;
 

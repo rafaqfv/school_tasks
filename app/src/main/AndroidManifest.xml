@@ -25,7 +25,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".UpdateTask"
+            android:name=".UpdateTaskActivity"
             android:exported="false" />
         <activity
             android:name=".AddTasksActivity"

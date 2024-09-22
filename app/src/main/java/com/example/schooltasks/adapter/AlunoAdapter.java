@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.schooltasks.Aluno;
+import com.example.schooltasks.Class.Aluno;
 import com.example.schooltasks.OnItemClickListener;
 import com.example.schooltasks.R;
 

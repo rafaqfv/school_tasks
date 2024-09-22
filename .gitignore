@@ -8,4 +8,4 @@
 .cxx
 local.properties
 /.idea/
-./app/google-services.json
+/app/google-services.json

@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     private TurmaAdapter adapter;
     private TaskAdapter taskAdapter;
     private BottomSheetDialog bottomSheetDialogTasks;
+    private ArrayList<String> idTasks;
+    private ArrayList<Task> filteredTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             return insets;
         });
         inicializarComponentes();
-        listenForTurmaChanges();
         botoes();
     }
 
@@ -88,10 +89,13 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         db = FirebaseFirestore.getInstance();
         listaTurmas = new ArrayList<>();
         nextTasks = new ArrayList<>();
+        idTasks = new ArrayList<>();
         idTurmas = new ArrayList<>();
+        filteredTasks = new ArrayList<>();
         adapter = new TurmaAdapter(listaTurmas, this);
         binding.turmasRecycler.setLayoutManager(new LinearLayoutManager(this));
         binding.turmasRecycler.setAdapter(adapter);
+        listenForTurmaChanges();
         getUserName();
     }
 
@@ -130,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
                     if (!idTurmas.isEmpty()) {
                         listenForTurmaDetails(idTurmas);
+                        getTasksFromTheClass();
                     }
                 });
     }
@@ -266,16 +271,24 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         RecyclerView rv = view1.findViewById(R.id.notificationTasks);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        taskAdapter = new TaskAdapter(nextTasks);
+        taskAdapter = new TaskAdapter(filteredTasks);
         rv.setAdapter(taskAdapter);
 
-        getTasksFromTheClass();
+        if (filteredTasks.isEmpty()) {
+            TextView titulo = view1.findViewById(R.id.titleTasks);
+            titulo.setText("Não há tarefas próximas");
+        }
+
+        adapter.notifyDataSetChanged();
 
         bottomSheetDialogTasks.show();
     }
 
     private void getTasksFromTheClass() {
-        ArrayList<String> idTasks = new ArrayList<>();
+        if (idTurmas == null || idTurmas.isEmpty()) {
+            Log.w("Firestore", "idTurmas está vazio. Não é possível buscar tarefas.");
+            return;
+        }
 
         db.collection("tasks").whereIn("idTurma", idTurmas)
                 .get()
@@ -288,12 +301,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
                     nextTasks.clear();
                     if (task.getResult().isEmpty()) {
-                        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_notification, null);
-                        bottomSheetDialogTasks.setContentView(view1);
-                        TextView titleTasks = view1.findViewById(R.id.titleTasks);
-                        titleTasks.setText("Não há tarefas próximas");
-
-                        RecyclerView rv = view1.findViewById(R.id.notificationTasks);
                         idTasks.clear();
                         return;
                     }
@@ -324,7 +331,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     }
 
                     // Filtrar as tarefas pelas datas dentro do intervalo
-                    ArrayList<Task> filteredTasks = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Task taskItem = document.toObject(Task.class);
                         taskItem.setId(document.getId());
@@ -337,16 +343,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     }
 
                     if (filteredTasks.isEmpty()) {
-                        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_notification, null);
-                        bottomSheetDialogTasks.setContentView(view1);
-                        TextView titleTasks = view1.findViewById(R.id.titleTasks);
-                        titleTasks.setText("Não há tarefas próximas");
+                        Toast.makeText(this, "Nenhuma tarefa encontrada.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        binding.containerEllipse.setVisibility(View.VISIBLE);
                     }
-
-                    // Atualiza a lista e o adapter com as tarefas filtradas
-                    nextTasks.clear();
-                    nextTasks.addAll(filteredTasks);
-                    taskAdapter.notifyDataSetChanged();
                 });
     }
 

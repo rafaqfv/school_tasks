@@ -101,102 +101,96 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     private void getUserName() {
         DocumentReference userDocRef = db.collection("users").document(mAuth.getUid());
-        userDocRef.get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        nomeUser = documentSnapshot.getString("nome");
-                        return;
-                    }
-                    Log.w("Firestore", "Documento do usuário não encontrado");
-                })
-                .addOnFailureListener(e -> Log.w("Firestore", "Erro ao buscar o documento", e));
+        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                nomeUser = documentSnapshot.getString("nome");
+                return;
+            }
+            Log.w("Firestore", "Documento do usuário não encontrado");
+        }).addOnFailureListener(e -> Log.w("Firestore", "Erro ao buscar o documento", e));
     }
 
     private void listenForTurmaChanges() {
-        db.collection("turmaAlunos").whereEqualTo("idAluno", mAuth.getUid())
-                .addSnapshotListener((value, e) -> {
-                    if (e != null) {
-                        Log.w("Firestore", "Erro ao buscar turmas do usuário", e);
-                        return;
-                    }
+        CollectionReference turmaAlunosRef = db.collection("turmaAlunos");
+        Query query = turmaAlunosRef.whereEqualTo("idAluno", mAuth.getUid());
+        query.addSnapshotListener((value, e) -> {
+            if (e != null) {
+                Log.w("Firestore", "Erro ao buscar turmas do usuário", e);
+                return;
+            }
 
-                    if (value == null || value.isEmpty()) {
-                        Log.w("Firestore", "Nenhuma turma encontrada para o usuário");
-                        return;
-                    }
+            if (value == null || value.isEmpty()) {
+                Log.w("Firestore", "Nenhuma turma encontrada para o usuário");
+                return;
+            }
 
-                    for (QueryDocumentSnapshot doc : value) {
-                        String idTurma = doc.getString("idTurma");
-                        if (idTurma != null) {
-                            idTurmas.add(idTurma);
-                        }
-                    }
+            for (QueryDocumentSnapshot doc : value) {
+                String idTurma = doc.getString("idTurma");
+                if (idTurma != null) idTurmas.add(idTurma);
+            }
 
-                    if (!idTurmas.isEmpty()) {
-                        listenForTurmaDetails(idTurmas);
-                        getTasksFromTheClass();
-                    }
-                });
+            if (!idTurmas.isEmpty()) {
+                listenForTurmaDetails(idTurmas);
+                getTasksFromTheClass();
+            }
+        });
     }
 
     private void listenForTurmaDetails(ArrayList<String> idTurmas) {
         listaTurmas.clear();
+        CollectionReference turmaRef = db.collection("turma");
+        Query query = turmaRef.whereIn(FieldPath.documentId(), idTurmas);
 
-        db.collection("turma")
-                .whereIn(FieldPath.documentId(), idTurmas)
-                .addSnapshotListener((value, e) -> {
-                    if (e != null) {
-                        Log.w("Firestore", "Erro ao buscar detalhes das turmas", e);
-                        return;
-                    }
+        query.addSnapshotListener((value, e) -> {
+            if (e != null) {
+                Log.w("Firestore", "Erro ao buscar detalhes das turmas", e);
+                return;
+            }
 
-                    if (value != null && !value.isEmpty()) {
-                        listaTurmas.clear();
-                        for (QueryDocumentSnapshot doc : value) {
-                            Turma turma = doc.toObject(Turma.class);
-                            if (turma != null) {
-                                turma.setId(doc.getId());
-                                listaTurmas.add(turma);
-                            }
-                        }
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        Log.w("Firestore", "Nenhuma turma encontrada");
+            if (value != null && !value.isEmpty()) {
+                listaTurmas.clear();
+                for (QueryDocumentSnapshot doc : value) {
+                    Turma turma = doc.toObject(Turma.class);
+                    if (turma != null) {
+                        turma.setId(doc.getId());
+                        listaTurmas.add(turma);
                     }
-                });
+                }
+                adapter.notifyDataSetChanged();
+            } else {
+                Log.w("Firestore", "Nenhuma turma encontrada");
+            }
+        });
     }
 
     private void criarTurma(Turma turma) {
-        db.collection("turma")
-                .add(turma)
-                .addOnSuccessListener(documentReference -> {
-                    entrarNaTurma(mAuth.getUid(), documentReference.getId());
-                    View rootView = findViewById(android.R.id.content);
-                    HelperClass.showSnackbar(rootView, this, "Turma criada!");
-                    Intent intent = new Intent(this, TaskActivity.class);
-                    intent.putExtra("idTurma", documentReference.getId());
-                    intent.putExtra("idAdmin", mAuth.getUid());
-                    intent.putExtra("nomeTurma", turma.getNome());
-                    finish();
-                    startActivity(intent);
-                })
-                .addOnFailureListener(e -> {
-                    View rootView = findViewById(android.R.id.content);
-                    HelperClass.showSnackbar(rootView, this, "Erro ao criar turma.");
-                });
+        CollectionReference turmaRef = db.collection("turma");
+        turmaRef.add(turma).addOnSuccessListener(documentReference -> {
+            entrarNaTurma(mAuth.getUid(), documentReference.getId());
+            View rootView = findViewById(android.R.id.content);
+            HelperClass.showSnackbar(rootView, this, "Turma criada!");
+            Intent intent = new Intent(this, TaskActivity.class);
+            intent.putExtra("idTurma", documentReference.getId());
+            intent.putExtra("idAdmin", mAuth.getUid());
+            intent.putExtra("nomeTurma", turma.getNome());
+            finish();
+            startActivity(intent);
+        }).addOnFailureListener(e -> {
+            View rootView = findViewById(android.R.id.content);
+            HelperClass.showSnackbar(rootView, this, "Erro ao criar turma.");
+        });
     }
 
     private void entrarNaTurma(String idUser, String idTurma) {
         Map<String, Object> turmaAlunos = new HashMap<>();
         turmaAlunos.put("idTurma", idTurma);
         turmaAlunos.put("idAluno", idUser);
-        db.collection("turmaAlunos").add(turmaAlunos)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("Firestore", "Aluno entrou na turma com ID: " + documentReference.getId());
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Erro ao entrar no aluno na turma", e);
-                });
+        CollectionReference turmaAlunosRef = db.collection("turmaAlunos");
+        turmaAlunosRef.add(turmaAlunos).addOnSuccessListener(documentReference -> {
+            Log.d("Firestore", "Aluno entrou na turma com ID: " + documentReference.getId());
+        }).addOnFailureListener(e -> {
+            Log.w("Firestore", "Erro ao entrar no aluno na turma", e);
+        });
     }
 
     private void bottomSheetTurma() {
@@ -290,59 +284,56 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             return;
         }
 
-        db.collection("tasks").whereIn("idTurma", idTurmas)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        Exception exception = task.getException();
-                        Toast.makeText(this, "Erro ao buscar tarefas.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+        CollectionReference tasksRef = db.collection("tasks");
+        Query query = tasksRef.whereIn("idTurma", idTurmas);
+        query.get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Exception exception = task.getException();
+                Log.w("Firestore", "Erro ao pegar as tarefas", exception);
+                return;
+            }
 
-                    nextTasks.clear();
-                    if (task.getResult().isEmpty()) {
-                        idTasks.clear();
-                        return;
-                    }
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        idTasks.add(document.getId());
-                    }
-                    getTasks(idTasks);
-                });
+            nextTasks.clear();
+            if (task.getResult().isEmpty()) {
+                idTasks.clear();
+                return;
+            }
+            for (QueryDocumentSnapshot document : task.getResult()) {
+                idTasks.add(document.getId());
+            }
+            getTasks(idTasks);
+        });
     }
 
     private void getTasks(ArrayList<String> idTasks) {
         CollectionReference tasksRef = db.collection("tasks");
+        Query queryByIds = tasksRef.whereIn(FieldPath.documentId(), idTasks)
+                .orderBy("dataDeEntrega", Query.Direction.ASCENDING);
         Date hoje = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(hoje);
         calendar.add(Calendar.DAY_OF_MONTH, 5);
         Date fiveDaysLater = calendar.getTime();
 
-        Query queryByIds = tasksRef.whereIn(FieldPath.documentId(), idTasks)
-                .orderBy("dataDeEntrega", Query.Direction.ASCENDING);
+        queryByIds.get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.w("Firestore", "Erro ao pegar as tarefas por ID!!!", task.getException());
+                return;
+            }
 
-        queryByIds.get()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        Log.w("Firestore", "Erro ao pegar as tarefas por ID!!!", task.getException());
-                        Toast.makeText(this, "Erro ao pegar as tarefas", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+            for (QueryDocumentSnapshot document : task.getResult()) {
+                Task taskItem = document.toObject(Task.class);
+                taskItem.setId(document.getId());
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Task taskItem = document.toObject(Task.class);
-                        taskItem.setId(document.getId());
+                Date dataDeEntrega = taskItem.getDataDeEntrega().toDate();
+                if (dataDeEntrega != null
+                        && dataDeEntrega.compareTo(hoje) >= 0
+                        && dataDeEntrega.compareTo(fiveDaysLater) <= 0)
+                    filteredTasks.add(taskItem);
+            }
 
-                        Date dataDeEntrega = taskItem.getDataDeEntrega().toDate();
-                        if (dataDeEntrega != null && dataDeEntrega.compareTo(hoje) >= 0 && dataDeEntrega.compareTo(fiveDaysLater) <= 0) {
-                            filteredTasks.add(taskItem);
-                        }
-                    }
-
-                    if (!filteredTasks.isEmpty())
-                        binding.containerEllipse.setVisibility(View.VISIBLE);
-                });
+            if (!filteredTasks.isEmpty()) binding.containerEllipse.setVisibility(View.VISIBLE);
+        });
     }
 
     @SuppressLint("MissingSuperCall")

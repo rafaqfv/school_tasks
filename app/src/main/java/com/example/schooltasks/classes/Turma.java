@@ -1,4 +1,4 @@
-package com.example.schooltasks.Class;
+package com.example.schooltasks.classes;
 
 public class Turma {
     private String nome;

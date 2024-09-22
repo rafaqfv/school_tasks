@@ -13,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.schooltasks.Class.HelperClass;
+import com.example.schooltasks.classes.HelperClass;
 import com.example.schooltasks.databinding.ActivityCadastroBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

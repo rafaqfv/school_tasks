@@ -12,8 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.schooltasks.Class.HelperClass;
-import com.example.schooltasks.Class.Task;
+import com.example.schooltasks.classes.HelperClass;
+import com.example.schooltasks.classes.Task;
 import com.example.schooltasks.databinding.ActivityAddTasksBinding;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;

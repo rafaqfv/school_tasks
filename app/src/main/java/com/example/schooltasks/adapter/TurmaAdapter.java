@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.schooltasks.OnItemClickListener;
 import com.example.schooltasks.R;
-import com.example.schooltasks.Class.Turma;
+import com.example.schooltasks.classes.Turma;
 
 import java.util.ArrayList;
 

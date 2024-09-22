@@ -1,4 +1,4 @@
-package com.example.schooltasks.Class;
+package com.example.schooltasks.classes;
 
 import android.content.Context;
 import android.view.View;

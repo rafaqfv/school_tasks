@@ -19,9 +19,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.schooltasks.Class.HelperClass;
-import com.example.schooltasks.Class.Task;
-import com.example.schooltasks.Class.Turma;
+import com.example.schooltasks.classes.HelperClass;
+import com.example.schooltasks.classes.Task;
+import com.example.schooltasks.classes.Turma;
 import com.example.schooltasks.adapter.TaskAdapter;
 import com.example.schooltasks.adapter.TurmaAdapter;
 import com.example.schooltasks.databinding.ActivityMainBinding;

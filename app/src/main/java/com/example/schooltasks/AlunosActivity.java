@@ -16,8 +16,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.schooltasks.Class.Aluno;
-import com.example.schooltasks.Class.HelperClass;
+import com.example.schooltasks.classes.Aluno;
+import com.example.schooltasks.classes.HelperClass;
 import com.example.schooltasks.adapter.AlunoAdapter;
 import com.example.schooltasks.databinding.ActivityAlunosBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;

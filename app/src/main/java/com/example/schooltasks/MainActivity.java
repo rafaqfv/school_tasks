@@ -319,8 +319,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         calendar.add(Calendar.DAY_OF_MONTH, 5);
         Date fiveDaysLater = calendar.getTime();
 
-        // Primeiro, buscar pelos ids das tarefas
-        Query queryByIds = tasksRef.whereIn(FieldPath.documentId(), idTasks);
+        Query queryByIds = tasksRef.whereIn(FieldPath.documentId(), idTasks)
+                .orderBy("dataDeEntrega", Query.Direction.ASCENDING);
 
         queryByIds.get()
                 .addOnCompleteListener(task -> {
@@ -330,23 +330,18 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                         return;
                     }
 
-                    // Filtrar as tarefas pelas datas dentro do intervalo
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Task taskItem = document.toObject(Task.class);
                         taskItem.setId(document.getId());
 
-                        // Verifica se a dataDeEntrega está no intervalo
                         Date dataDeEntrega = taskItem.getDataDeEntrega().toDate();
                         if (dataDeEntrega != null && dataDeEntrega.compareTo(hoje) >= 0 && dataDeEntrega.compareTo(fiveDaysLater) <= 0) {
                             filteredTasks.add(taskItem);
                         }
                     }
 
-                    if (filteredTasks.isEmpty()) {
-                        Toast.makeText(this, "Nenhuma tarefa encontrada.", Toast.LENGTH_SHORT).show();
-                    } else {
+                    if (!filteredTasks.isEmpty())
                         binding.containerEllipse.setVisibility(View.VISIBLE);
-                    }
                 });
     }
 

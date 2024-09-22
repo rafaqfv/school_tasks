@@ -31,15 +31,18 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -302,32 +305,47 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     }
 
     private void getTasks(ArrayList<String> idTasks) {
-// Obter a data atual e definir a hora como 00:00 em UTC
-        LocalDate today = LocalDate.now();
-        Instant todayMidnightUTC = today.atStartOfDay(ZoneOffset.UTC).toInstant();
+        CollectionReference tasksRef = db.collection("tasks");
+        Date hoje = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(hoje);
+        calendar.add(Calendar.DAY_OF_MONTH, 5);
+        Date fiveDaysLater = calendar.getTime();
 
-// Obter a data de daqui 5 dias e definir a hora como 00:00 em UTC
-        LocalDate fiveDaysLater = today.plusDays(5);
-        Instant fiveDaysLaterMidnightUTC = fiveDaysLater.atStartOfDay(ZoneOffset.UTC).toInstant();
+        // Primeiro, buscar pelos ids das tarefas
+        Query queryByIds = tasksRef.whereIn(FieldPath.documentId(), idTasks);
 
-// Converter para Timestamps do Firebase
-        Timestamp todayTimestamp = new Timestamp(Date.from(todayMidnightUTC));
-        Timestamp fiveDaysLaterTimestamp = new Timestamp(Date.from(fiveDaysLaterMidnightUTC));
-
-        db.collection("tasks")
-                .whereIn(FieldPath.documentId(), idTasks)
-                .get()
+        queryByIds.get()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
+                        Log.w("Firestore", "Erro ao pegar as tarefas por ID!!!", task.getException());
                         Toast.makeText(this, "Erro ao pegar as tarefas", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    nextTasks.clear();
+
+                    // Filtrar as tarefas pelas datas dentro do intervalo
+                    ArrayList<Task> filteredTasks = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Task taskItem = document.toObject(Task.class);
                         taskItem.setId(document.getId());
-                        nextTasks.add(taskItem);
+
+                        // Verifica se a dataDeEntrega está no intervalo
+                        Date dataDeEntrega = taskItem.getDataDeEntrega().toDate();
+                        if (dataDeEntrega != null && dataDeEntrega.compareTo(hoje) >= 0 && dataDeEntrega.compareTo(fiveDaysLater) <= 0) {
+                            filteredTasks.add(taskItem);
+                        }
                     }
+
+                    if (filteredTasks.isEmpty()) {
+                        View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_notification, null);
+                        bottomSheetDialogTasks.setContentView(view1);
+                        TextView titleTasks = view1.findViewById(R.id.titleTasks);
+                        titleTasks.setText("Não há tarefas próximas");
+                    }
+
+                    // Atualiza a lista e o adapter com as tarefas filtradas
+                    nextTasks.clear();
+                    nextTasks.addAll(filteredTasks);
                     taskAdapter.notifyDataSetChanged();
                 });
     }

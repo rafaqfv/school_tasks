@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CadastroActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     private ActivityCadastroBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -65,7 +65,7 @@ public class CadastroActivity extends AppCompatActivity {
                     HelperClass.showSnackbar(rootView, this, "Usuário cadastrado com sucesso!");
                     binding.progressBar2.setVisibility(View.GONE);
                     finish();
-                    startActivity(new Intent(this, VerificarEmailActivity.class));
+                    startActivity(new Intent(this, VerifyEmailActivity.class));
 
                 })
                 .addOnFailureListener(e -> {

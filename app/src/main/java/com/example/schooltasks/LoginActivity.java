@@ -38,10 +38,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void botoes() {
-        binding.btnCadastrar.setOnClickListener(v -> startActivity(new Intent(this, CadastroActivity.class)));
+        binding.btnCadastrar.setOnClickListener(v -> startActivity(new Intent(this, SignUpActivity.class)));
 
         binding.btnRecuperar.setOnClickListener(v -> {
-            startActivity(new Intent(this, ResetSenhaActivity.class));
+            startActivity(new Intent(this, ResetPasswordActivity.class));
         });
 
         binding.btnLogin.setOnClickListener(v -> {

@@ -76,7 +76,7 @@ public class UpdateTaskActivity extends AppCompatActivity {
                     // TODO: 09/09/2024 Corrigir crash de app ao deletar task 
                     
                     finish();
-                    startActivity(new Intent(this, TasksActivity.class));
+                    startActivity(new Intent(this, TaskActivity.class));
                 })
                 .addOnFailureListener(e -> {
                     View rootView = findViewById(android.R.id.content);

@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class AddTasksActivity extends AppCompatActivity {
+public class CreateTaskActivity extends AppCompatActivity {
     private ActivityAddTasksBinding binding;
     private FirebaseFirestore db;
     private String idTurma;

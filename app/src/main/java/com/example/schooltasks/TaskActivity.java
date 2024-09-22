@@ -29,7 +29,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 
-public class TasksActivity extends AppCompatActivity implements OnItemClickListener {
+public class TaskActivity extends AppCompatActivity implements OnItemClickListener {
     private ActivityTasksBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -88,7 +88,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
         });
 
         binding.intentAddTask.setOnClickListener(v -> {
-            Intent intentAddTask = new Intent(this, AddTasksActivity.class);
+            Intent intentAddTask = new Intent(this, CreateTaskActivity.class);
             intentAddTask.putExtra("idTurma", idTurma);
             startActivity(intentAddTask);
         });
@@ -132,7 +132,7 @@ public class TasksActivity extends AppCompatActivity implements OnItemClickListe
 
         verAlunos.setOnClickListener(vv -> {
             bottomSheetDialog.dismiss();
-            Intent intentAlunos = new Intent(this, AlunosActivity.class);
+            Intent intentAlunos = new Intent(this, StudentsActivity.class);
             intentAlunos.putExtra("idTurma", idTurma);
             intentAlunos.putExtra("isAdmin", isAdmin);
             intentAlunos.putExtra("idAdmin", idAdmin);

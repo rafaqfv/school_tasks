@@ -15,7 +15,7 @@ import com.example.schooltasks.databinding.ActivityVerificarEmailBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class VerificarEmailActivity extends AppCompatActivity {
+public class VerifyEmailActivity extends AppCompatActivity {
     private ActivityVerificarEmailBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseUser user;

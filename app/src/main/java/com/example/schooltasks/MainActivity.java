@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     entrarNaTurma(mAuth.getUid(), documentReference.getId());
                     View rootView = findViewById(android.R.id.content);
                     HelperClass.showSnackbar(rootView, this, "Turma criada!");
-                    Intent intent = new Intent(this, TasksActivity.class);
+                    Intent intent = new Intent(this, TaskActivity.class);
                     intent.putExtra("idTurma", documentReference.getId());
                     intent.putExtra("idAdmin", mAuth.getUid());
                     intent.putExtra("nomeTurma", turma.getNome());
@@ -343,14 +343,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         super.onStart();
         if (!mAuth.getCurrentUser().isEmailVerified()) {
             finish();
-            startActivity(new Intent(this, VerificarEmailActivity.class));
+            startActivity(new Intent(this, VerifyEmailActivity.class));
         }
     }
 
     @Override
     public void onItemClick(int position) {
         Turma turma = listaTurmas.get(position);
-        Intent intent = new Intent(this, TasksActivity.class);
+        Intent intent = new Intent(this, TaskActivity.class);
         intent.putExtra("idTurma", turma.getId());
         intent.putExtra("idAdmin", turma.getAdmin());
         intent.putExtra("nomeTurma", turma.getNome());

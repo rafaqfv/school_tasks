@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/md_theme_surface"
-    tools:context=".TasksActivity">
+    tools:context=".TaskActivity">
 
     <ImageView
         android:id="@+id/btnMenu"

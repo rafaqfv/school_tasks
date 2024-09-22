@@ -18,7 +18,7 @@ import com.example.schooltasks.databinding.ActivityResetSenhaBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ResetSenhaActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends AppCompatActivity {
     private ActivityResetSenhaBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;

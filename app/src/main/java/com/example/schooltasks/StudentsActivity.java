@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AlunosActivity extends AppCompatActivity implements OnItemClickListener {
+public class StudentsActivity extends AppCompatActivity implements OnItemClickListener {
     private ActivityAlunosBinding binding;
     private boolean admin;
     private FirebaseFirestore db;

@@ -22,12 +22,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class TaskActivity extends AppCompatActivity implements OnItemClickListener {
     private ActivityTaskBinding binding;
@@ -95,23 +99,40 @@ public class TaskActivity extends AppCompatActivity implements OnItemClickListen
     }
 
     private void listenForTaskChanges() {
-        db.collection("tasks")
-                .whereEqualTo("idTurma", idTurma)
-                .orderBy("dataDeEntrega", Query.Direction.ASCENDING)
-                .addSnapshotListener((value, e) -> {
-                    if (e != null) {
-                        Log.w("Firestore", "Erro ao buscar tarefas", e);
-                        return;
-                    }
+        CollectionReference tasksRef = db.collection("tasks");
+        Query query = tasksRef.whereEqualTo("idTurma", idTurma)
+                .orderBy("dataDeEntrega", Query.Direction.ASCENDING);
+        query.addSnapshotListener((value, e) -> {
+            if (e != null) {
+                Log.w("Firestore", "Erro ao buscar tarefas", e);
+                return;
+            }
 
-                    taskList.clear();
-                    for (QueryDocumentSnapshot doc : value) {
-                        Task task = doc.toObject(Task.class);
-                        task.setId(doc.getId());
-                        taskList.add(task);
+            taskList.clear();
+            for (QueryDocumentSnapshot doc : value) {
+                Task task = doc.toObject(Task.class);
+                Date dataAtualDate = new Date();
+                Calendar hojeCalendar = Calendar.getInstance();
+                hojeCalendar.setTime(dataAtualDate);
+                hojeCalendar.set(Calendar.HOUR_OF_DAY, 0);
+                hojeCalendar.set(Calendar.MINUTE, 0);
+                hojeCalendar.set(Calendar.SECOND, 0);
+                hojeCalendar.set(Calendar.MILLISECOND, 0);
+                dataAtualDate = hojeCalendar.getTime();
+                if (task.getDataDeEntrega().toDate().compareTo(dataAtualDate) > 0) {
+                    if (isAdmin) {
+                        DocumentReference taskRef = tasksRef.document(doc.getId());
+                        taskRef.delete()
+                                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Tarefa deletada com sucesso"))
+                                .addOnFailureListener(ee -> Log.w("Firestore", "Erro ao deletar tarefa", ee));
                     }
-                    adapter.notifyDataSetChanged();
-                });
+                    return;
+                }
+                task.setId(doc.getId());
+                taskList.add(task);
+            }
+            adapter.notifyDataSetChanged();
+        });
     }
 
     private void bottomSheetTurmaActions() {

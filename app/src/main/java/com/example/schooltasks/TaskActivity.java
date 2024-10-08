@@ -29,9 +29,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class TaskActivity extends AppCompatActivity implements OnItemClickListener {
     private ActivityTaskBinding binding;
@@ -109,30 +111,45 @@ public class TaskActivity extends AppCompatActivity implements OnItemClickListen
             }
 
             taskList.clear();
+            Date dataAtualDate = zerarHoras(new Date());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Log.d("TASK!!!", "Data atual: " + dataAtualDate.toString());
             for (QueryDocumentSnapshot doc : value) {
                 Task task = doc.toObject(Task.class);
-                Date dataAtualDate = new Date();
-                Calendar hojeCalendar = Calendar.getInstance();
-                hojeCalendar.setTime(dataAtualDate);
-                hojeCalendar.set(Calendar.HOUR_OF_DAY, 0);
-                hojeCalendar.set(Calendar.MINUTE, 0);
-                hojeCalendar.set(Calendar.SECOND, 0);
-                hojeCalendar.set(Calendar.MILLISECOND, 0);
-                dataAtualDate = hojeCalendar.getTime();
-                if (task.getDataDeEntrega().toDate().compareTo(dataAtualDate) > 0) {
+                Date dataDeEntregaDate = task.getDataDeEntrega().toDate();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(dataDeEntregaDate);
+                calendar.add(Calendar.HOUR_OF_DAY, 3);
+                dataDeEntregaDate = calendar.getTime();
+                int comparacao = dataDeEntregaDate.compareTo(dataAtualDate);
+                Log.d("TASK!!!", "Data de entrega da tarefa: " + String.valueOf(dataDeEntregaDate));
+                if (comparacao < 0) {
                     if (isAdmin) {
                         DocumentReference taskRef = tasksRef.document(doc.getId());
                         taskRef.delete()
                                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Tarefa deletada com sucesso"))
                                 .addOnFailureListener(ee -> Log.w("Firestore", "Erro ao deletar tarefa", ee));
                     }
-                    return;
+                    continue;
                 }
                 task.setId(doc.getId());
                 taskList.add(task);
             }
             adapter.notifyDataSetChanged();
         });
+    }
+
+    private Date zerarHoras(Date dataParaSerZerada) {
+        Calendar zerarCalendar = Calendar.getInstance();
+        zerarCalendar.setTime(dataParaSerZerada);
+        zerarCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        zerarCalendar.set(Calendar.MINUTE, 0);
+        zerarCalendar.set(Calendar.SECOND, 0);
+        zerarCalendar.set(Calendar.MILLISECOND, 0);
+        dataParaSerZerada = zerarCalendar.getTime();
+
+        return dataParaSerZerada;
     }
 
     private void bottomSheetTurmaActions() {

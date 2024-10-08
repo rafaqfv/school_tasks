@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         CollectionReference tasksRef = db.collection("tasks");
         Query queryByIds = tasksRef.whereIn(FieldPath.documentId(), idTasks)
                 .orderBy("dataDeEntrega", Query.Direction.ASCENDING);
-        Date hoje = new Date();
+        Date hoje = zerarHoras(new Date());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(hoje);
         calendar.add(Calendar.DAY_OF_MONTH, 5);
@@ -326,6 +326,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 taskItem.setId(document.getId());
 
                 Date dataDeEntrega = taskItem.getDataDeEntrega().toDate();
+                Calendar calendar1 = Calendar.getInstance();
+                calendar1.setTime(dataDeEntrega);
+                calendar1.add(Calendar.HOUR_OF_DAY, 3);
+                dataDeEntrega = calendar1.getTime();
                 if (dataDeEntrega != null
                         && dataDeEntrega.compareTo(hoje) >= 0
                         && dataDeEntrega.compareTo(fiveDaysLater) <= 0)
@@ -334,6 +338,18 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
             if (!filteredTasks.isEmpty()) binding.containerEllipse.setVisibility(View.VISIBLE);
         });
+    }
+
+    private Date zerarHoras(Date dataParaSerZerada) {
+        Calendar zerarCalendar = Calendar.getInstance();
+        zerarCalendar.setTime(dataParaSerZerada);
+        zerarCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        zerarCalendar.set(Calendar.MINUTE, 0);
+        zerarCalendar.set(Calendar.SECOND, 0);
+        zerarCalendar.set(Calendar.MILLISECOND, 0);
+        dataParaSerZerada = zerarCalendar.getTime();
+
+        return dataParaSerZerada;
     }
 
     @SuppressLint("MissingSuperCall")

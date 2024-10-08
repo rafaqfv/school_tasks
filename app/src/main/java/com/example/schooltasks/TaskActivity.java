@@ -112,9 +112,6 @@ public class TaskActivity extends AppCompatActivity implements OnItemClickListen
 
             taskList.clear();
             Date dataAtualDate = zerarHoras(new Date());
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Log.d("TASK!!!", "Data atual: " + dataAtualDate.toString());
             for (QueryDocumentSnapshot doc : value) {
                 Task task = doc.toObject(Task.class);
                 Date dataDeEntregaDate = task.getDataDeEntrega().toDate();

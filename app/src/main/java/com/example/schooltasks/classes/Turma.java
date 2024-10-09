@@ -4,14 +4,14 @@ public class Turma {
     private String nome;
     private String id;
     private String admin;
-    private String nomeAdmin;
+    private String nomeCriador;
 
-    public String getNomeAdmin() {
-        return nomeAdmin;
+    public String getNomeCriador() {
+        return nomeCriador;
     }
 
-    public void setNomeAdmin(String nomeAdmin) {
-        this.nomeAdmin = nomeAdmin;
+    public void setNomeCriador(String nomeCriador) {
+        this.nomeCriador = nomeCriador;
     }
 
     public Turma() {
@@ -20,7 +20,7 @@ public class Turma {
     public Turma(String nome, String admin, String nomeAdmin) {
         this.nome = nome;
         this.admin = admin;
-        this.nomeAdmin = nomeAdmin;
+        this.nomeCriador = nomeAdmin;
     }
 
     public String getNome() {

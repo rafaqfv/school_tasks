@@ -1,9 +1,11 @@
 package com.example.schooltasks.classes;
 
+import java.util.List;
+
 public class Turma {
     private String nome;
     private String id;
-    private String admin;
+    private List<String> admin;
     private String nomeCriador;
 
     public String getNomeCriador() {
@@ -17,7 +19,7 @@ public class Turma {
     public Turma() {
     }
 
-    public Turma(String nome, String admin, String nomeAdmin) {
+    public Turma(String nome, List<String> admin, String nomeAdmin) {
         this.nome = nome;
         this.admin = admin;
         this.nomeCriador = nomeAdmin;
@@ -39,11 +41,11 @@ public class Turma {
         this.id = id;
     }
 
-    public String getAdmin() {
+    public List<String> getAdmin() {
         return admin;
     }
 
-    public void setAdmin(String admin) {
+    public void setAdmin(List<String> admin) {
         this.admin = admin;
     }
 }

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
     android:paddingBottom="20dp">
@@ -31,26 +32,45 @@
             app:iconPadding="20dp"
             app:iconSize="30dp"
             app:iconTint="@color/md_theme_tertiaryContainer"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/div"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
-            android:layout_marginStart="60dp"
-            app:layout_constraintBottom_toTopOf="@id/deleteAluno"
-            app:layout_constraintTop_toBottomOf="@id/addAdmin" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/deleteAluno"
+            android:id="@+id/removeAdmin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
             android:paddingHorizontal="10dp"
             android:paddingVertical="10dp"
+            android:text="Tirar admin do aluno"
+            android:textAlignment="textStart"
+            android:textColor="@color/md_theme_onSurface"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:icon="@drawable/add_admin"
+            app:iconPadding="20dp"
+            app:iconSize="30dp"
+            app:iconTint="@color/md_theme_errorContainer_mediumContrast"
+            app:layout_constraintTop_toBottomOf="@id/addAdmin" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/div2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="60dp"
+            app:layout_constraintBottom_toTopOf="@id/deleteAluno"
+            app:layout_constraintTop_toBottomOf="@id/removeAdmin" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteAluno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:backgroundTint="@android:color/transparent"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
             android:text="Remover aluno da turma"
             android:textAlignment="textStart"
             android:textColor="@color/md_theme_onSurface"
@@ -60,8 +80,7 @@
             app:iconPadding="20dp"
             app:iconSize="30dp"
             app:iconTint="@color/md_theme_errorContainer_mediumContrast"
-            app:layout_constraintTop_toBottomOf="@id/div"
-            />
+            app:layout_constraintTop_toBottomOf="@id/div2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

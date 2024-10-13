@@ -3,6 +3,7 @@ package com.example.schooltasks.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,10 +19,12 @@ import java.util.ArrayList;
 public class AlunoAdapter extends RecyclerView.Adapter<AlunoAdapter.ViewHolder> {
     private final ArrayList<Aluno> listaAlunos;
     private OnItemClickListener listener;
+    private ArrayList<String> admins;
 
-    public AlunoAdapter(ArrayList<Aluno> listaAlunos, OnItemClickListener listener) {
+    public AlunoAdapter(ArrayList<Aluno> listaAlunos, OnItemClickListener listener, ArrayList<String> admins) {
         this.listaAlunos = listaAlunos;
         this.listener = listener;
+        this.admins = admins;
     }
 
     @NonNull
@@ -36,6 +39,8 @@ public class AlunoAdapter extends RecyclerView.Adapter<AlunoAdapter.ViewHolder> 
         Aluno aluno = listaAlunos.get(position);
         holder.nomeAluno.setText(aluno.getNome());
         holder.emailAluno.setText(aluno.getEmail());
+
+        if (admins.contains(aluno.getId())) holder.adminIcon.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -46,11 +51,13 @@ public class AlunoAdapter extends RecyclerView.Adapter<AlunoAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nomeAluno;
         public TextView emailAluno;
+        public ImageView adminIcon;
 
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             nomeAluno = itemView.findViewById(R.id.nomeAluno);
             emailAluno = itemView.findViewById(R.id.emailAluno);
+            adminIcon = itemView.findViewById(R.id.isAdmin);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

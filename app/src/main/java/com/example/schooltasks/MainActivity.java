@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnItemClickListener {
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         TextView btnCancelar = view1.findViewById(R.id.cancelarBottomSheet);
         nomeTurmaInput.requestFocus();
 
-        btnCriarTurma.setOnClickListener(vv -> {
+        btnCriarTurma.setOnClickListener(v -> {
             if (nomeTurmaInput.getText().toString().isEmpty()) {
                 nomeLayout.setError("Digite um nome válido.");
                 nomeTurmaInput.addTextChangedListener(new TextWatcher() {
@@ -226,10 +227,12 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 });
                 return;
             }
-            criarTurma(new Turma(nomeTurmaInput.getText().toString(), mAuth.getUid(), nomeUser));
+            List<String> admin = new ArrayList<>();
+            admin.add(mAuth.getCurrentUser().getUid());
+            criarTurma(new Turma(nomeTurmaInput.getText().toString(), admin, nomeUser));
             bottomSheetDialog.dismiss();
         });
-        btnCancelar.setOnClickListener(vvv -> bottomSheetDialog.dismiss());
+        btnCancelar.setOnClickListener(v -> bottomSheetDialog.dismiss());
     }
 
     private void bottomSheetUserActions() {
@@ -241,14 +244,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         userBtn.setText(nomeUser);
 
-        logOut.setOnClickListener(vv -> {
+        logOut.setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
             mAuth.signOut();
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         });
 
-        userBtn.setOnClickListener(vvv -> {
+        userBtn.setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
             View rootView = findViewById(android.R.id.content);
             HelperClass.showSnackbar(rootView, this, "Ainda precisamos criar esta atividade, " + nomeUser);
@@ -372,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         Turma turma = listaTurmas.get(position);
         Intent intent = new Intent(this, TaskActivity.class);
         intent.putExtra("idTurma", turma.getId());
-        intent.putExtra("idAdmin", turma.getAdmin());
+        intent.putExtra("idAdmin", turma.getAdmin().get(0));
         intent.putExtra("nomeTurma", turma.getNome());
 
         finish();

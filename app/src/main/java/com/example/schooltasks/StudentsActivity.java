@@ -16,9 +16,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.schooltasks.adapter.AlunoAdapter;
 import com.example.schooltasks.classes.Aluno;
 import com.example.schooltasks.classes.HelperClass;
-import com.example.schooltasks.adapter.AlunoAdapter;
 import com.example.schooltasks.databinding.ActivityStudentsBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
@@ -32,7 +32,6 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +50,7 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
     private FirebaseAuth mAuth;
     private String idAdmin;
     private CollectionReference turmaAlunosRef;
+    private ArrayList<String> admins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
             return insets;
         });
         inicializarComponentes();
-        listenForAlunosChanges();
+        getAdmins();
         botoes();
     }
 
@@ -84,11 +84,28 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
         db = FirebaseFirestore.getInstance();
         turmaAlunosRef = db.collection("turmaAlunos");
         listaAlunos = new ArrayList<>();
-        adapter = new AlunoAdapter(listaAlunos, this);
+        admins = new ArrayList<>();
+        adapter = new AlunoAdapter(listaAlunos, this, admins);
         binding.recyclerAlunos.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerAlunos.setAdapter(adapter);
         bottomSheetDialog = new BottomSheetDialog(this);
         view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_layout, null);
+    }
+
+    private void getAdmins() {
+        DocumentReference turmaRef = db.collection("turma").document(idTurma);
+        turmaRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (!documentSnapshot.exists()) {
+                Log.w("Firestore", "Turma não encontrada");
+                return;
+            }
+
+            Object adminObject = documentSnapshot.get("admin");
+            if (adminObject instanceof String) admins.add((String) adminObject);
+            if (adminObject instanceof List) admins.addAll((List<String>) adminObject);
+
+            listenForAlunosChanges();
+        }).addOnFailureListener(e -> Log.w("Firestore", "Erro ao pegar documento: " + e));
     }
 
     private void listenForAlunosChanges() {
@@ -115,6 +132,8 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
     }
 
     private void listenForAlunoDetails(ArrayList<String> idAlunos) {
+        ArrayList<Aluno> alunosAdmins = new ArrayList<>();
+        ArrayList<Aluno> naoAdmins = new ArrayList<>();
         listaAlunos.clear();
         CollectionReference alunosRef = db.collection("users");
         Query query = alunosRef.whereIn(FieldPath.documentId(), idAlunos);
@@ -135,8 +154,17 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
                 Aluno aluno = doc.toObject(Aluno.class);
                 if (aluno == null) return;
                 aluno.setId(doc.getId());
-                listaAlunos.add(aluno);
+                if (admins.contains(aluno.getId())) {
+                    alunosAdmins.add(aluno);
+                    continue;
+                }
+                naoAdmins.add(aluno);
             }
+
+            listaAlunos.addAll(alunosAdmins);
+            listaAlunos.addAll(naoAdmins);
+
+
             adapter.notifyDataSetChanged();
         });
     }
@@ -294,41 +322,40 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
     }
 
     private void addAdmin(String idAluno) {
-
-        // TÁ CRASHANDO 
-        
+        bottomSheetDialog.dismiss();
         DocumentReference turmaRef = db.collection("turma").document(idTurma);
 
-        turmaRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                // Pega a lista atual de admins (assumindo que é uma lista de Strings)
-                List<String> listaAdmins = (List<String>) documentSnapshot.get("admin");
-
-                if (listaAdmins == null) {
-                    listaAdmins = new ArrayList<>(); // Se for null, inicialize a lista
-                }
-
-                // Adiciona o novo ID de admin à lista (se ainda não estiver lá)
-                if (listaAdmins.contains(idAluno)) {
-                    View rootView = findViewById(android.R.id.content);
-                    HelperClass.showSnackbar(rootView, this, "Este aluno já é admin!");
-                    return;
-                }
-                listaAdmins.add(idAluno);
-
-                // Atualize o documento com a nova lista de admins
-                turmaRef.update("admin", listaAdmins).addOnSuccessListener(aVoid -> {
-                    View rootView = findViewById(android.R.id.content);
-                    HelperClass.showSnackbar(rootView, this, "Aluno promovido a admin com sucesso!");
-                }).addOnFailureListener(e -> {
-                    View rootView = findViewById(android.R.id.content);
-                    HelperClass.showSnackbar(rootView, this, "Erro ao promover aluno a admin");
-                });
-            }
-        }).addOnFailureListener(e -> {
+        if (admins.contains(idAluno)) {
+            bottomSheetDialog.dismiss();
             View rootView = findViewById(android.R.id.content);
-            HelperClass.showSnackbar(rootView, this, "Erro ao buscar admins da turma");
-        });
+            HelperClass.showSnackbar(rootView, this, "Aluno já é administrador");
+            return;
+        }
+
+        admins.add(idAluno);
+        turmaRef.update("admin", admins).addOnSuccessListener(aVoid -> {
+            View rootView = findViewById(android.R.id.content);
+            HelperClass.showSnackbar(rootView, this, "Aluno virou administrador");
+
+        }).addOnFailureListener(e -> Log.w("Firestore", "Erro ao torná-lo administrador"));
+    }
+
+    private void removeAdmin(String idAluno) {
+        bottomSheetDialog.dismiss();
+        DocumentReference turmaRef = db.collection("turma").document(idTurma);
+
+        if (!admins.contains(idAluno)) {
+            bottomSheetDialog.dismiss();
+            View rootView = findViewById(android.R.id.content);
+            HelperClass.showSnackbar(rootView, this, "Aluno não é administrador");
+            return;
+        }
+
+        admins.remove(idAluno);
+        turmaRef.update("admin", admins).addOnSuccessListener(aVoid -> {
+            View rootView = findViewById(android.R.id.content);
+            HelperClass.showSnackbar(rootView, this, "Aluno não é mais administrador");
+        }).addOnFailureListener(e -> Log.w("Firestore", "Erro ao torná-lo administrador"));
     }
 
     @Override
@@ -345,10 +372,14 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View view1 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_update_aluno, null);
         bottomSheetDialog.setContentView(view1);
-        bottomSheetDialog.show();
 
         MaterialButton removerAluno = view1.findViewById(R.id.deleteAluno);
         MaterialButton addAdmin = view1.findViewById(R.id.addAdmin);
+        MaterialButton removeAdmin = view1.findViewById(R.id.removeAdmin);
+        if (admins.contains(idAluno)) {
+            addAdmin.setVisibility(View.GONE);
+            removeAdmin.setVisibility(View.VISIBLE);
+        }
 
         removerAluno.setOnClickListener(v -> {
             bottomSheetDialog.dismiss();
@@ -358,6 +389,12 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
             bottomSheetDialog.dismiss();
             addAdmin(idAluno);
         });
+        removeAdmin.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            removeAdmin(idAluno);
+        });
+
+        bottomSheetDialog.show();
     }
 
     @Override

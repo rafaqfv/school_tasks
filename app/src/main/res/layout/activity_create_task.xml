@@ -55,35 +55,44 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/disciplinaLayout"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Disciplina"
-            app:helperText=" ">
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/disciplina"
-                inputType="textCapSentences"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/dataLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:hint="Data de entrega (dd/mm/aaaa)"
-            app:helperText=" ">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/data"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/disciplinaLayout"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:focusable="false"
-                android:maxLength="10" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="Disciplina"
+                app:helperText=" ">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/disciplina"
+                    inputType="textCapSentences"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dataLayout"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:clickable="true"
+                android:hint="Data de entrega"
+                app:helperText=" ">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:maxLength="10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tituloLayout"
@@ -94,9 +103,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titulo"
-                android:inputType="textCapSentences"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -108,9 +117,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descricao"
-                android:inputType="textCapSentences"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

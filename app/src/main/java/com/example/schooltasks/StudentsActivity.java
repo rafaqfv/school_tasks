@@ -336,7 +336,7 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
         turmaRef.update("admin", admins).addOnSuccessListener(aVoid -> {
             View rootView = findViewById(android.R.id.content);
             HelperClass.showSnackbar(rootView, this, "Aluno virou administrador");
-
+            adapter.notifyDataSetChanged();
         }).addOnFailureListener(e -> Log.w("Firestore", "Erro ao torná-lo administrador"));
     }
 
@@ -355,6 +355,7 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
         turmaRef.update("admin", admins).addOnSuccessListener(aVoid -> {
             View rootView = findViewById(android.R.id.content);
             HelperClass.showSnackbar(rootView, this, "Aluno não é mais administrador");
+            adapter.notifyDataSetChanged();
         }).addOnFailureListener(e -> Log.w("Firestore", "Erro ao torná-lo administrador"));
     }
 

@@ -375,7 +375,6 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         Turma turma = listaTurmas.get(position);
         Intent intent = new Intent(this, TaskActivity.class);
         intent.putExtra("idTurma", turma.getId());
-        intent.putExtra("idAdmin", turma.getAdmin().get(0));
         intent.putExtra("nomeTurma", turma.getNome());
 
         finish();

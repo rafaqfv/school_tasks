@@ -40,7 +40,7 @@ import java.util.Map;
 
 public class StudentsActivity extends AppCompatActivity implements OnItemClickListener {
     private ActivityStudentsBinding binding;
-    private boolean admin;
+    private boolean admin = false;
     private FirebaseFirestore db;
     private ArrayList<Aluno> listaAlunos;
     private String idTurma;
@@ -48,7 +48,6 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
     private BottomSheetDialog bottomSheetDialog;
     private View view1;
     private FirebaseAuth mAuth;
-    private String idAdmin;
     private CollectionReference turmaAlunosRef;
     private ArrayList<String> admins;
 
@@ -77,11 +76,9 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
     private void inicializarComponentes() {
         Intent intent = getIntent();
         idTurma = intent.getStringExtra("idTurma");
-        admin = intent.getBooleanExtra("isAdmin", false);
-        idAdmin = intent.getStringExtra("idAdmin");
         binding.addAluno.setVisibility(View.GONE);
-        if (admin) binding.addAluno.setVisibility(View.VISIBLE);
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         turmaAlunosRef = db.collection("turmaAlunos");
         listaAlunos = new ArrayList<>();
         admins = new ArrayList<>();
@@ -102,7 +99,19 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
 
             Object adminObject = documentSnapshot.get("admin");
             if (adminObject instanceof String) admins.add((String) adminObject);
-            if (adminObject instanceof List) admins.addAll((List<String>) adminObject);
+            if (adminObject instanceof List) {
+                List<?> adminList = (List<?>) adminObject;
+                for (Object item : adminList) {
+                    if (item instanceof String) admins.add((String) item);
+                }
+            }
+
+            if (admins.contains(mAuth.getUid())) {
+                binding.addAluno.setVisibility(View.VISIBLE);
+                admin = true;
+            } else {
+                admin = false;
+            }
 
             listenForAlunosChanges();
         }).addOnFailureListener(e -> Log.w("Firestore", "Erro ao pegar documento: " + e));
@@ -361,8 +370,6 @@ public class StudentsActivity extends AppCompatActivity implements OnItemClickLi
 
     @Override
     public void onItemClick(int position) {
-        mAuth = FirebaseAuth.getInstance();
-
         if (!admin) return;
 
         Aluno aluno = listaAlunos.get(position);

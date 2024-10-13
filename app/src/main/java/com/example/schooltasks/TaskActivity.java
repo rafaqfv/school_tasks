@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 public class TaskActivity extends AppCompatActivity implements OnItemClickListener {
@@ -43,6 +44,7 @@ public class TaskActivity extends AppCompatActivity implements OnItemClickListen
     private TaskAdapter adapter;
     private String idTurma;
     private String idAdmin;
+    private List<String> admins;
     private String nomeTurma;
     private boolean isAdmin;
 
@@ -66,24 +68,42 @@ public class TaskActivity extends AppCompatActivity implements OnItemClickListen
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         taskList = new ArrayList<>();
+        admins = new ArrayList<>();
         adapter = new TaskAdapter(taskList, this);
         binding.recyclerTasks.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerTasks.setAdapter(adapter);
 
         Intent intent = getIntent();
         idTurma = intent.getStringExtra("idTurma");
-        idAdmin = intent.getStringExtra("idAdmin");
         nomeTurma = intent.getStringExtra("nomeTurma");
         binding.titleActivity.setText(nomeTurma.toString());
 
         binding.intentAddTask.setVisibility(View.GONE);
+        getAdmins();
+    }
 
-        if (mAuth.getUid().equals(idAdmin)) {
-            binding.intentAddTask.setVisibility(View.VISIBLE);
-            isAdmin = true;
-        } else {
-            isAdmin = false;
-        }
+    private void getAdmins() {
+        DocumentReference turmaRef = db.collection("turma").document(idTurma);
+        turmaRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (!documentSnapshot.exists()) return;
+
+            Object adminObject = documentSnapshot.get("admin");
+            if (adminObject instanceof String) admins.add((String) adminObject);
+            if (adminObject instanceof List) {
+                List<?> adminList = (List<?>) adminObject;
+                for (Object item : adminList) {
+                    if (item instanceof String) admins.add((String) item);
+                }
+            }
+
+            if (admins.contains(mAuth.getUid())) {
+                binding.intentAddTask.setVisibility(View.VISIBLE);
+                isAdmin = true;
+            } else {
+                isAdmin = false;
+            }
+
+        }).addOnFailureListener(e -> Log.w("Firestore", "Erro ao pegar documento: " + e));
     }
 
     private void botoes() {
@@ -170,7 +190,6 @@ public class TaskActivity extends AppCompatActivity implements OnItemClickListen
             Intent intentAlunos = new Intent(this, StudentsActivity.class);
             intentAlunos.putExtra("idTurma", idTurma);
             intentAlunos.putExtra("isAdmin", isAdmin);
-            intentAlunos.putExtra("idAdmin", idAdmin);
             startActivity(intentAlunos);
         });
 
